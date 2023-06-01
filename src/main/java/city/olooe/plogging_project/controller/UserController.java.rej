@@ -1,7 +1,0 @@
-diff a/src/main/java/city/olooe/plogging_project/controller/UserController.java b/src/main/java/city/olooe/plogging_project/controller/UserController.java	(rejected hunks)
-@@ -1,4 +0,4 @@
--package city.olooe.plogging_project.controller;
-+package city.olooe.plogging_project.Controller;
- 
- public class UserController {
- 
