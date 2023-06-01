@@ -75,5 +75,4 @@ public class MapDTO {
         .time(mapDTO.getTime())
         .build();
   }
-
 }
