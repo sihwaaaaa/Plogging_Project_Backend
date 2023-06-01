@@ -7,5 +7,6 @@ public class Hello {
         System.out.println("김성진이 작성");
         System.out.println("이시화");
         System.out.println("김민수");
+        System.out.println("김민수test");
     }
 }
