@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tbl_badge")
-public class badgeEntity {
+public class BadgeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int badgeNo; // pk 뱃지 번호
