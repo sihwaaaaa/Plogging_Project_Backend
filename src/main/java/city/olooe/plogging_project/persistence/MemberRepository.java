@@ -14,4 +14,7 @@ import city.olooe.plogging_project.model.MemberEntity;
 public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 
   MemberEntity findByUserIdAndPassword(String userId, String password);
+
+  Boolean existsByUserId(String userId);
+
 }

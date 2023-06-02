@@ -1,9 +1,12 @@
 package city.olooe.plogging_project.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -14,34 +17,45 @@ import org.hibernate.annotations.GenericGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-/**
- * 
- */
-@Data
+@Entity
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Builder
-@Table(name = "member", uniqueConstraints = { @UniqueConstraint(columnNames = "nickname") })
+@Table(name = "tbl_member", uniqueConstraints = { @UniqueConstraint(columnNames = "nickName") })
+/**
+ * @author: 박연재
+ * @date: 2023.06.01
+ * @brief: 멤버 엔티티
+ */
 public class MemberEntity {
 
   @Id
-  @GeneratedValue(generator = "system-uuid")
-  @GenericGenerator(name = "system-uuid", strategy = "uuid")
-  private Long memberNo;
-  private String userId;
-  private String password;
-  private String userName;
-  private String email;
-  private Date regDate;
-  private String address;
-  private String nickName;
-  private String birth;
-  private String gender;
-  private Long totalPoint;
-  private Long currentPoint;
-  private String authProvider;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long memberNo; // 회원 번호
+  private String userId; // 회원 아이디
+  private String password; // 회원 비밀번호
+  private String userName; // 회원 이름
+  private String email; // 회원 이메일
+  private Date regDate; // 회원 등록일자
+  private String address; // 회원 주소
+  private String nickName; // 회원 닉네임
+  private String birth; // 회원 생년월일
+  private String gender; // 회원 성별
+  private Long totalPoint; // 회원 누적 포인트
+  private Long currentPoint; // 회원 현재 포인트
+  private String authProvider; // 회원 oauth 2.0 로그인 공급자
 
+  public MemberEntity(String userId, String password, String userName, String email) {
+    this.userId = userId;
+    this.password = password;
+    this.userName = userName;
+    this.email = email;
+  }
+
+  @OneToMany(mappedBy = "memberEntity")
+  private List<AuthEntity> authEntity = new ArrayList<>();
 }
