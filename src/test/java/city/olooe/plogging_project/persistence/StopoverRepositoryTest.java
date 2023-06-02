@@ -1,7 +1,5 @@
 package city.olooe.plogging_project.persistence;
 
-import java.util.Map;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +11,20 @@ import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
 @Slf4j
-public class MapRepositoryTest {
+public class StopoverRepositoryTest {
   @Autowired
-  MapRepository mapRepository;
+  StopoverRepository repository;
 
   @Test
-  @DisplayName("맵 생성 테스트")
-  public void createMap() {
+  @DisplayName("경유지 단일 생성 테스트")
+  public void createStopover() {
+
     // given
-    MapEntity mapEntity = MapEntity.builder().startX(0d).startY(0d).endX(0d).endY(0d).courseName("테스트")
-        .courseDetail("테스트내용").addr("테스트주소").distance(0).build();
-    // when
+    StopoverEntity entity = StopoverEntity.builder().stopoverX(123.1).stopoverY(123.1)
+        .mapEntity(MapEntity.builder().mapNo(1L).build())
+        .stopoverIdx(1)
+        .build();
     // then
-    log.info("{}", mapRepository.save(mapEntity));
-
+    log.info("{}", repository.save(entity));
   }
-
 }

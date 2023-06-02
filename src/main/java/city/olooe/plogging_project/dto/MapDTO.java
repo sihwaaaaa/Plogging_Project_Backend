@@ -10,25 +10,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-/*
+/**
  * @author : 이시화
  * 
  * @date: 23.06.01
  * 
  * @brief: MapDTO
+ * 
  */
 public class MapDTO {
-  private double startX;
-  private double startY;
-  private double endX;
-  private double endY;
+  private Double startX;
+  private Double startY;
+  private Double endX;
+  private Double endY;
   private String courseName;
   private String courseDetail;
   private String addr;
-  private int distance;
+  private Integer distance;
   private Date time;
 
-  /*
+  /**
    * @author : 이시화
    * 
    * @date: 23.06.01
@@ -51,7 +52,7 @@ public class MapDTO {
     this.time = entity.getTime();
   }
 
-  /*
+  /**
    * @author : 이시화
    * 
    * @date: 23.06.01

@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tbl_location")
-/*
+/**
  * @author : 이시화
  * 
  * @date: 23.06.01
@@ -27,9 +27,9 @@ import lombok.NoArgsConstructor;
 public class LocationEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long locationNo; // pk
-  private double locationX; // 거점 x좌표
-  private double locationY; // 거점 x좌표
+  private Long locationNo; // pk
+  private Double locationX; // 거점 x좌표
+  private Double locationY; // 거점 x좌표
   private String type; // 유형(거점 / 쓰레기통)
   private String detail; // 상세설명 (거점-상호명/쓰레기통-상세위치)
   private String addr; // 위치 주소
