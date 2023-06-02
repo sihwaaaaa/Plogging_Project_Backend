@@ -13,5 +13,23 @@ import city.olooe.plogging_project.model.MemberEntity;
 @Repository
 public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 
+  /**
+   * @author: 박연재
+   * @date: 2023.06.02
+   * @brief: 회원 로그인 메서드
+   * @param userId
+   * @param password
+   * @return MemberEntity
+   */
   MemberEntity findByUserIdAndPassword(String userId, String password);
+
+  /**
+   * @author: 박연재
+   * @date: 2023.06.02
+   * @brief: 회원 존재 여부
+   * @param userId
+   * @return Boolean
+   */
+  Boolean existsByUserId(String userId);
+
 }
