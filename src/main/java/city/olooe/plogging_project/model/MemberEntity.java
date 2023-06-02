@@ -1,5 +1,7 @@
 package city.olooe.plogging_project.model;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +14,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.apache.ibatis.annotations.One;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +25,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@DynamicInsert
 @Entity
 @Getter
 @Builder
@@ -31,7 +37,7 @@ import lombok.NoArgsConstructor;
  * @date: 2023.06.01
  * @brief: 멤버 엔티티
  */
-public class MemberEntity {
+public class MemberEntity implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,5 +63,11 @@ public class MemberEntity {
   }
 
   @OneToMany(mappedBy = "memberEntity")
-  private List<AuthEntity> authEntity = new ArrayList<>();
+  private List<AuthEntity> authEntities = new ArrayList<>();
+
+  @OneToMany(mappedBy = "host")
+  private List<ChallengeEntity> challengeEntities = new ArrayList<>();
+
+  @OneToMany(mappedBy = "memberEntity")
+  private List<RewardEntity> rewardEntities = new ArrayList<>();
 }

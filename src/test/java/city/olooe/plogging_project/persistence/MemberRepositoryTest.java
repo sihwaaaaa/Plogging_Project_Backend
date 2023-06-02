@@ -1,5 +1,7 @@
 package city.olooe.plogging_project.persistence;
 
+import java.util.Collections;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -32,19 +34,26 @@ public class MemberRepositoryTest {
     MemberEntity member = MemberEntity.builder().userId("root2").password("12345").userName("김연재")
         .email("root1234@gmail.com").build();
     log.info("{}", memberRepository.save(member));
-    
+
   }
+
+  @DisplayName("회원 단일 조회 테스트")
+  @Test
+  public void testFindAllMember() {
+
+    log.info("{}", memberRepository.findAll());
+  }
+
   @DisplayName("회원 단일 조회 테스트")
   @Test
   public void checkMember() {
-    
-    
-    log.info("{}", memberRepository.findByUserIdAndPassword("root", "1234"));    
+
+    log.info("{}", memberRepository.findByUserIdAndPassword("root", "1234"));
   }
 
   @DisplayName("클래스 확인 용도")
   @Test
-  public void testClass(){
+  public void testClass() {
     log.info("{}", memberRepository.getClass().getName());
   }
 }
