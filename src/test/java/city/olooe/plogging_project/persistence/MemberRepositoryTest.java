@@ -37,11 +37,17 @@ public class MemberRepositoryTest {
 
   }
 
-  @DisplayName("회원 단일 조회 테스트")
+  @DisplayName("회원 목록 조회 테스트")
   @Test
   public void testFindAllMember() {
 
     log.info("{}", memberRepository.findAll());
+  }
+
+  @DisplayName("회원 수정 테스트")
+  @Test
+  public void testModifyMember() {
+    // log.info("{}")
   }
 
   @DisplayName("회원 단일 조회 테스트")
