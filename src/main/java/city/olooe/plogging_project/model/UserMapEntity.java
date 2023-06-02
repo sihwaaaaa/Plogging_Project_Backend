@@ -27,8 +27,8 @@ import lombok.NoArgsConstructor;
 public class UserMapEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long userMapNo;// pk
-  private long mapNo;// 지도번호 fk
-  private long memberNo;// 회원번호 fk
+  private Long userMapNo;// pk
+  private Long mapNo;// 지도번호 fk
+  private Long memberNo;// 회원번호 fk
 
 }
