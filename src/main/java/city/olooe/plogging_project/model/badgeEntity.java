@@ -16,19 +16,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_usermap")
-/*
- * @author : 이시화
- * 
- * @date: 23.06.01
- * 
- * @brief: 회원과 경로를 연결해주는 브릿지 테이블(다대다관계)
- */
-public class UserMapEntity {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long userMapNo;// pk
-  private Long mapNo;// 지도번호 fk
-  private Long memberNo;// 회원번호 fk
-
+@Table(name = "tbl_badge")
+public class badgeEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int badgeNo; // pk 뱃지 번호
+    private String name; // 뱃지 이름
+    private int point; // 회원의 누적 포인트
 }

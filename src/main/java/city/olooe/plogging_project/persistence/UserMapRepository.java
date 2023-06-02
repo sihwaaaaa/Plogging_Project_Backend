@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import city.olooe.plogging_project.model.UserMapEntity;
 
 @Repository
-/*
+/**
  * @author : 이시화
  * 
  * @date: 23.06.01
