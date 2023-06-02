@@ -34,9 +34,15 @@ public class ChallengeScheduleEntity {
     @JoinColumn(name = "chNo")
     private ChallengeEntity chNo; // 챌린지의 번호
 
+<<<<<<< HEAD
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = MapEntity.class)
     @JoinColumn(name = "mapNo")
     private MapEntity mapNo; // 추천경로 맵의 번호
+=======
+    // @ManyToOne
+    // @JoinColumn(name = "mapNo")
+    // private Long mapNo; // 추천경로 맵의 번호
+>>>>>>> origin/feature/board
 
     private Date startDate; // 플로깅 시작날짜 시간
     private Date endDate; // 플로깅 끝나는 날짜 시간

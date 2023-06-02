@@ -25,22 +25,25 @@ public class BoardDTO {
   private String content;
   private LocalDateTime regDate;
   private LocalDateTime updateDate;
+  private Integer category;
 
   private Long writer;
 
   public BoardEntity boardEntity() {
-    BoardEntity boardBuild = BoardEntity.builder().bno(bno).writer(writer).title(title).content(content).build();
+    BoardEntity boardBuild = BoardEntity.builder().bno(bno).writer(writer).title(title).content(content)
+        .category(category).build();
 
     return boardBuild;
   }
 
   @Builder
-  public BoardDTO(Long bno, Long writer, String title, String content, LocalDateTime regDate,
+  public BoardDTO(Long bno, Long writer, String title, String content, Integer category, LocalDateTime regDate,
       LocalDateTime updateDate) {
     this.bno = bno;
     this.writer = writer;
     this.title = title;
     this.content = content;
+    this.category = category;
     this.regDate = regDate;
     this.updateDate = updateDate;
   }
