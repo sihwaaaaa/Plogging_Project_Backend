@@ -29,7 +29,11 @@ public class ChallengeMemberEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+<<<<<<< HEAD
     // @OneToMany(mappedBy = "cmemberNo", cascade = CascadeType.ALL)
+=======
+    @OneToMany(mappedBy = "cmemberNo", cascade = CascadeType.ALL)
+>>>>>>> 2a9cdff833500bab93c73b3393cff974f16b8d6e
     private Long cmemberNo; // 챌린지맴버 번호
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = ChallengeEntity.class)
