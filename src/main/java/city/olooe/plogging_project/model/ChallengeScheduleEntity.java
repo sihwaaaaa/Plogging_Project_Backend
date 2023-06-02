@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 public class ChallengeScheduleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @OneToMany(mappedBy = "scheduleNo", cascade = CascadeType.ALL)
+    // @OneToMany(mappedBy = "scheduleNo", cascade = CascadeType.ALL)
     private Long scheduleNo; // 플로깅 스케쥴 번호
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = ChallengeEntity.class)

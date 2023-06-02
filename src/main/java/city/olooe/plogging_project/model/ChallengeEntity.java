@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,13 +24,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "tbl_challenge")
+@DynamicInsert
 public class ChallengeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chNo; // 챌린지 번호 PK
 
-    private Long blind; // 공개,비공개 여부
+    private Boolean blind; // 공개,비공개 여부
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = MemberEntity.class)
     @JoinColumn(name = "memberNo")
