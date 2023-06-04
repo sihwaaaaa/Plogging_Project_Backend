@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import city.olooe.plogging_project.config.WebSecurityConfig;
 import city.olooe.plogging_project.model.MemberEntity;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,16 +16,19 @@ public class MemberServiceTest {
   @Autowired
   private MemberService memberService;
 
+  @Autowired
+  private WebSecurityConfig securityConfig;
+
   @DisplayName("회원 생성 테스트")
   @Test
   public void testCreateMember() {
     memberService.create(new MemberEntity("root1234", "123456", "아로하", "root@123.com"));
   }
 
-  @DisplayName("회원 중복 여부 확인")
+  @DisplayName("로그인 확인 메서드")
   @Test
   public void testCheckMember() {
-    memberService.checkMember("root1234", "123456");
+    memberService.getByCredentials("root", "1234567", securityConfig.getPasswordEncoder());
   }
 
 }

@@ -1,19 +1,20 @@
 package city.olooe.plogging_project.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 
-@Service
-@Slf4j
 /**
  * @author: 박연재
  * @date: 2023.06.02
  * @brief: 비즈니스 계층의 회원 서비스
  */
+@Service
+@Slf4j
 public class MemberService {
 
   @Autowired
@@ -47,24 +48,15 @@ public class MemberService {
    * @date: 2023.06.02
    * @brief: 회원 확인 용도
    * @param: MemberEntity
-   * @return: boolean
+   * @return: MemberEntity
    */
-  public boolean checkMember(final String userId, final String password) {
-    if (memberRepository.findByUserIdAndPassword(userId, password) == null) {
-      return false; // 회원이 존재하지 않으면 0
-    }
-    return true; // 회원이 존재하면 1
+  public MemberEntity getByCredentials(final String userId, final String password, PasswordEncoder encoder) {
+      final MemberEntity originalMember = memberRepository.findByUserId(userId);
+
+      if(originalMember != null && encoder.matches(password, originalMember.getPassword())) return originalMember; // 회원이 존재하지 않으면 0
+      
+      return null;
+
   }
 
-  // public UserEntity getByCredentials(final String username, final String
-  // password, PasswordEncoder encoder) { // 패스워드
-  // // 암호화
-  // UserEntity userEntity = userRepository.findByUsername(username);
-  // if (userEntity != null && encoder.matches(password,
-  // userEntity.getPassword())) {
-  // return userEntity;
-  // }
-  // return null;
-  // // return userRepository.findByUsernameAndPassword(username, password);
-  // }
 }
