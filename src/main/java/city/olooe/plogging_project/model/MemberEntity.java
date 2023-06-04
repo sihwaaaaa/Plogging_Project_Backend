@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.ibatis.annotations.One;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
@@ -25,6 +27,11 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author: 박연재
+ * @date: 2023.06.01
+ * @brief: 멤버 엔티티
+ */
 @DynamicInsert
 @Entity
 @Getter
@@ -32,11 +39,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tbl_member", uniqueConstraints = { @UniqueConstraint(columnNames = "nickName") })
-/**
- * @author: 박연재
- * @date: 2023.06.01
- * @brief: 멤버 엔티티
- */
 public class MemberEntity implements Serializable {
 
   @Id
@@ -65,8 +67,8 @@ public class MemberEntity implements Serializable {
   @OneToMany(mappedBy = "memberEntity")
   private List<AuthEntity> authEntities = new ArrayList<>();
 
-  @OneToMany(mappedBy = "host")
-  private List<ChallengeEntity> challengeEntities = new ArrayList<>();
+  // @OneToMany(mappedBy = "host")
+  // private List<ChallengeEntity> challengeEntities = new ArrayList<>();
 
   @OneToMany(mappedBy = "memberEntity")
   private List<RewardEntity> rewardEntities = new ArrayList<>();
