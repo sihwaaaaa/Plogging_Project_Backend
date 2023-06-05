@@ -15,28 +15,28 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author : ì´ì¬ì›
+ * 
+ * @date : 2023.06.05
+ * 
+ * @brief : ë¦¬ì›Œë“œ ê´€ë ¨ DTO ìƒì„±ì, builder ì‚¬ìš©
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-/**
- * @author : ÀÌÀç¿ø
- * 
- * @date : 2023.06.05
- * 
- * @brief : ¸®¿öµå °ü·Ã DTO »ı¼ºÀÚ, builder »ç¿ë
- */
 public class RewardDTO {
 
     // @Temporal(TemporalType.TIMESTAMP)
     // private LocalDateTime localDateTime;
-    private Long rewardNo; // PK, Reward ¹øÈ£
-    private String type; // Æ÷ÀÎÆ® À¯Çü(±âºÎ or ·£´ı¹Ú½º)
-    private double tradePoint; // Æ÷ÀÎÆ® Áõ°¨, Â÷°¨¾×
-    private Date rewardDate; // Æ÷ÀÎÆ® ¾÷µ¥ÀÌÆ® ½Ã°£
-    private Long memberNo; // FK, È¸¿ø ¹øÈ£
-    private Long dno; // FK, ±âºÎ ¹øÈ£
-    private Long pno; // FK, »óÇ° ¹øÈ£
+    private Long rewardNo; // PK, Reward ë²ˆí˜¸
+    private String type; // í¬ì¸íŠ¸ ìœ í˜•(ê¸°ë¶€ or ëœë¤ë°•ìŠ¤)
+    private double tradePoint; // í¬ì¸íŠ¸ ì¦ê°, ì°¨ê°ì•¡
+    private Date rewardDate; // í¬ì¸íŠ¸ ì—…ë°ì´íŠ¸ ì‹œê°„
+    private Long memberNo; // FK, íšŒì› ë²ˆí˜¸
+    private Long dno; // FK, ê¸°ë¶€ ë²ˆí˜¸
+    private Long pno; // FK, ìƒí’ˆ ë²ˆí˜¸
 
     public RewardDTO(final RewardEntity entity) {
         this.rewardNo = entity.getRewardNo();
