@@ -28,8 +28,8 @@ public class ChallengeEntityTest {
     @DisplayName("챌린지 생성 테스트")
     public void createChallenge() {
         ChallengeEntity challengeEntity = ChallengeEntity.builder()
-                .blind(true)
-                .host(MemberEntity.builder().memberNo(6L).build())
+                .chNo(1L)
+                .host(MemberEntity.builder().memberNo(12L).build())
                 .title("챌린지 생성 테스트")
                 .content("테스트 내용")
                 .personnel(5L)

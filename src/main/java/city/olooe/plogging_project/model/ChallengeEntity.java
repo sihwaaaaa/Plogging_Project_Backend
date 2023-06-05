@@ -31,7 +31,7 @@ public class ChallengeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chNo; // 챌린지 번호 PK
 
-    private Boolean blind; // 공개,비공개 여부
+    private Integer blind; // 공개,비공개 여부
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = MemberEntity.class)
     @JoinColumn(name = "memberNo")
