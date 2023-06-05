@@ -1,9 +1,5 @@
 package city.olooe.plogging_project.persistence;
 
-import java.lang.reflect.Member;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.MemberEntity;
-import lombok.Builder.Default;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
@@ -28,7 +23,6 @@ public class ChallengeEntityTest {
     @DisplayName("챌린지 생성 테스트")
     public void createChallenge() {
         ChallengeEntity challengeEntity = ChallengeEntity.builder()
-                .chNo(1L)
                 .host(MemberEntity.builder().memberNo(12L).build())
                 .title("챌린지 생성 테스트")
                 .content("테스트 내용")
@@ -36,4 +30,5 @@ public class ChallengeEntityTest {
                 .build();
         log.info("{}", challengeRepository.save(challengeEntity));
     }
+
 }
