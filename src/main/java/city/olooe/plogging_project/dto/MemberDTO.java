@@ -19,6 +19,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MemberDTO {
 
+
+  private String token;
+
   private Long memberNo;
   private String userId;
   private String password;
