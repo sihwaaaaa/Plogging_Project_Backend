@@ -20,18 +20,25 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author: 박연재
+ * 
+ * @date: 2023.06.05
+ * 
+ * @brief: 인증을 하기 위한 JWT 설정 클래스
+ */
 @Slf4j
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   @Autowired
-  private TokenProvider tokenProvider;
-  
+  private TokenProvider tokenProvider; // 토큰 공급 클래스
+
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
     try {
-      String token = parseBearerToken(request);
+      String token = parseBearerToken(request); // Bearer Token 방식 토큰
       log.info("Filter is running...");
 
       if (token != null && !token.equalsIgnoreCase("null")) {
