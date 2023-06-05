@@ -16,11 +16,14 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,21 +38,21 @@ import lombok.NoArgsConstructor;
 public class RewardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int rewardNo; // pk
+    private Long rewardNo; // pk
     private String type; // 리워드 유형(기부, 상품)
     private double tradePoint; // 포인트의 증감, 차감
     private Date rewardDate; // 포인트 갱신 날짜
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberNo")
+    @JoinColumn(name = "memberNo", nullable = false)
     private MemberEntity memberEntity; // memberNo를 통해 조회
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "dno")
-    private List<DonationEntity> donation = new ArrayList<>(); // dno를 통해 기부처 목록 조회 가능
+    private DonationEntity donationEntity; // FK, 기부 번호
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "pno")
-    private List<ProductEntity> product = new ArrayList<>(); // pno를 통해 랜덤박스 목록 조회 가능
+    private ProductEntity productEntity; // FK, 상품 번호
 
 }

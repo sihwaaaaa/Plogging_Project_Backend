@@ -54,7 +54,7 @@ public class MemberRepositoryTest {
   @Test
   public void checkMember() {
 
-    log.info("{}", memberRepository.findByUserIdAndPassword("root", "1234"));
+    log.info("{}", memberRepository.findByUserIdAndPassword("root2", "12345"));
   }
 
   @DisplayName("클래스 확인 용도")

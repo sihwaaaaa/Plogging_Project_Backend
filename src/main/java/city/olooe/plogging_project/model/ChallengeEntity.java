@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Builder
 @Getter
@@ -25,13 +26,14 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tbl_challenge")
 @DynamicInsert
+@ToString
 public class ChallengeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chNo; // 챌린지 번호 PK
 
-    private Boolean blind; // 공개,비공개 여부
+    private Integer blind; // 공개,비공개 여부
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = MemberEntity.class)
     @JoinColumn(name = "memberNo")

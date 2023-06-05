@@ -7,5 +7,6 @@ import city.olooe.plogging_project.model.ChallengeEntity;
 
 @Repository
 public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Long> {
+    ChallengeEntity findByChNo(Long chNo);
 
 }
