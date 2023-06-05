@@ -37,22 +37,21 @@ public class MemberController {
   @Autowired
   private MemberService memberService;
 
-
   @Autowired
   private TokenProvider tokenProvider;
 
   @Autowired
   private WebSecurityConfig securityConfig;
   // /**
-  //  * @author: 박연재
-  //  * @date: 2023.06.02
-  //  * @brief: 로그인 페이지
-  //  * @param param
-  //  * @return void
-  //  */
+  // * @author: 박연재
+  // * @date: 2023.06.02
+  // * @brief: 로그인 페이지
+  // * @param param
+  // * @return void
+  // */
   // @GetMapping(value = "login")
   // public void login(@RequestParam String param) {
-    
+
   // }
   /**
    * @author: 박연재
@@ -65,30 +64,31 @@ public class MemberController {
   public ResponseEntity<?> signin(@RequestBody MemberDTO memberDTO) {
     // 1. 아이디, 비밀번호를 통해서 로그인 완료
     // if(memberService.checkMember(dto.getUserId(),dto.getPassword())){
-    //   MemberEntity entity = MemberDTO.toEntity(dto);
-    //   return ResponseEntity.ok().body(entity);
+    // MemberEntity entity = MemberDTO.toEntity(dto);
+    // return ResponseEntity.ok().body(entity);
     // }
-    MemberEntity member = memberService.getByCredentials(memberDTO.getUserId(), memberDTO.getPassword(), securityConfig.getPasswordEncoder());
+    MemberEntity member = memberService.getByCredentials(memberDTO.getUserId(), memberDTO.getPassword(),
+        securityConfig.getPasswordEncoder());
 
-    if(member != null){
+    if (member != null) {
       final String token = tokenProvider.create(member);
       log.info("{}", token);
       final MemberDTO responseMemberDTO = MemberDTO.builder()
-        .memberNo(member.getMemberNo())
-        .userId(member.getUserId())
-        .token(token)
-        .build();
+          .memberNo(member.getMemberNo())
+          .userId(member.getUserId())
+          .token(token)
+          .build();
       return ResponseEntity.ok().body(responseMemberDTO);
-    }else{
+    } else {
       ResponseDTO responseDTO = ResponseDTO.builder().error("로그인 실패!").build();
       return ResponseEntity.badRequest().body(responseDTO);
     }
   }
 
   @PostMapping("signup")
-  public ResponseEntity<?> registerMember(@RequestBody MemberDTO memberDTO){
+  public ResponseEntity<?> registerMember(@RequestBody MemberDTO memberDTO) {
     try {
-      if(memberDTO == null || memberDTO.getPassword() == null){
+      if (memberDTO == null || memberDTO.getPassword() == null) {
         throw new Exception("유효하지 않는 패스워드 값");
       }
       MemberEntity member = MemberEntity.builder()
@@ -101,8 +101,8 @@ public class MemberController {
           .nickName(memberDTO.getNickName())
           .gender(memberDTO.getGender())
           .build();
-  
-      MemberEntity registeredMember = memberService.create(member);    
+
+      MemberEntity registeredMember = memberService.create(member);
       MemberDTO responseMemberDTO = MemberDTO.builder()
           .memberNo(registeredMember.getMemberNo())
           .userId(registeredMember.getUserId())
@@ -124,7 +124,7 @@ public class MemberController {
 
   // @PostMapping(value = "path")
   // public String postMethodName(@RequestBody MemberDTO memberDto) {
-  //   return null;
+  // return null;
   // }
 
 }
