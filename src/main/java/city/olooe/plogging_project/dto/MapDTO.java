@@ -7,9 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
 /**
  * @author : 이시화
  * 
@@ -18,7 +15,11 @@ import lombok.NoArgsConstructor;
  * @brief: MapDTO
  * 
  */
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class MapDTO {
+  private Long mapNo;
   private Double startX;
   private Double startY;
   private Double endX;
@@ -41,6 +42,7 @@ public class MapDTO {
    * @brief: Entity를 DTO로 변환
    */
   public MapDTO(final MapEntity entity) {
+    this.mapNo = entity.getMapNo();
     this.startX = entity.getStartX();
     this.startY = entity.getStartY();
     this.endX = entity.getEndX();
@@ -65,6 +67,7 @@ public class MapDTO {
    */
   public static MapEntity toEntity(final MapDTO mapDTO) {
     return MapEntity.builder()
+        .mapNo(mapDTO.getMapNo())
         .startX(mapDTO.getStartX())
         .startY(mapDTO.getStartY())
         .endX(mapDTO.getEndX())

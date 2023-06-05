@@ -2,8 +2,6 @@ package city.olooe.plogging_project.dto;
 
 import java.util.Date;
 
-import org.apache.ibatis.javassist.compiler.ast.Member;
-
 import city.olooe.plogging_project.model.MemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,7 +36,7 @@ public class MemberDTO {
   private Long currentPoint;
   private String authProvider;
 
-  public MemberDTO (final MemberEntity entity){
+  public MemberDTO(final MemberEntity entity) {
     this.memberNo = entity.getMemberNo();
     this.userId = entity.getUserId();
     this.password = entity.getPassword();
