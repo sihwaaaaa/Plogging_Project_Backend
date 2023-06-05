@@ -6,6 +6,9 @@ import java.util.Date;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import city.olooe.plogging_project.model.DonationEntity;
+import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.model.ProductEntity;
 import city.olooe.plogging_project.model.RewardEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,8 +43,8 @@ public class RewardDTO {
         this.type = entity.getType();
         this.tradePoint = entity.getTradePoint();
         this.rewardDate = entity.getRewardDate();
-        this.dno = entity.getDno();
-        this.pno = entity.getPno();
+        this.dno = entity.getDonationEntity().getDno();
+        this.pno = entity.getProductEntity().getPno();
     }
 
     public static RewardEntity toEntity(final RewardDTO dto) {
@@ -50,8 +53,9 @@ public class RewardDTO {
                 .type(dto.getType())
                 .tradePoint(dto.getTradePoint())
                 .rewardDate(dto.getRewardDate())
-                .dno(dto.getDno())
-                .pno(dto.getPno())
+                .memberEntity(MemberEntity.builder().memberNo(dto.getMemberNo()).build())
+                .donationEntity(DonationEntity.builder().dno(dto.getDno()).build())
+                .productEntity(ProductEntity.builder().pno(dto.getPno()).build())
                 .build();
     }
 

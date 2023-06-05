@@ -28,9 +28,8 @@ public class DonationRepositoryTest {
     @DisplayName("기부처 등록 테스트")
     public void createDonation() {
         DonationEntity donationEntity = DonationEntity.builder()
-                .dno(1L)
-                .name("기부처 이름 TEST")
-                .detail("나")
+                .name("기부처 이름2")
+                .detail("기부처 내용")
                 .build();
         log.info("{}", donationRepository.save(donationEntity));
     }

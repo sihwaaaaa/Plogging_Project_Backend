@@ -44,15 +44,15 @@ public class RewardEntity {
     private Date rewardDate; // 포인트 갱신 날짜
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberNo")
+    @JoinColumn(name = "memberNo", nullable = false)
     private MemberEntity memberEntity; // memberNo를 통해 조회
 
-    // @OneToMany
-    // @JoinColumn(name = "dno")
-    private Long dno; // FK, 기부번호
+    @ManyToOne
+    @JoinColumn(name = "dno")
+    private DonationEntity donationEntity; // FK, 기부 번호
 
-    // @OneToMany
-    // @JoinColumn(name = "pno")
-    private Long pno; // FK, 상품 번호
+    @ManyToOne
+    @JoinColumn(name = "pno")
+    private ProductEntity productEntity; // FK, 상품 번호
 
 }

@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import city.olooe.plogging_project.model.DonationEntity;
+import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.model.ProductEntity;
 import city.olooe.plogging_project.model.RewardEntity;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,13 +30,24 @@ public class RewardRepositoryTest {
     @Test
     @DisplayName("리워드 적립 테스트")
     public void createReward() {
-        // RewardEntity reward =
+        // RewardEntity reward = RewardEntity.builder()
+        // .tradePoint(50d)
+        // .memberEntity(MemberEntity.builder().memberNo(1L).build())
+        // .donationEntity(DonationEntity.builder().dno(1L).build())
+        // .build();
+        RewardEntity reward = RewardEntity.builder()
+                .tradePoint(50d)
+                .memberEntity(MemberEntity.builder().memberNo(1L).build())
+                // .donationEntity(DonationEntity.builder().dno(1L).build())
+                .productEntity(ProductEntity.builder().pno(1L).build())
+                .build();
         // RewardEntity.builder().rewardNo(1L).tradePoint(50).rewardDate(null).build();
 
-        RewardEntity reward = RewardEntity.builder().rewardNo(3L)
-                .tradePoint(-20).rewardDate(new Date())
-                .type("기부")
-                .build();
+        // RewardEntity reward = RewardEntity
+        // RewardEntity.
+        // .rewardNo(3L)
+        // .tradePoint(-20)
+        // .rewardDate(
 
         log.info("{}", rewardRepository.save(reward));
     }
