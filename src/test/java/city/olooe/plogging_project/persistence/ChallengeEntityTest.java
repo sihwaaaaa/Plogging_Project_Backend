@@ -44,6 +44,12 @@ public class ChallengeEntityTest {
     }
 
     @Test
+    @DisplayName("챌린지 단일 조회")
+    public void readChallenge() {
+        challengeRepository.findByChNo(5L);
+    }
+
+    @Test
     @DisplayName("챌린지 삭제 테스트")
     public void deleteChallenge() {
         ChallengeEntity challenge = challengeRepository.findByChNo(4L);
