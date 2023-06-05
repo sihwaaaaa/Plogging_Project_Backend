@@ -23,7 +23,7 @@ public class ChallengeDTO {
      */
     private Long chNo;
     private Boolean blind;
-    private Long blind;
+    // private Long blind;
     private MemberEntity host;
     private String title;
     private String content;
