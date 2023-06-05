@@ -63,12 +63,12 @@ public class MemberEntity implements Serializable {
     this.email = email;
   }
 
-  @OneToMany(mappedBy = "memberEntity")
-  private List<AuthEntity> authEntities = new ArrayList<>();
+  // @OneToMany(mappedBy = "memberEntity")
+  // private List<AuthEntity> authEntities = new ArrayList<>();
 
   // @OneToMany(mappedBy = "host")
   // private List<ChallengeEntity> challengeEntities = new ArrayList<>();
 
-  @OneToMany(mappedBy = "memberEntity")
-  private List<RewardEntity> rewardEntities = new ArrayList<>();
+  // @OneToMany(mappedBy = "memberEntity")
+  // private List<RewardEntity> rewardEntities = new ArrayList<>();
 }

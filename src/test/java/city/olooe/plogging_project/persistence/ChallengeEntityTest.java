@@ -30,7 +30,7 @@ public class ChallengeEntityTest {
         MemberEntity entity;
         ChallengeEntity challengeEntity = ChallengeEntity.builder()
                 .blind(true)
-                .host(MemberEntity.builder().memberNo(1L).build())
+                .host(MemberEntity.builder().memberNo(12L).build())
                 .title("챌린지 생성 테스트")
                 .content("테스트 내용")
                 .personnel(5L)
