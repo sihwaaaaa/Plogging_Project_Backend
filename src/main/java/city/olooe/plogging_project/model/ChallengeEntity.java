@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Builder
 @Getter
@@ -25,6 +26,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tbl_challenge")
 @DynamicInsert
+@ToString
 public class ChallengeEntity {
 
     @Id

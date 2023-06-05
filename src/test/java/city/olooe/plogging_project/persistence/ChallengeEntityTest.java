@@ -40,7 +40,7 @@ public class ChallengeEntityTest {
     @Test
     @DisplayName("챌린지 목록 전체조회")
     public void readAllChallenge() {
-        challengeRepository.findAll();
+        log.info("{}", challengeRepository.findAll());
     }
 
     @Test
