@@ -11,6 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
 @Slf4j
+/**
+* @author : 이시화
+* @date: 23.06.02
+* 
+* @brief: 경유지 테스트 클래스
+*/
 public class StopoverRepositoryTest {
   @Autowired
   StopoverRepository repository;
