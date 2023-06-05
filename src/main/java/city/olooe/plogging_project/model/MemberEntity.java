@@ -1,9 +1,13 @@
 package city.olooe.plogging_project.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -24,12 +28,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Builder
-@Table(name = "member", uniqueConstraints = { @UniqueConstraint(columnNames = "nickname") })
+@Table(name = "tbl_member", uniqueConstraints = { @UniqueConstraint(columnNames = "nickName") })
 public class MemberEntity {
 
   @Id
-  @GeneratedValue(generator = "system-uuid")
-  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  // @GenericGenerator(name = "system-uuid", strategy = "uuid")
   private Long memberNo;
   private String userId;
   private String password;

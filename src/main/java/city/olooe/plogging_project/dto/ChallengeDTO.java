@@ -22,11 +22,7 @@ public class ChallengeDTO {
      * @brief: ChallengDTO
      */
     private Long chNo;
-<<<<<<< HEAD
     private Boolean blind;
-=======
-    private Long blind;
->>>>>>> 2a9cdff833500bab93c73b3393cff974f16b8d6e
     private MemberEntity host;
     private String title;
     private String content;
