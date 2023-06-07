@@ -1,6 +1,5 @@
 package city.olooe.plogging_project.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,29 +23,28 @@ import lombok.extern.slf4j.Slf4j;
 @SuppressWarnings("deprecation")
 @EnableWebSecurity
 @Slf4j
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
-  
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
   @Autowired
   private JwtAuthenticationFilter jwtAuthenticationFilter;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.cors()
-      .and()
-      .csrf()
+        .and()
+        .csrf()
         .disable()
-      .httpBasic()
+        .httpBasic()
         .disable()
-      .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)   
-      .and()
-      .authorizeRequests()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .authorizeRequests()
         .antMatchers("/", "/member/**").permitAll()
-      .anyRequest()
+        .anyRequest()
         .authenticated();
-        
-        
-      http.addFilterAfter(jwtAuthenticationFilter,CorsFilter.class);  
+
+    http.addFilterAfter(jwtAuthenticationFilter, CorsFilter.class);
   }
 
   @Bean

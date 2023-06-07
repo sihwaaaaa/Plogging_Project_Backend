@@ -21,9 +21,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * @author: �ڿ���
+ * @author: 박연재
  * @date: 2023.06.01
- * @brief: ��� ��ƼƼ
+ * @brief: 멤버 엔티티
  */
 @DynamicInsert
 @Entity
@@ -36,19 +36,19 @@ public class MemberEntity implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long memberNo; // ȸ�� ��ȣ
-  private String userId; // ȸ�� ���̵�
-  private String password; // ȸ�� ��й�ȣ
-  private String userName; // ȸ�� �̸�
-  private String email; // ȸ�� �̸���
-  private Date regDate; // ȸ�� �������
-  private String address; // ȸ�� �ּ�
-  private String nickName; // ȸ�� �г���
-  private String birth; // ȸ�� �������
-  private String gender; // ȸ�� ����
-  private Long totalPoint; // ȸ�� ���� ����Ʈ
-  private Long currentPoint; // ȸ�� ���� ����Ʈ
-  private String authProvider; // ȸ�� oauth 2.0 �α��� ������
+  private Long memberNo; // 회원 번호
+  private String userId; // 회원 아이디
+  private String password; // 비밀번호
+  private String userName; // 이름
+  private String email; // 이메일
+  private Date regDate; // 등록일자
+  private String address; // 주소
+  private String nickName; // 닉네임
+  private String birth; // 생년월일
+  private String gender; // 성별
+  private Long totalPoint; // 누적 포인트
+  private Long currentPoint; // 현재 포인트
+  private String authProvider; // oauth 2.0 연동 공급자
 
   public MemberEntity(String userId, String password, String userName, String email) {
     this.userId = userId;
@@ -57,12 +57,12 @@ public class MemberEntity implements Serializable {
     this.email = email;
   }
 
-//  @OneToMany(mappedBy = "memberEntity")
-//  private List<AuthEntity> authEntities = new ArrayList<>();
-//
-//  // @OneToMany(mappedBy = "host")
-//  // private List<ChallengeEntity> challengeEntities = new ArrayList<>();
-//
-//  @OneToMany(mappedBy = "memberEntity")
-//  private List<RewardEntity> rewardEntities = new ArrayList<>();
+  // @OneToMany(mappedBy = "memberEntity")
+  // private List<AuthEntity> authEntities = new ArrayList<>();
+  //
+  // // @OneToMany(mappedBy = "host")
+  // // private List<ChallengeEntity> challengeEntities = new ArrayList<>();
+  //
+  // @OneToMany(mappedBy = "memberEntity")
+  // private List<RewardEntity> rewardEntities = new ArrayList<>();
 }
