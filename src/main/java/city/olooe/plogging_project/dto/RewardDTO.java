@@ -15,22 +15,28 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author : 이재원
+ * 
+ * @date : 2023.06.05
+ * 
+ * @brief : 리워드 관련 DTO 생성자, builder 사용
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 public class RewardDTO {
 
     // @Temporal(TemporalType.TIMESTAMP)
     // private LocalDateTime localDateTime;
-    private Long rewardNo;
-    private String type;
-    private double tradePoint;
-    private Date rewardDate;
-    private Long memberNo;
-    private Long dno;
-    private Long pno;
+    private Long rewardNo; // PK, Reward 번호
+    private String type; // 포인트 유형(기부 or 랜덤박스)
+    private double tradePoint; // 포인트 증감, 차감액
+    private Date rewardDate; // 포인트 업데이트 시간
+    private Long memberNo; // FK, 회원 번호
+    private Long dno; // FK, 기부 번호
+    private Long pno; // FK, 상품 번호
 
     public RewardDTO(final RewardEntity entity) {
         this.rewardNo = entity.getRewardNo();
