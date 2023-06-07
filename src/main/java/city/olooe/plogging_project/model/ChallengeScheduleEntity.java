@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,10 +26,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "tbl_challengeschedule")
+@DynamicInsert
 public class ChallengeScheduleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // @OneToMany(mappedBy = "scheduleNo", cascade = CascadeType.ALL)
     private Long scheduleNo; // 플로깅 스케쥴 번호
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = ChallengeEntity.class)
