@@ -6,14 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 import org.apache.ibatis.annotations.One;
 import org.hibernate.annotations.ColumnDefault;
@@ -28,9 +21,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * @author: ¹Ú¿¬Àç
+ * @author: ï¿½Ú¿ï¿½ï¿½ï¿½
  * @date: 2023.06.01
- * @brief: ¸â¹ö ¿£Æ¼Æ¼
+ * @brief: ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Æ¼
  */
 @DynamicInsert
 @Entity
@@ -43,19 +36,19 @@ public class MemberEntity implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long memberNo; // È¸¿ø ¹øÈ£
-  private String userId; // È¸¿ø ¾ÆÀÌµð
-  private String password; // È¸¿ø ºñ¹Ð¹øÈ£
-  private String userName; // È¸¿ø ÀÌ¸§
-  private String email; // È¸¿ø ÀÌ¸ÞÀÏ
-  private Date regDate; // È¸¿ø µî·ÏÀÏÀÚ
-  private String address; // È¸¿ø ÁÖ¼Ò
-  private String nickName; // È¸¿ø ´Ð³×ÀÓ
-  private String birth; // È¸¿ø »ý³â¿ùÀÏ
-  private String gender; // È¸¿ø ¼ºº°
-  private Long totalPoint; // È¸¿ø ´©Àû Æ÷ÀÎÆ®
-  private Long currentPoint; // È¸¿ø ÇöÀç Æ÷ÀÎÆ®
-  private String authProvider; // È¸¿ø oauth 2.0 ·Î±×ÀÎ °ø±ÞÀÚ
+  private Long memberNo; // È¸ï¿½ï¿½ ï¿½ï¿½È£
+  private String userId; // È¸ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½
+  private String password; // È¸ï¿½ï¿½ ï¿½ï¿½Ð¹ï¿½È£
+  private String userName; // È¸ï¿½ï¿½ ï¿½Ì¸ï¿½
+  private String email; // È¸ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½
+  private Date regDate; // È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  private String address; // È¸ï¿½ï¿½ ï¿½Ö¼ï¿½
+  private String nickName; // È¸ï¿½ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½
+  private String birth; // È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  private String gender; // È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+  private Long totalPoint; // È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+  private Long currentPoint; // È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+  private String authProvider; // È¸ï¿½ï¿½ oauth 2.0 ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
   public MemberEntity(String userId, String password, String userName, String email) {
     this.userId = userId;

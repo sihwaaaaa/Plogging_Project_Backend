@@ -29,7 +29,7 @@ public class ChallengeEntityTest {
     @DisplayName("챌린지 생성 테스트")
     public void createChallenge() {
         ChallengeEntity challengeEntity = ChallengeEntity.builder()
-                .blind(true)
+                .blind(1)
                 .host(MemberEntity.builder().memberNo(12L).build())
                 .title("챌린지 생성 테스트")
                 .content("테스트 내용")
