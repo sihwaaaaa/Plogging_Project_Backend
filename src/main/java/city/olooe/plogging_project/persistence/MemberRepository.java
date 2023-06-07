@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import city.olooe.plogging_project.model.MemberEntity;
 import java.util.List;
 
-
 /**
  * @author: 박연재
  * @date: 2023.06.01
@@ -25,7 +24,6 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
    * @return MemberEntity
    */
   MemberEntity findByUserIdAndPassword(String userId, String password);
-
 
   /**
    * @author: 박연재
@@ -46,22 +44,22 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
   Boolean existsByUserId(String userId);
 
   // /**
-  //  * @author: 박연재
-  //  * @date: 2023.06.02
-  //  * @brief: 회원 수정
-  //  * @param memberEntity
-  //  * @return void
-  //  */
+  // * @author: 박연재
+  // * @date: 2023.06.02
+  // * @brief: 회원 수정
+  // * @param memberEntity
+  // * @return void
+  // */
   // @Modifying
   // void update(final MemberEntity memberEntity);
 
   // /**
-  //  * @author: 박연재
-  //  * @date: 2023.06.02
-  //  * @brief: 회원 수정
-  //  * @param memberEntity
-  //  * @return void
-  //  */
+  // * @author: 박연재
+  // * @date: 2023.06.02
+  // * @brief: 회원 수정
+  // * @param memberEntity
+  // * @return void
+  // */
   // @Modifying
   // void delete(Long memberNo);
 }

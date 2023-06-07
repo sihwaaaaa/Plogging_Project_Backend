@@ -91,6 +91,7 @@ public class MemberController {
       if (memberDTO == null || memberDTO.getPassword() == null) {
         throw new Exception("유효하지 않는 패스워드 값");
       }
+      System.out.println(memberDTO);
       MemberEntity member = MemberEntity.builder()
           .userId(memberDTO.getUserId())
           .password(securityConfig.getPasswordEncoder().encode(memberDTO.getPassword()))

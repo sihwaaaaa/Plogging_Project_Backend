@@ -28,9 +28,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * @author: ¹Ú¿¬Àç
+ * @author: ë°•ì—°ì¬
  * @date: 2023.06.01
- * @brief: ¸â¹ö ¿£Æ¼Æ¼
+ * @brief: ë©¤ë²„ ì—”í‹°í‹°
  */
 @DynamicInsert
 @Entity
@@ -43,19 +43,19 @@ public class MemberEntity implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long memberNo; // È¸¿ø ¹øÈ£
-  private String userId; // È¸¿ø ¾ÆÀÌµğ
-  private String password; // È¸¿ø ºñ¹Ğ¹øÈ£
-  private String userName; // È¸¿ø ÀÌ¸§
-  private String email; // È¸¿ø ÀÌ¸ŞÀÏ
-  private Date regDate; // È¸¿ø µî·ÏÀÏÀÚ
-  private String address; // È¸¿ø ÁÖ¼Ò
-  private String nickName; // È¸¿ø ´Ğ³×ÀÓ
-  private String birth; // È¸¿ø »ı³â¿ùÀÏ
-  private String gender; // È¸¿ø ¼ºº°
-  private Long totalPoint; // È¸¿ø ´©Àû Æ÷ÀÎÆ®
-  private Long currentPoint; // È¸¿ø ÇöÀç Æ÷ÀÎÆ®
-  private String authProvider; // È¸¿ø oauth 2.0 ·Î±×ÀÎ °ø±ŞÀÚ
+  private Long memberNo; // íšŒì› ë²ˆí˜¸
+  private String userId; // íšŒì› ì•„ì´ë””
+  private String password; // ë¹„ë°€ë²ˆí˜¸
+  private String userName; // ì´ë¦„
+  private String email; // ì´ë©”ì¼
+  private Date regDate; // ë“±ë¡ì¼ì
+  private String address; // ì£¼ì†Œ
+  private String nickName; // ë‹‰ë„¤ì„
+  private String birth; // ìƒë…„ì›”ì¼
+  private String gender; // ì„±ë³„
+  private Long totalPoint; // ëˆ„ì  í¬ì¸íŠ¸
+  private Long currentPoint; // í˜„ì¬ í¬ì¸íŠ¸
+  private String authProvider; // oauth 2.0 ì—°ë™ ê³µê¸‰ì
 
   public MemberEntity(String userId, String password, String userName, String email) {
     this.userId = userId;
@@ -64,12 +64,12 @@ public class MemberEntity implements Serializable {
     this.email = email;
   }
 
-//  @OneToMany(mappedBy = "memberEntity")
-//  private List<AuthEntity> authEntities = new ArrayList<>();
-//
-//  // @OneToMany(mappedBy = "host")
-//  // private List<ChallengeEntity> challengeEntities = new ArrayList<>();
-//
-//  @OneToMany(mappedBy = "memberEntity")
-//  private List<RewardEntity> rewardEntities = new ArrayList<>();
+  // @OneToMany(mappedBy = "memberEntity")
+  // private List<AuthEntity> authEntities = new ArrayList<>();
+  //
+  // // @OneToMany(mappedBy = "host")
+  // // private List<ChallengeEntity> challengeEntities = new ArrayList<>();
+  //
+  // @OneToMany(mappedBy = "memberEntity")
+  // private List<RewardEntity> rewardEntities = new ArrayList<>();
 }
