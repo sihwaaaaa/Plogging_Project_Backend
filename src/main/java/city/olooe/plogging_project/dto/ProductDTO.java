@@ -20,6 +20,7 @@ public class ProductDTO {
     private Long pno; // PK, 상품 번호
     private String name; // 상품 이름
     private String detail; // 상품 번호
+    private Long proPrice = 8000L;
 
     /**
      * @author : 이재원
@@ -34,6 +35,7 @@ public class ProductDTO {
         this.pno = productEntity.getPno();
         this.name = productEntity.getName();
         this.detail = productEntity.getDetail();
+        // this.proPrice = getProPrice();
     }
 
     /**
@@ -41,7 +43,7 @@ public class ProductDTO {
      * @date: 23.06.05
      * 
      * @param: ProductDTO
-     * @return: void
+     * @return: pno, name, detail
      * 
      * @brief: entity -> DTO
      */
