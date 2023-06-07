@@ -19,10 +19,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tbl_badge")
-public class badgeEntity {
+public class BadgeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int badgeNo; // pk 뱃지 번호
+    private Long badgeNo; // pk 뱃지 번호
     private String name; // 뱃지 이름
-    private int point; // 회원의 누적 포인트
+    private Long point; // 회원의 누적 포인트
 }
