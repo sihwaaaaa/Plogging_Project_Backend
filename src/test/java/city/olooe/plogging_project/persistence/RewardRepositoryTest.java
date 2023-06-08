@@ -36,18 +36,11 @@ public class RewardRepositoryTest {
         // .donationEntity(DonationEntity.builder().dno(1L).build())
         // .build();
         RewardEntity reward = RewardEntity.builder()
-                .tradePoint(50d)
+                .tradePoint(50L)
                 .memberEntity(MemberEntity.builder().memberNo(1L).build())
                 // .donationEntity(DonationEntity.builder().dno(1L).build())
                 .productEntity(ProductEntity.builder().pno(1L).build())
                 .build();
-        // RewardEntity.builder().rewardNo(1L).tradePoint(50).rewardDate(null).build();
-
-        // RewardEntity reward = RewardEntity
-        // RewardEntity.
-        // .rewardNo(3L)
-        // .tradePoint(-20)
-        // .rewardDate(
 
         log.info("{}", rewardRepository.save(reward));
     }
@@ -70,7 +63,7 @@ public class RewardRepositoryTest {
     @DisplayName("리워드 수정 테스트")
     public void testUpdateReward() {
         RewardEntity rewardupdate = RewardEntity.builder().rewardNo(3L)
-                .tradePoint(10)
+                .tradePoint(10L)
                 .type("랜덤박스 수정")
                 .rewardDate(new Date())
                 .build();

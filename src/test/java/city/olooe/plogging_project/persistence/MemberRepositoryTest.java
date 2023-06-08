@@ -34,7 +34,6 @@ public class MemberRepositoryTest {
     MemberEntity member = MemberEntity.builder().userId("root2").password("12345").userName("김연재")
         .email("root1234@gmail.com").build();
     log.info("{}", memberRepository.save(member));
-
   }
 
   @DisplayName("회원 목록 조회 테스트")
@@ -55,6 +54,13 @@ public class MemberRepositoryTest {
   public void checkMember() {
 
     log.info("{}", memberRepository.findByUserIdAndPassword("root2", "12345"));
+  }
+
+  @DisplayName("회원 단일 조회 테스트")
+  @Test
+  public void findMember() {
+
+    log.info("{}", memberRepository.findById(1L));
   }
 
   @DisplayName("클래스 확인 용도")
