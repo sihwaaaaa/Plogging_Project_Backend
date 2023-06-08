@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import org.apache.ibatis.annotations.One;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
@@ -46,8 +45,6 @@ public class MemberEntity implements Serializable {
   private String nickName; // 닉네임
   private String birth; // 생년월일
   private String gender; // 성별
-  private Long totalPoint; // 누적 포인트
-  private Long currentPoint; // 현재 포인트
   private String authProvider; // oauth 2.0 연동 공급자
 
   public MemberEntity(String userId, String password, String userName, String email) {
@@ -56,6 +53,10 @@ public class MemberEntity implements Serializable {
     this.userName = userName;
     this.email = email;
   }
+
+  // @OneToOne(cascade = CascadeType.ALL)
+  // @JoinColumn(name = "pointNo")
+  // private MemberPointEntity memberPointEntity;
 
   // @OneToMany(mappedBy = "memberEntity")
   // private List<AuthEntity> authEntities = new ArrayList<>();

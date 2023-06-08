@@ -53,8 +53,6 @@ public class MemberDTO {
         .nickName(entity.getNickName())
         .birth(entity.getBirth())
         .gender(entity.getGender())
-        .totalPoint(entity.getTotalPoint())
-        .currentPoint(entity.getCurrentPoint())
         .authProvider(entity.getAuthProvider())
         .build();
   }
@@ -90,8 +88,6 @@ public class MemberDTO {
         .nickName(entity.getNickName())
         .birth(entity.getBirth())
         .gender(entity.getGender())
-        .totalPoint(entity.getTotalPoint())
-        .currentPoint(entity.getCurrentPoint())
         .authProvider(entity.getAuthProvider())
         .build();
   }
@@ -107,8 +103,6 @@ public class MemberDTO {
         .nickName(dto.getNickName())
         .birth(dto.getBirth())
         .gender(dto.getGender())
-        .totalPoint(dto.getTotalPoint())
-        .currentPoint(dto.getCurrentPoint())
         .authProvider(dto.getAuthProvider())
         .build();
   }
