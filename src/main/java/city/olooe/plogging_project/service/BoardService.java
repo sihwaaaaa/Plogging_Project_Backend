@@ -1,5 +1,6 @@
 package city.olooe.plogging_project.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,7 +58,7 @@ public class BoardService {
     BoardEntity boardEntity = boardRepository.findById(bno)
         .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
 
-    boardEntity.update(boardUpdateDTO.getTitle(), boardUpdateDTO.getContent());
+    boardEntity.update(boardUpdateDTO.getTitle(), boardUpdateDTO.getContent(), new Date());
 
     return bno;
   }
