@@ -16,15 +16,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class RedirectUrlCookieFilter extends OncePerRequestFilter {
-  
+
   public static final String REDIRECT_URI_PARAM = "redirect_url";
   private static final int MAX_AGE = 180;
-
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-    if (request.getRequestURI().startsWith("/oauth2/auth")) {
+    if (request.getRequestURI().startsWith("/oauth2/member")) {
       Cookie cookie = new Cookie(REDIRECT_URI_PARAM, request.getParameter(REDIRECT_URI_PARAM));
       cookie.setPath("/");
       cookie.setHttpOnly(true);
@@ -32,6 +31,6 @@ public class RedirectUrlCookieFilter extends OncePerRequestFilter {
       response.addCookie(cookie);
     }
     filterChain.doFilter(request, response);
-    
+
   }
 }
