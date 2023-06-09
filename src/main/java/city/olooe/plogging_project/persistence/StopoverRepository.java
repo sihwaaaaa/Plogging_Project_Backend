@@ -14,5 +14,14 @@ import city.olooe.plogging_project.model.StopoverEntity;
  * @brief: StopoverEntity jpa 구현체
  */
 public interface StopoverRepository extends JpaRepository<StopoverEntity, String> {
-
+  /**
+  * @author : 이시화
+  * @date: 23.06.08
+  * 
+  * @param: mapNo
+  * @return: StopoverEntity
+  * 
+  * @brief:mapNo로 Stopover 단일 객체 반환
+  */
+  // StopoverEntity findByMapNo(Integer mapNo);s
 }

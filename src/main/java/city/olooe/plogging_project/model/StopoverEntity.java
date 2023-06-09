@@ -9,10 +9,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author : 이시화
@@ -20,22 +23,27 @@ import lombok.NoArgsConstructor;
  * 
  * @brief: 경유지 엔티티
  */
-@Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_stopover")
+@DynamicInsert
+@Entity(name = "tbl_stopover")
 public class StopoverEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long stopoverNo; // pk
   private Double stopoverX; // 경유지 x좌표
   private Double stopoverY; // 경유지 x좌표
-  private Integer stopoverIdx; // 경유지 순서
-
-  @ManyToOne(fetch = FetchType.LAZY)
+  private Integer stopoverIdx;
+  @ManyToOne
+  @Setter // 교차검증 후 db반영용
   @JoinColumn(name = "mapNo")
-  private MapEntity mapEntity; // mapNo를 통해 매핑 - MapEntity가지고 있음
+  private MapEntity mapEntity;
+
+
+  public String toString() {
+    return String.format("tmp : %s, mapNo : ", mapEntity.getMapNo());
+  }
 
 }
