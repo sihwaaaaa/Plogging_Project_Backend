@@ -3,6 +3,7 @@ package city.olooe.plogging_project.dto;
 import java.util.Date;
 
 import city.olooe.plogging_project.model.ChallengeEntity;
+import city.olooe.plogging_project.model.ChallengeStatus;
 import city.olooe.plogging_project.model.MemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,7 @@ public class ChallengeDTO {
     private Date regDate;
     private Date startDate;
     private Date endDate;
+    private ChallengeStatus status;
 
     /*
      * @author : 김민수
@@ -88,9 +90,10 @@ public class ChallengeDTO {
      * 
      * @brief: DTO -> entity
      */
-    public ChallengeEntity toChallengeEntity(ChallengeDTO challengeDTO) {
-        return ChallengeEntity.builder().chNo(chNo).blind(blind).title(title).content(content).personnel(personnel)
-                .regDate(regDate).startDate(startDate).endDate(endDate).build();
+    public ChallengeEntity toChallengeEntity() {
+        return ChallengeEntity.builder().chNo(chNo).host(host).blind(blind).title(title).content(content)
+                .personnel(personnel)
+                .regDate(regDate).startDate(startDate).endDate(endDate).status(status).build();
     }
 
 }
