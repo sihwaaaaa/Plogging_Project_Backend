@@ -15,14 +15,12 @@ import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 
-
 @Service
 @Slf4j
-public class OauthUserServiceImpl extends DefaultOAuth2UserService{
+public class OauthUserServiceImpl extends DefaultOAuth2UserService {
 
   @Autowired
   private MemberRepository memberRepository;
-  
 
   public OauthUserServiceImpl() {
     super();
@@ -39,19 +37,25 @@ public class OauthUserServiceImpl extends DefaultOAuth2UserService{
     // final String username = (String) oAuth2User.getAttribute("login");
     final String authProvider = userRequest.getClientRegistration().getClientName();
 
-
     log.info("{}", authProvider);
 
     String userId = null;
-    if (authProvider.equalsIgnoreCase("github")) {
-      userId = (String) oAuth2User.getAttribute("login");
-    } else if (authProvider.equalsIgnoreCase("google")) {
+    if (authProvider.equalsIgnoreCase("google")) {
       userId = (String) oAuth2User.getAttribute("email");
+      log.info("{}", userId);
     } else if (authProvider.equalsIgnoreCase("kakao")) {
-      Map<String, String> map =  oAuth2User.getAttribute("kakao_account");
+      Map<String, String> map = oAuth2User.getAttribute("kakao_account");
       userId = map.get("email");
       log.info(userId);
-    } 
+    } else if (authProvider.equalsIgnoreCase("naver")) {
+
+    }
+    // }
+    // else if (authProvider.equalsIgnoreCase("naver")) {
+    // Map<String, String> map = oAuth2User.getAttribute("kakao_account");
+    // userId = map.get("email");
+    // log.info(userId);
+    // }
 
     MemberEntity memberEntity = null;
     if (!memberRepository.existsByUserId(userId)) {
@@ -65,5 +69,5 @@ public class OauthUserServiceImpl extends DefaultOAuth2UserService{
     log.info("Successfully pulled user info username {} authProvider {}", userId, authProvider);
     return new ApplicationOAuth2User(memberEntity.getUserId(), oAuth2User.getAttributes());
   }
-  
+
 }

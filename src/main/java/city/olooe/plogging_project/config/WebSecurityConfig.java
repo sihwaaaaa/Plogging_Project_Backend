@@ -50,14 +50,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeRequests()
-        .antMatchers("/", "/member/**").permitAll()
+        .antMatchers("/", "/auth/**", "/member/**", "/oauth2/**").permitAll()
         .anyRequest()
         .authenticated()
         .and()
-        .oauth2Login().authorizationEndpoint().baseUri("/oauth2/member")
+        .oauth2Login().authorizationEndpoint().baseUri("/oauth2/auth")
         .and()
         .redirectionEndpoint()
-        .baseUri("/oauth2/callback")
+        .baseUri("/oauth2/callback/*")
         .and()
         .userInfoEndpoint()
         .userService(oauthUserServiceImpl)
@@ -67,6 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .exceptionHandling()
         .authenticationEntryPoint(new Http403ForbiddenEntryPoint());
 
+    // jwtAuthenticationFilter, CorsFilter.class
     http.addFilterAfter(jwtAuthenticationFilter, CorsFilter.class);
   }
 

@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MemberDTO {
 
-<<<<<<< HEAD
   private String token; // 토큰 문자열
 
   private Long memberNo; // 회원 번호
@@ -29,29 +28,11 @@ public class MemberDTO {
   private String email; // 이메일
   private Date regDate; // 등록일자
   private String address; // 주소
+  private String addressDetail; // 세부 주소
   private String nickName; // 닉네임
   private String birth; // 생년월일
   private String gender; // 성별
-  private Long totalPoint; // 누적 포인트
-  private Long currentPoint; // 현재 포인트
   private String authProvider; // 권한 공급자
-=======
-  private String token;
-
-  private Long memberNo;
-  private String userId;
-  private String password;
-  private String userName;
-  private String email;
-  private Date regDate;
-  private String address;
-  private String nickName;
-  private String birth;
-  private String gender;
-  private Long totalPoint;
-  private Long currentPoint;
-  private String authProvider;
->>>>>>> origin/feature/reward
 
   /**
    * @author: 박연재
@@ -60,7 +41,6 @@ public class MemberDTO {
    * @param entity
    */
   public MemberDTO(final MemberEntity entity) {
-<<<<<<< HEAD
     MemberDTO.builder()
         .memberNo(entity.getMemberNo())
         .userId(entity.getUserId())
@@ -69,24 +49,12 @@ public class MemberDTO {
         .email(entity.getEmail())
         .regDate(entity.getRegDate())
         .address(entity.getAddress())
+        .addressDetail(entity.getAddressDetail())
         .nickName(entity.getNickName())
         .birth(entity.getBirth())
         .gender(entity.getGender())
         .authProvider(entity.getAuthProvider())
         .build();
-=======
-    this.memberNo = entity.getMemberNo();
-    this.userId = entity.getUserId();
-    this.password = entity.getPassword();
-    this.userName = entity.getUserName();
-    this.email = entity.getEmail();
-    this.regDate = entity.getRegDate();
-    this.address = entity.getAddress();
-    this.nickName = entity.getNickName();
-    this.birth = entity.getBirth();
-    this.gender = entity.getGender();
-    this.authProvider = entity.getAuthProvider();
->>>>>>> origin/feature/reward
   }
 
   /**
@@ -117,6 +85,7 @@ public class MemberDTO {
         .email(entity.getEmail())
         .regDate(entity.getRegDate())
         .address(entity.getAddress())
+        .addressDetail(entity.getAddressDetail())
         .nickName(entity.getNickName())
         .birth(entity.getBirth())
         .gender(entity.getGender())
@@ -132,6 +101,7 @@ public class MemberDTO {
         .email(dto.getEmail())
         .regDate(dto.getRegDate())
         .address(dto.getAddress())
+        .addressDetail(dto.getAddressDetail())
         .nickName(dto.getNickName())
         .birth(dto.getBirth())
         .gender(dto.getGender())
