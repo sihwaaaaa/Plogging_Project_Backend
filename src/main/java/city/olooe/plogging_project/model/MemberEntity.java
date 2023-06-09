@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import org.apache.ibatis.annotations.One;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
@@ -57,6 +56,10 @@ public class MemberEntity implements Serializable {
     this.userName = userName;
     this.email = email;
   }
+
+  // @OneToOne(cascade = CascadeType.ALL)
+  // @JoinColumn(name = "pointNo")
+  // private MemberPointEntity memberPointEntity;
 
   // @OneToMany(mappedBy = "memberEntity")
   // private List<AuthEntity> authEntities = new ArrayList<>();

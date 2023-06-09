@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import city.olooe.plogging_project.config.WebSecurityConfig;
+import city.olooe.plogging_project.dto.MailCheckDTO;
 import city.olooe.plogging_project.dto.MemberDTO;
 import city.olooe.plogging_project.dto.ResponseDTO;
 import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.security.TokenProvider;
+import city.olooe.plogging_project.service.EmailService;
 import city.olooe.plogging_project.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,6 +38,9 @@ public class MemberController {
 
   @Autowired
   private MemberService memberService;
+
+  @Autowired
+  private EmailService emailService;
 
   @Autowired
   private TokenProvider tokenProvider;
@@ -123,9 +128,13 @@ public class MemberController {
     }
   }
 
-  // @PostMapping(value = "path")
-  // public String postMethodName(@RequestBody MemberDTO memberDto) {
-  // return null;
-  // }
+  @PostMapping("/signup/emailConfirm")
+  public ResponseEntity<?> postMethodName(@RequestBody MailCheckDTO dto) throws Exception {
+    String confirm = emailService.sendMessage(dto.getEmail());
+    if (confirm == null) {
+      return ResponseEntity.badRequest().body("null");
+    }
+    return ResponseEntity.ok().body(confirm);
+  }
 
 }

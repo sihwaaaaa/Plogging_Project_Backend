@@ -46,7 +46,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
     // // https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-client
-	// implementation 'org.springframework.security:spring-security-oauth2-client:5.6.1'
+	implementation 'org.springframework.security:spring-security-oauth2-client:5.6.1'
 
     // https://mvnrepository.com/artifact/org.mybatis/mybatis
     implementation group: 'org.mybatis', name: 'mybatis', version: '3.5.13'
@@ -56,9 +56,12 @@ dependencies {
 
     // SLF4J binding (Logback in this example)
     implementation 'ch.qos.logback:logback-classic:1.2.12'
-    
+
     // 파일 업로드 관련
     implementation 'commons-io:commons-io:2.6'
+
+    // 메일 인증용 디펜던시
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 tasks.named('test') {
