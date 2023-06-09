@@ -12,7 +12,7 @@ import city.olooe.plogging_project.model.ChallengeEntity;
 public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Long> {
     ChallengeEntity findByChNo(Long chNo);
 
-    Optional<ChallengeEntity> findByChNoOptional(Long chNo);
+    // Optional<ChallengeEntity> findByChNoOptional(Long chNo);
 
     List<ChallengeEntity> findChallengeEntityByOrderByChNoDesc();
 }

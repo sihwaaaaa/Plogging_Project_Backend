@@ -56,13 +56,12 @@ public class ChallengeService {
      * 
      * @brief: 챌린지 단일 조회
      */
-    @Transactional(readOnly = true)
-    public ChallengeDTO searchByBno(Long chNo) {
-        ChallengeEntity challengeEntity = challengeRepository.findByChNoOptional(chNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 챌린지가 존재하지 않습니다."));
-
-        return new ChallengeDTO(challengeEntity);
-    }
+     @Transactional(readOnly = true)
+     public ChallengeDTO searchByChNo(Long chNo) {
+     ChallengeEntity challengeEntity = challengeRepository.findByChNo(chNo);
+     validate(challengeEntity);
+     return new ChallengeDTO(challengeEntity);
+     }
 
     /**
      * @author : 김민수
@@ -73,7 +72,7 @@ public class ChallengeService {
      * @brief: 챌린지 전체 조회
      */
     @Transactional(readOnly = true)
-    public List<ChallengeDTO> searchAllBoard() {
+    public List<ChallengeDTO> serchAllCh() {
         return challengeRepository.findChallengeEntityByOrderByChNoDesc().stream()
                 .map(ChallengeDTO::new)
                 .collect(Collectors.toList());
@@ -87,12 +86,12 @@ public class ChallengeService {
      * 
      * @brief: 챌린지 삭제 서비스
      */
-    @Transactional
-    public void delete(Long chNo) {
-        ChallengeEntity boardEntity = challengeRepository.findByChNoOptional(chNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 챌린지는 존재하지 않습니다."));
-        challengeRepository.delete(boardEntity);
-    }
+     @Transactional
+     public void delete(Long chNo) {
+     ChallengeEntity challengeEntity = challengeRepository.findByChNo(chNo);
+     validate(challengeEntity);
+     challengeRepository.delete(challengeEntity);
+     }
 
     /**
      * @author : 김민수
@@ -125,10 +124,10 @@ public class ChallengeService {
         else if (challengeEntity.getContent() == null) {
             throw new RuntimeException("empty content");
         }
-        // personnel error
+        // personnel null
         else if (challengeEntity.getPersonnel() == null) {
             throw new RuntimeException("empty personnel");
-        } else if (challengeEntity.getPersonnel() > 2 && challengeEntity.getPersonnel() < 10) {
+        } else if (challengeEntity.getPersonnel() < 2 && challengeEntity.getPersonnel() > 10) {
             throw new RuntimeException("error personnel");
         }
         // status null

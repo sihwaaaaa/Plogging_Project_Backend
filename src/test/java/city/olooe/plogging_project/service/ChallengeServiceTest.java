@@ -12,10 +12,9 @@ import city.olooe.plogging_project.dto.ChallengeDTO;
 import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.ChallengeStatus;
 import city.olooe.plogging_project.model.MemberEntity;
-import city.olooe.plogging_project.persistence.ChallengeMemberRepository;
-import city.olooe.plogging_project.persistence.ChallengeRepository;
-import city.olooe.plogging_project.persistence.ChallengeScheduleRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.test.annotation.Commit;
+import org.springframework.test.annotation.Rollback;
 
 @SpringBootTest
 @Slf4j
@@ -26,16 +25,17 @@ public class ChallengeServiceTest {
 
     /**
      * @author : 김민수
-     * @date: '23.06.08
+     * @date: '23.06.09
      * 
      * @param: -
-     * @return: ChallengeEntity
+     * @return: -
      * 
      * @brief: 챌린지 생성 테스트
      */
     @Test
     @Transactional
-    public ChallengeEntity createChallengeTest() {
+    @Rollback(false)
+    public void createChallengeTest() {
         ChallengeDTO challengeDTO = ChallengeDTO.builder()
                 .blind(true)
                 .host(MemberEntity.builder().memberNo(12L).build())
@@ -45,6 +45,50 @@ public class ChallengeServiceTest {
                 .status(ChallengeStatus.CHALLENGEBEFORE)
                 .build();
         ChallengeEntity challengeEntity = challengeService.createChallenge(challengeDTO);
-        return challengeEntity;
+        log.info("{}",challengeEntity);
     }
+
+    /**
+     * @author : 김민수
+     * @date: '23.06.09
+     *
+     * @param: -
+     * @return: -
+     *
+     * @brief: 챌린지 단일조회 테스트
+     */
+    @Test
+    @Transactional
+    public void searchByChNoTest(){
+        // 테스트 데이터 설정
+        Long chNo = 12L;
+       ChallengeDTO challengeDTO = challengeService.searchByChNo(chNo);
+        log.info("{}", challengeDTO);
+    }
+
+    /**
+     * @author : 김민수
+     * @date: '23.06.09
+     *
+     * @param: -
+     * @return: -
+     *
+     * @brief: 챌린지 전체조회 테스트
+     */
+    @Test
+    @Transactional
+    public void searchByCh(){
+        List<ChallengeDTO> challengeDTOS = challengeService.serchAllCh();
+        log.info("{}", challengeDTOS);
+    }
+
+    @Test
+    @Transactional
+    public void deleteTest(){
+        // 테스트 데이터 설정
+        Long chNo = 10L;
+        challengeService.delete(chNo);
+    }
+
+
 }

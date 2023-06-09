@@ -15,6 +15,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 
+import city.olooe.plogging_project.model.map.MapEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
