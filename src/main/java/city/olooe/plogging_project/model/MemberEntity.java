@@ -18,6 +18,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author: 박연재
@@ -25,6 +27,7 @@ import lombok.NoArgsConstructor;
  * @brief: 멤버 엔티티
  */
 @DynamicInsert
+@ToString
 @Entity
 @Getter
 @Builder
@@ -54,11 +57,6 @@ public class MemberEntity implements Serializable {
     this.userName = userName;
     this.email = email;
   }
-
-  // @OneToOne(cascade = CascadeType.ALL)
-  // @JoinColumn(name = "pointNo")
-  // private MemberPointEntity memberPointEntity;
-
   // @OneToMany(mappedBy = "memberEntity")
   // private List<AuthEntity> authEntities = new ArrayList<>();
   //

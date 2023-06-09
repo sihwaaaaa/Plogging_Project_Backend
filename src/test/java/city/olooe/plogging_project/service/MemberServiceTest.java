@@ -22,7 +22,7 @@ public class MemberServiceTest {
   @DisplayName("회원 생성 테스트")
   @Test
   public void testCreateMember() {
-    memberService.create(new MemberEntity("root1234", "123456", "아로하", "root@123.com"));
+    memberService.create(new MemberEntity("test1234", "123456", "테스트", "root@123.com"));
   }
 
   @DisplayName("로그인 확인 메서드")

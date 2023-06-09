@@ -16,6 +16,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,10 +32,12 @@ import lombok.ToString;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Entity // 테이블과 링크될 클래스
 @DynamicInsert
 @DynamicUpdate
 @ToString
+@Builder
 @Table(name = "tbl_board")
 public class BoardEntity {
   @Id // 해당 테이블의 PK 필드
@@ -61,18 +64,20 @@ public class BoardEntity {
 
   @ManyToOne(cascade = CascadeType.MERGE, targetEntity = MemberEntity.class) // 관계매핑을 위한 어노테이션
   @JoinColumn(name = "memberNo", updatable = false)
-  private MemberEntity memberEntity;
+  private MemberEntity memberEntity; // FK(tbl_member)
 
-  @Builder // 해당 클래스의 빌더 패턴 클래스 생성, 생성자에 포함된 필드만 빌더에 포함
-  public BoardEntity(MemberEntity memberEntity, String title, String content, Integer category) {
-    this.memberEntity = memberEntity;
+  // @Builder // 해당 클래스의 빌더 패턴 클래스 생성, 생성자에 포함된 필드만 빌더에 포함
+  // public BoardEntity(MemberEntity memberEntity, String title, String content,
+  // Integer category) {
+  // this.memberEntity = memberEntity;
+  // this.title = title;
+  // this.content = content;
+  // this.category = category;
+  // }
+
+  public void update(String title, String content, Date upDatedate) {
     this.title = title;
     this.content = content;
-    this.category = category;
-  }
-
-  public void update(String title, String content) {
-    this.title = title;
-    this.content = content;
+    this.updateDate = upDatedate;
   }
 }

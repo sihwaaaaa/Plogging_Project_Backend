@@ -23,14 +23,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardDTO {
-  private MemberEntity memberEntity;
-  private String userId;
-  private Long bno;
-  private String title;
-  private String content;
-  private LocalDateTime regDate;
-  private LocalDateTime updateDate;
-  private Integer category;
+  private MemberEntity memberEntity; // 작성하는 회원
+  private String userId; // 작성한 회원 아이디
+  private Long bno; // 게시글 번호(PK)
+  private String title; // 게시글 제목
+  private String content; // 게시글 내용
+  private LocalDateTime regDate; // 게시글 작성일
+  private LocalDateTime updateDate; // 게시글 수정일
+  private Integer category; // 게시글 카테고리(0 : 커뮤니티, 1 : 플로깅)
 
   /**
    * @author : 김성진
