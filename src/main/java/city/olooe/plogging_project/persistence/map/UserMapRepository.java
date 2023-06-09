@@ -1,9 +1,9 @@
-package city.olooe.plogging_project.persistence;
+package city.olooe.plogging_project.persistence.map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import city.olooe.plogging_project.model.UserMapEntity;
+import city.olooe.plogging_project.model.map.UserMapEntity;
 
 @Repository
 /**

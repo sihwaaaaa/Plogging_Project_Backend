@@ -1,4 +1,4 @@
-package city.olooe.plogging_project.persistence;
+package city.olooe.plogging_project.persistence.map;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,8 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
-import city.olooe.plogging_project.model.MapEntity;
-import city.olooe.plogging_project.model.StopoverEntity;
+import city.olooe.plogging_project.model.map.MapEntity;
+import city.olooe.plogging_project.model.map.StopoverEntity;
 
 
 @SpringBootTest
