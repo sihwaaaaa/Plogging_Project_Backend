@@ -1,4 +1,4 @@
-package city.olooe.plogging_project.persistence;
+package city.olooe.plogging_project.persistence.map;
 
 import java.util.Map;
 
@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import city.olooe.plogging_project.model.MapEntity;
-import city.olooe.plogging_project.model.StopoverEntity;
+import city.olooe.plogging_project.model.map.MapEntity;
+import city.olooe.plogging_project.model.map.StopoverEntity;
+import city.olooe.plogging_project.persistence.map.MapRepository;
+import city.olooe.plogging_project.persistence.map.StopoverRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest

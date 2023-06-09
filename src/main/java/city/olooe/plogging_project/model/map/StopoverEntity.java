@@ -1,4 +1,4 @@
-package city.olooe.plogging_project.model;
+package city.olooe.plogging_project.model.map;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
