@@ -27,8 +27,8 @@ public class MapDTO {
   private String courseName;
   private String courseDetail;
   private String addr;
-  private Integer distance;
-  private Date time;
+  private Double distance;
+  private Integer time;
 
   /**
    * @author : 이시화
