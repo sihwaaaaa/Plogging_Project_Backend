@@ -1,5 +1,7 @@
 package city.olooe.plogging_project.persistence;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ import lombok.extern.slf4j.Slf4j;
  * @brief : 게시글 관련 Repository test
  */
 
+
+@EqualsAndHashCode
+@ToString
 @SpringBootTest
 @Slf4j
 public class BoardRepositoryTest {
