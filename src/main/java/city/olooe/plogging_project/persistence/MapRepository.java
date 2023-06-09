@@ -25,5 +25,5 @@ public interface MapRepository extends JpaRepository<MapEntity, Long> {
   * 
   * @brief: tmp를 통해서 mapEntity 리스트 조회 - 데이터 파싱위한 메서드
   */
-  List<MapEntity> findByTmp(String tmp);
+  // List<MapEntity> findByTmp(String tmp);
 }
