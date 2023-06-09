@@ -23,14 +23,10 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation("org.junit.vintage:junit-vintage-engine") {
-        exclude group: "org.hamcrest", module: "hamcrest-core"
-    }
+    testImplementation 'org.projectlombok:lombok:1.18.26'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-    testAnnotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok' 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
@@ -46,23 +42,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
     // // https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-client
-	implementation 'org.springframework.security:spring-security-oauth2-client:5.6.1'
+	// implementation 'org.springframework.security:spring-security-oauth2-client:5.6.1'
 
+    // https://mvnrepository.com/artifact/org.mybatis/mybatis
     implementation group: 'org.mybatis', name: 'mybatis', version: '3.5.6'
-    
-    implementation 'org.locationtech.proj4j:proj4j:1.2.2'
 
-    // SLF4J API
-    implementation 'org.slf4j:slf4j-api:1.7.32'
-
-    // SLF4J binding (Logback in this example)
-    implementation 'ch.qos.logback:logback-classic:1.2.12'
-
-    // 파일 업로드 관련
-    implementation 'commons-io:commons-io:2.6'
-
-    // 메일 인증용 디펜던시
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 tasks.named('test') {
