@@ -1,6 +1,9 @@
 package city.olooe.plogging_project.persistence;
 
+import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,8 +58,10 @@ public class ChallengeEntityTest {
      */
     @Test
     @DisplayName("챌린지 목록 전체조회")
+    @Transactional
     public void readAllChallenge() {
-        log.info("{}", challengeRepository.findAll());
+        List<ChallengeEntity> challengeList = challengeRepository.findAll();
+        log.info("챌린지 전체 조회 테스트 : {}" + challengeList);
     }
 
     /**

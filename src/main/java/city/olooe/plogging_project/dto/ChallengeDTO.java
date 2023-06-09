@@ -59,11 +59,11 @@ public class ChallengeDTO {
      * 
      * @date: 23.06.02
      * 
-     * @param: MemberDTO
+     * @param: ChallengeDTO
      * 
-     * @return: MapEntity
+     * @return: ChallengeEntity
      * 
-     * @brief: MemberDTO를 MapEntity로 변환
+     * @brief: ChallengeDTO를 ChallengeEntity 변환
      */
     public static ChallengeEntity chToEntity(final ChallengeDTO challengeDTO) {
         return ChallengeEntity.builder()
@@ -77,6 +77,20 @@ public class ChallengeDTO {
                 .startDate(challengeDTO.getStartDate())
                 .endDate(challengeDTO.endDate)
                 .build();
+    }
+
+    /**
+     * @author : 김민수
+     * @date: 23.06.08
+     * 
+     * @param: -
+     * @return: entity
+     * 
+     * @brief: DTO -> entity
+     */
+    public ChallengeEntity toChallengeEntity(ChallengeDTO challengeDTO) {
+        return ChallengeEntity.builder().chNo(chNo).blind(blind).title(title).content(content).personnel(personnel)
+                .regDate(regDate).startDate(startDate).endDate(endDate).build();
     }
 
 }
