@@ -1,5 +1,9 @@
 package city.olooe.plogging_project.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.model.RewardEntity;
+import city.olooe.plogging_project.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
@@ -17,13 +22,55 @@ public class RewardServiceTest {
     @Autowired
     private RewardService rewardService;
 
-    // @Autowired
-    // private MemberRepository memberRepository;
+    @Autowired
+    private MemberRepository memberRepository;
+
+    /**
+     * @author: 이재원
+     * @date: 2023.06.07
+     * @brief: 기부처 기부하기
+     * @param: rewardEntity, rewardService
+     * @return: MemberNo, currentPoint, tradePoint
+     */
+    @DisplayName("리워드 전체 조회 Test")
+    @Test
+    @Transactional
+    public void testRewardlist() {
+        // RewardEntity rewardEntity = RewardEntity.builder()
+        // .memberEntity(MemberEntity.builder().memberNo(1L).totalPoint(1000L).build());
+        // rewardEntities =
+        // RewardEntity.builder().memberEntity(MemberEntity.builder().memberNo(1L).totalPoint().build());
+
+        // RewardEntity rewardEntity =
+        // RewardEntity.builder().memberEntity(MemberEntity.builder().memberNo(1L).build())
+        // .tradePoint(-8000L).build();
+        // rewardEntities = rewardService.findAllReward();
+        // log.info("{}", rewardEntities);
+    }
+
+    @Test
+    @Transactional
+    public void testmemberrank() {
+
+    }
+    // RewardEntity rewardEntity =
+    // RewardEntity.builder().memberEntity(MemberEntity.builder().memberNo(1L).build())
+    // .tradePoint(-8000L).build();
+
+    // rewardService.joinProduct(rewardEntity);
+    // log.info("{}", rewardEntity);
+    // log.info("test : {}", rewardService.findAllProduct().get(0));
 
     @DisplayName("랜덤박스 구성품 조회 Test")
     @Test
+    @Transactional
     public void testProduct() {
-        log.info("{}", rewardService.findAllProduct());
+    }
+
+    @DisplayName("기부처 전체 조회 Test")
+    @Test
+    @Transactional
+    public void testfindAllDonation() {
     }
 
     /**
@@ -38,22 +85,20 @@ public class RewardServiceTest {
     @Transactional
     @Rollback(false)
     public void testJoinProduct() {
-        RewardEntity rewardEntity = RewardEntity.builder().memberEntity(MemberEntity.builder().memberNo(1L).build())
-                .tradePoint(-8000L).build();
-
-        rewardService.joinProduct(rewardEntity);
-        log.info("{}", rewardEntity);
-        log.info("test : {}", rewardService.findAll().get(0));
     }
 
     /**
      * @author: 이재원
      * @date: 2023.06.07
-     * @brief: 기부처 조회
+     * @brief: 기부처 기부하기
      * @param: rewardEntity, rewardService
      * @return: MemberNo, currentPoint, tradePoint
      */
-    public void testfindAllDonation() {
+    @DisplayName("기부 하기 Test")
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void testJoinDonation() {
 
     }
     // MemberEntity member =

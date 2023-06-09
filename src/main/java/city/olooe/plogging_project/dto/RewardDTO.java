@@ -8,9 +8,8 @@ import javax.persistence.TemporalType;
 
 import org.apache.ibatis.javassist.compiler.ast.Member;
 
-import city.olooe.plogging_project.model.DonationEntity;
 import city.olooe.plogging_project.model.MemberEntity;
-import city.olooe.plogging_project.model.ProductEntity;
+
 import city.olooe.plogging_project.model.RewardEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,24 +39,24 @@ public class RewardDTO {
     private Long dno; // FK, 기부 번호
     private Long pno; // FK, 상품 번호
 
-    public RewardDTO(final RewardEntity entity) {
-        this.rewardNo = entity.getRewardNo();
-        this.type = entity.getType();
-        this.tradePoint = entity.getTradePoint();
-        this.rewardDate = entity.getRewardDate();
-        this.dno = entity.getDonationEntity().getDno();
-        this.pno = entity.getProductEntity().getPno();
-    }
+    // public RewardDTO(final RewardEntity entity) {
+    // this.rewardNo = entity.getRewardNo();
+    // this.type = entity.getType();
+    // this.tradePoint = entity.getTradePoint();
+    // this.rewardDate = entity.getRewardDate();
+    // this.dno = entity.getDonationEntity().getDno();
+    // this.pno = entity.getProductEntity().getPno();
+    // }
 
-    public static RewardEntity toEntity(final RewardDTO dto) {
-        return RewardEntity.builder()
-                .rewardNo(dto.getRewardNo())
-                .type(dto.getType())
-                .tradePoint(dto.getTradePoint())
-                .rewardDate(dto.getRewardDate())
-                .memberEntity(MemberEntity.builder().memberNo(dto.getMemberNo()).build())
-                .donationEntity(DonationEntity.builder().dno(dto.getDno()).build())
-                .productEntity(ProductEntity.builder().pno(dto.getPno()).build())
-                .build();
-    }
+    // public static RewardEntity toEntity(final RewardDTO dto) {
+    // return RewardEntity.builder()
+    // .rewardNo(dto.getRewardNo())
+    // .type(dto.getType())
+    // .tradePoint(dto.getTradePoint())
+    // .rewardDate(dto.getRewardDate())
+    // .memberEntity(MemberEntity.builder().memberNo(dto.getMemberNo()).build())
+    // .donationEntity(DonationEntity.builder().dno(dto.getDno()).build())
+    // .productEntity(ProductEntity.builder().pno(dto.getPno()).build())
+    // .build();
+    // }
 }

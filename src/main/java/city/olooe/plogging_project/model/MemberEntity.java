@@ -56,9 +56,6 @@ public class MemberEntity implements Serializable {
   private String nickName; // ȸ�� �г���
   private String birth; // ȸ�� �������
   private String gender; // ȸ�� ����
-  private Long totalPoint; // ȸ�� ���� ����Ʈ
-  @Setter
-  private Long currentPoint; // ȸ�� ���� ����Ʈ
   private String authProvider; // ȸ�� oauth 2.0 �α��� ������
 
   public MemberEntity(String userId, String password, String userName, String email) {
@@ -68,9 +65,6 @@ public class MemberEntity implements Serializable {
     this.email = email;
   }
 
-  public void changeCurrentPoint(Long value) {
-    currentPoint += value;
-  }
   // public void updateCurr(Long memberNo, Long currentPoint) {
   // this.memberNo = memberNo;
   // this.currentPoint = currentPoint;

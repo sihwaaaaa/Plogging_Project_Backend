@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MemberDTO {
 
-
   private String token;
 
   private Long memberNo;
@@ -47,8 +46,6 @@ public class MemberDTO {
     this.nickName = entity.getNickName();
     this.birth = entity.getBirth();
     this.gender = entity.getGender();
-    this.totalPoint = entity.getTotalPoint();
-    this.currentPoint = entity.getCurrentPoint();
     this.authProvider = entity.getAuthProvider();
   }
 
@@ -64,8 +61,6 @@ public class MemberDTO {
         .nickName(dto.getNickName())
         .birth(dto.getBirth())
         .gender(dto.getGender())
-        .totalPoint(dto.getTotalPoint())
-        .currentPoint(dto.getCurrentPoint())
         .authProvider(dto.getAuthProvider())
         .build();
   }

@@ -13,16 +13,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import city.olooe.plogging_project.dto.DonationDTO;
-import city.olooe.plogging_project.model.DonationEntity;
 import city.olooe.plogging_project.model.MemberEntity;
-import city.olooe.plogging_project.model.ProductEntity;
 import city.olooe.plogging_project.model.RewardEntity;
 import city.olooe.plogging_project.persistence.ChallengeRepository;
-import city.olooe.plogging_project.persistence.DonationRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
 import city.olooe.plogging_project.persistence.PloggingRepository;
-import city.olooe.plogging_project.persistence.ProductRepository;
 import city.olooe.plogging_project.persistence.RewardRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,37 +32,50 @@ public class RewardService {
 
     @Autowired
     private RewardRepository rewardRepository; // 리워드 jpa 구현체를 Bean등록!
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private ProductRepository productRepository;
 
     /**
      * @author: 이재원
      * @date: 2023.06.07
      * @brief: 랜덤박스 신청
      * @param: memberEntity(회원 번호, 현재 포인트)
-     * @return: memberRepository.save(memberEntity)
+     * @return: memberRepository(memberEntity)
      */
     @Transactional
     public RewardEntity joinProduct(RewardEntity rewardEntity) {
 
-        MemberEntity member = memberRepository.findById(rewardEntity.getMemberEntity().getMemberNo())
-                .orElseThrow(() -> new RuntimeException("회원없음"));
-        member.changeCurrentPoint(rewardEntity.getTradePoint());
+        // member.changeCurrentPoint(rewardEntity.getTradePoint());
+
+        // memberPointEntity.changeCurrentPoint(rewardEntity.getTradePoint());
         // memberRepository.save(member);
 
         return rewardRepository.save(rewardEntity);
     }
 
+    /**
+     * @author: 이재원
+     * @date: 2023.06.07
+     * @brief: 기부하기
+     * @param: 회원 번호, 현재 포인트
+     * @return: memberRepository(memberEntity)
+     */
     @Transactional
-    public RewardEntity get(Long id) {
-        return rewardRepository.findById(id).orElseThrow();
+    public RewardEntity joinDonation(RewardEntity rewardEntity) {
+        // 회원의 포인트 1000p 차감(update)
+        // 차감된 데이터 기록 (insert)
+
+        return rewardRepository.save(rewardEntity);
     }
 
+    /**
+     * @author: 이재원
+     * @date: 2023.06.08
+     * @brief: 리워드 단일 조회
+     * @param: Long id
+     * @return: rewardNo
+     */
     @Transactional
-    public List<RewardEntity> findAll() {
-        return rewardRepository.findAll(Sort.by(Direction.DESC, "rewardNo"));
+    public RewardEntity getReward(Long id) {
+        return rewardRepository.findById(id).orElseThrow();
     }
 
     /**
@@ -77,33 +85,48 @@ public class RewardService {
      * @param: pno, attach(IMG 미구현)
      * @return: productEntities
      */
-    @Transactional
-    public List<ProductEntity> findAllProduct() {
-        List<ProductEntity> productEntities = productRepository.findAll();
-
-        return productEntities;
-    }
+    // @Transactional
+    // public List<ProductEntity> findAllProduct() {
+    // return productRepository.findAll(Sort.by(Direction.DESC, "pno"));
+    // }
 
     /**
      * @author: 이재원
      * @date: 2023.06.07
-     * @brief: 기부처 조회
+     * @brief: 기부처 전체 조회
      * @param: pno, attach(IMG 미구현)
      * @return: productEntities
      */
+    // @Transactional
+    // public List<DonationEntity> findAllDonation() {
+    // return donationRepository.findAll(Sort.by(Direction.DESC, "dno"));
+    // }
+
+    /**
+     * @author: 이재원
+     * @date: 2023.06.08
+     * @brief: 랭킹 서비스
+     * @param: pno, attach(IMG 미구현)
+     * @return: productEntities
+     */
+    // @Transactional
+    // public MemberPointEntity memberRank(RewardEntity rewardEntity) {
+    // MemberPointEntity memberPointEntity = MemberPointEntity.builder()
+    // .totalPoint(rewardEntity.getMemberPointEntity().getTotalPoint()).build();
+    // return null;
+    // }
+
+    /**
+     * @author: 이재원
+     * @date: 2023.06.08
+     * @brief: 리워드 전체 조회
+     * @param:
+     * @return: rewardNo
+     */
     @Transactional
-    public RewardEntity joinDonation(RewardEntity rewardEntity) {
-        // 회원의 포인트 8000p 차감(update)
-        // 차감된 데이터 기록 (insert)
-
-        MemberEntity member = MemberEntity.builder().memberNo(rewardEntity.getMemberEntity().getMemberNo())
-                .currentPoint(rewardEntity.getMemberEntity().getCurrentPoint() - 8000).build();
-
-        memberRepository.save(member);
-
-        return rewardRepository.save(rewardEntity);
+    public List<RewardEntity> findAllReward() {
+        return rewardRepository.findAll(Sort.by(Direction.DESC, "rewardNo"));
     }
-
     // public RewardEntity joinProduct(MemberEntity memberEntity) {
     // return null;
     // }
