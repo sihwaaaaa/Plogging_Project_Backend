@@ -19,4 +19,13 @@ import city.olooe.plogging_project.model.BoardEntity;
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
   // 23.06.05 추가
   List<BoardEntity> findBoardEntityByOrderByBnoDesc();
+
+  /**
+   * @Author 김성진
+   * @Date 23.06.08
+   * @param bno
+   * @return BoardEntity
+   * @Brief 해당 게시글 번호에 따른 조회
+   */
+  BoardEntity findByBno(Long bno);
 }

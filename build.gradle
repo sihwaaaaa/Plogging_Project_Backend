@@ -56,6 +56,9 @@ dependencies {
 
     // SLF4J binding (Logback in this example)
     implementation 'ch.qos.logback:logback-classic:1.2.12'
+    
+    // 파일 업로드 관련
+    implementation 'commons-io:commons-io:2.6'
 }
 
 tasks.named('test') {
