@@ -7,6 +7,7 @@ import city.olooe.plogging_project.persistence.FriendRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class FriendService {
 
     private final FriendRepository friendRepository;
@@ -49,6 +51,7 @@ public class FriendService {
      * @return List<FriendEntity>
      * @Brief 나의 팔로잉 상태별 플친 리스트 조회 : 요청대기 / 플친중 / 차단
      */
+    @Transactional(readOnly = true)
     public List<FriendEntity> GetMyFriendList(Long memberNo, String status) {
         return friendRepository.findByFromMemberAndStatus(toEntity(memberNo), FriendStatusType.valueOf(status));
     }
@@ -61,6 +64,7 @@ public class FriendService {
      * @return List<FriendEntity>
      * @Brief 나의 팔로워 상태별 플친 리스트 조회 : 요청대기 / 플친중 / 차단
      */
+    @Transactional(readOnly = true)
     public List<FriendEntity> getFriendListToMe(Long memberNo, String status){
         return friendRepository.findByToMemberAndStatus(toEntity(memberNo), FriendStatusType.valueOf(status));
     }
