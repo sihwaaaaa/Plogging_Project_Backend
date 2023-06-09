@@ -19,6 +19,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author: 박연재
@@ -26,6 +28,7 @@ import lombok.NoArgsConstructor;
  * @brief: 멤버 엔티티
  */
 @DynamicInsert
+@ToString
 @Entity
 @Getter
 @Builder
@@ -46,8 +49,6 @@ public class MemberEntity implements Serializable {
   private String nickName; // 닉네임
   private String birth; // 생년월일
   private String gender; // 성별
-  private Long totalPoint; // 누적 포인트
-  private Long currentPoint; // 현재 포인트
   private String authProvider; // oauth 2.0 연동 공급자
 
   public MemberEntity(String userId, String password, String userName, String email) {

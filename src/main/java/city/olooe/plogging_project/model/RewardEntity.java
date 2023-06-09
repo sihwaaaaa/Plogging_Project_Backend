@@ -40,7 +40,7 @@ public class RewardEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rewardNo; // pk
     private String type; // 리워드 유형(기부, 상품)
-    private double tradePoint; // 포인트의 증감, 차감
+    private Long tradePoint; // 포인트의 증감, 차감
     private Date rewardDate; // 포인트 갱신 날짜
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -55,4 +55,8 @@ public class RewardEntity {
     @JoinColumn(name = "pno")
     private ProductEntity productEntity; // FK, 상품 번호
 
+    public void joinPorudct(Long memberNo, Long currentPoint) {
+        this.memberEntity.getMemberNo();
+        this.memberEntity.getCurrentPoint();
+    }
 }

@@ -28,8 +28,8 @@ public class ProductRepositoryTest {
     @DisplayName("상품 등록 테스트")
     public void createProduct() {
         ProductEntity productEntity = ProductEntity.builder()
-                .name("새 상품 이름")
-                .detail("새 친환경 이름")
+                .name("새 상품 이름123")
+                .detail("새 친환경 이름123")
                 .build();
         log.info("{}", productRepository.save(productEntity));
     }
