@@ -1,8 +1,8 @@
-package city.olooe.plogging_project.dto;
+package city.olooe.plogging_project.dto.map;
 
 import java.util.Date;
 
-import city.olooe.plogging_project.model.MapEntity;
+import city.olooe.plogging_project.model.map.MapEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

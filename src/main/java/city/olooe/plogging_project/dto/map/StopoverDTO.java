@@ -1,7 +1,7 @@
-package city.olooe.plogging_project.dto;
+package city.olooe.plogging_project.dto.map;
 
-import city.olooe.plogging_project.model.MapEntity;
-import city.olooe.plogging_project.model.StopoverEntity;
+import city.olooe.plogging_project.model.map.MapEntity;
+import city.olooe.plogging_project.model.map.StopoverEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,11 +1,12 @@
-package city.olooe.plogging_project.persistence;
+package city.olooe.plogging_project.persistence.map;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import city.olooe.plogging_project.model.UserMapEntity;
+import city.olooe.plogging_project.model.map.UserMapEntity;
+import city.olooe.plogging_project.persistence.map.UserMapRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest

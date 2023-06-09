@@ -1,9 +1,10 @@
-package city.olooe.plogging_project.persistence;
+package city.olooe.plogging_project.persistence.map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import city.olooe.plogging_project.model.MapEntity;
+import city.olooe.plogging_project.model.map.MapEntity;
+
 import java.util.List;
 
 
@@ -25,5 +26,5 @@ public interface MapRepository extends JpaRepository<MapEntity, Long> {
   * 
   * @brief: tmp를 통해서 mapEntity 리스트 조회 - 데이터 파싱위한 메서드
   */
-  List<MapEntity> findByTmp(String tmp);
+  // List<MapEntity> findByTmp(String tmp);
 }
