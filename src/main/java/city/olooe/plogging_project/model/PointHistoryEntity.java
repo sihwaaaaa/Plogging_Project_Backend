@@ -4,32 +4,36 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
+@Builder
 @Entity
 @Getter
-@ToString
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_donation")
-/**
- * @author : 이재원
- * 
- * @date : 2023.06.05
- * 
- * @brief : 기부처 Entity
- */
-public class DonationEntity {
+@NoArgsConstructor
+@Table(name = "tbl_pointhistory")
+public class PointHistoryEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long dno; // 기부처 번호
-    private String name; // 기부처 명(재단 명)
-    private String detail; // 기부처 내용(지원내용이나 지원대상)
+    private Long pointNo; // PK
+
+    @ManyToOne
+    @JoinColumn(name = "memberNo")
+    private MemberEntity memberEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "rewardNo")
+    private RewardEntity rewardEntity;
+
+    private String type;
+    private Long point;
+
 }

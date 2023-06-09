@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Entity
@@ -36,27 +38,37 @@ import lombok.ToString;
  * @brief: 회원 포인트 클래스
  */
 public class RewardEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rewardNo; // pk
-    private String type; // 리워드 유형(기부, 상품)
-    private Long tradePoint; // 포인트의 증감, 차감
-    private Date rewardDate; // 포인트 갱신 날짜
+    private Long rewardNo; // PK
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberNo", nullable = false)
-    private MemberEntity memberEntity; // memberNo를 통해 조회
+    private String type; // FK
 
-    @ManyToOne
-    @JoinColumn(name = "dno")
-    private DonationEntity donationEntity; // FK, 기부 번호
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "pno")
-    private ProductEntity productEntity; // FK, 상품 번호
+    private String detail;
 
-    public void joinPorudct(Long memberNo, Long currentPoint) {
-        this.memberEntity.getMemberNo();
-        this.memberEntity.getCurrentPoint();
-    }
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // private Long rewardNo; // pk
+    // private String type; // 리워드 유형(기부, 상품)
+    // private Long tradePoint; // 포인트의 증감, 차감
+    // private Date rewardDate; // 포인트 갱신 날짜
+
+    // @ManyToOne(fetch = FetchType.LAZY, targetEntity = MemberAddressEntity.class)
+    // @JoinColumn(name = "memberNo", referencedColumnName = "memberNo")
+    // private MemberEntity memberEntity; // memberNo를 통해 조회
+
+    // @ManyToOne(fetch = FetchType.LAZY, targetEntity = MemberPointEntity.class)
+    // @JoinColumn(name = "pointNo", referencedColumnName = "pointNo")
+    // private MemberPointEntity memberPointEntity; // 포인트 번호를 통해 조회
+
+    // @ManyToOne
+    // @JoinColumn(name = "dno")
+    // private DonationEntity donationEntity; // FK, 기부 번호
+
+    // @ManyToOne
+    // @JoinColumn(name = "pno")
+    // private ProductEntity productEntity; // FK, 상품 번호
 }
