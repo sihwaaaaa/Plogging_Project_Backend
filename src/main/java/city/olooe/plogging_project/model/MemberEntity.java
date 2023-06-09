@@ -45,6 +45,7 @@ public class MemberEntity implements Serializable {
   private String email; // 이메일
   private Date regDate; // 등록일자
   private String address; // 주소
+  private String addressDetail; // 세부 주소
   private String nickName; // 닉네임
   private String birth; // 생년월일
   private String gender; // 성별
