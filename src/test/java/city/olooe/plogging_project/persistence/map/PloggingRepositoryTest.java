@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import city.olooe.plogging_project.model.map.PloggingEntity;
-import city.olooe.plogging_project.persistence.map.PloggingRepository;
+import city.olooe.plogging_project.persistence.PloggingRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest

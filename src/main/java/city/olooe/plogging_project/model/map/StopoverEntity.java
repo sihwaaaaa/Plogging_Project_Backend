@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author : 이시화
@@ -36,14 +37,21 @@ public class StopoverEntity {
   private Double stopoverX; // 경유지 x좌표
   private Double stopoverY; // 경유지 x좌표
   private Integer stopoverIdx;
+  // @ManyToOne(fetch = FetchType.LAZY)
   @ManyToOne
-  @Setter // 교차검증 후 db반영용
+  //@Setter // 교차검증 후 db반영용
   @JoinColumn(name = "mapNo")
   private MapEntity mapEntity;
+// @Override
+// public String toString() {
+//     return "StopoverEntity{" +
+//             "stopoverNo=" + stopoverNo +
+//             ", stopoverX=" + stopoverX +
+//             ", stopoverY=" + stopoverY +
+//             ", stopoverIdx=" + stopoverIdx +
+//             ", mapEntity=" + mapEntity.getMapNo() +
+//             '}';
+// }
 
-
-  public String toString() {
-    return String.format("tmp : %s, mapNo : ", mapEntity.getMapNo());
-  }
 
 }
