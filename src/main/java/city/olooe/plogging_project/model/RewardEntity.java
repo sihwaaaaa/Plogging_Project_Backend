@@ -32,7 +32,8 @@ public class RewardEntity {
 
     private String detail;
 
-//    @Enumerated(EnumType.STRING)
-//    @Setter
-//    private enum type;
+    @Enumerated(EnumType.STRING)
+    @Setter
+    private RewardTypeStatus type;
+
 }

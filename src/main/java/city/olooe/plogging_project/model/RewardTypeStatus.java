@@ -2,6 +2,13 @@ package city.olooe.plogging_project.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 
 /**
  * @author : 이재원
@@ -10,13 +17,19 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public enum RewardTypeStatus {
-    Challenge("Challeange", "챌린지"), // 100
-    Plogging("Plogging", "플로깅"), // 10
-    Donation("Donation", "기부하기"), // -1000
-    Product("Product", "랜덤박스"); // -8000
+    Challenge("Challeange", 100L), // 챌린지
+    Plogging("Plogging", 10L), // 플로깅
+    Donation("Donation", -1000L), // 기부
+    Product("Product", -8000L); // 랜덤박스
 
     @Getter
     private final String key;
     @Getter
-    private final String value;
+    private final Long value;
+
+    private static final Map<String, Long> KEY_MAP = Collections.unmodifiableMap(Stream.of(values()).collect(Collectors.toMap(RewardTypeStatus::getKey, RewardTypeStatus::getValue)));
+
+    public static RewardTypeStatus of(final String key) {
+        return RewardTypeStatus.valueOf(KEY_MAP.get(key).toString());
+    }
 }
