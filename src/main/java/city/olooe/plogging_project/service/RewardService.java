@@ -17,7 +17,7 @@ import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.model.RewardEntity;
 import city.olooe.plogging_project.persistence.ChallengeRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
-import city.olooe.plogging_project.persistence.PloggingRepository;
+//import city.olooe.plogging_project.persistence.PloggingRepository;
 import city.olooe.plogging_project.persistence.RewardRepository;
 import lombok.extern.slf4j.Slf4j;
 
