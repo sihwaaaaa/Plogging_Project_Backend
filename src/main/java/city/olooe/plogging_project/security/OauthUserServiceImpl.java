@@ -3,6 +3,7 @@ package city.olooe.plogging_project.security;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -63,7 +64,8 @@ public class OauthUserServiceImpl extends DefaultOAuth2UserService {
 
       memberEntity = memberRepository.save(memberEntity);
     } else {
-      memberEntity = memberRepository.findByUserId(userId);
+      memberEntity = memberRepository.findByUserId(userId)
+              .orElseThrow(() -> new UsernameNotFoundException("회원이 존재하지 않습니다."));
     }
 
     log.info("Successfully pulled user info username {} authProvider {}", userId, authProvider);

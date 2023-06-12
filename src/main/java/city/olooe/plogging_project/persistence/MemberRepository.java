@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import city.olooe.plogging_project.model.MemberEntity;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author: 박연재
@@ -30,8 +31,14 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
    * @param: userId
    * @return: MemberEntity
    */
-  MemberEntity findByUserId(String userId);
+  Optional<MemberEntity> findByUserId(String userId);
 
+  /**
+   * @author: 박연재
+   * @param: userId
+   * @return: MemberEntity
+   */
+  Optional<MemberEntity> findByUserName(String userName);
   /**
    * 
    * 

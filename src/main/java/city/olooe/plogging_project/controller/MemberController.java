@@ -1,13 +1,19 @@
 package city.olooe.plogging_project.controller;
 
+import city.olooe.plogging_project.security.CustomUserDetails;
 import org.apache.catalina.connector.Response;
 import org.apache.ibatis.javassist.compiler.ast.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.jaas.SecurityContextLoginModule;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import city.olooe.plogging_project.config.WebSecurityConfig;
 import city.olooe.plogging_project.dto.MailCheckDTO;
@@ -19,8 +25,8 @@ import city.olooe.plogging_project.service.EmailService;
 import city.olooe.plogging_project.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 
@@ -47,6 +53,10 @@ public class MemberController {
 
   @Autowired
   private WebSecurityConfig securityConfig;
+
+  @Autowired
+  private CustomUserDetails customUserDetails;
+
   // /**
   // * @author: 박연재
   // * @date: 2023.06.02
@@ -58,11 +68,12 @@ public class MemberController {
   // public void login(@RequestParam String param) {
 
   // }
+
   /**
    * @author: 박연재
    * @date: 2023.06.02
    * @brief: 로그인 페이지
-   * @param param
+   * @param memberDTO
    * @return void
    */
   @PostMapping("signin")
@@ -71,12 +82,11 @@ public class MemberController {
     // if(memberService.checkMember(dto.getUserId(),dto.getPassword())){
     // MemberEntity entity = MemberDTO.toEntity(dto);
     // return ResponseEntity.ok().body(entity);
-    // }
+    //
     MemberEntity member = memberService.getByCredentials(memberDTO.getUserId(), memberDTO.getPassword(),
         securityConfig.getPasswordEncoder());
-
     if (member != null) {
-      final String token = tokenProvider.create(member);
+      final String token = tokenProvider.userCreateToken(member);
       log.info("{}", token);
       final MemberDTO responseMemberDTO = MemberDTO.builder()
           .memberNo(member.getMemberNo())
@@ -126,6 +136,12 @@ public class MemberController {
       ResponseDTO resposneDTO = ResponseDTO.builder().error(e.getMessage()).build();
       return ResponseEntity.badRequest().body(resposneDTO);
     }
+  }
+
+  @GetMapping("logout")
+  public String logoutPage(HttpServletRequest request, HttpServletResponse response){
+    new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+    return "redirect:/";
   }
 
   @PostMapping("/signup/emailConfirm")
