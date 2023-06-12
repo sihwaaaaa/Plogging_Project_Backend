@@ -20,7 +20,7 @@ public class StopoverDTO {
   private Double stopoverX; // 경유지 x좌표
   private Double stopoverY; // 경유지 x좌표
   private Integer stopoverIdx; // 경유지 순서
-  private MapEntity mapEntity; // 경유지를 가지고 있는 맵
+  private Long mapNo; // 경유지를 가지고 있는 맵
 
   /**
    * @author : 이시화
@@ -36,7 +36,7 @@ public class StopoverDTO {
     this.stopoverX = entity.getStopoverX();
     this.stopoverY = entity.getStopoverY();
     this.stopoverIdx = entity.getStopoverIdx();
-    this.mapEntity = entity.getMapEntity();
+    this.mapNo = entity.getMapEntity().getMapNo();
   }
 
   /**
@@ -55,7 +55,7 @@ public class StopoverDTO {
         .stopoverX(stopoverDTO.getStopoverX())
         .stopoverY(stopoverDTO.getStopoverY())
         .stopoverIdx(stopoverDTO.getStopoverIdx())
-        .mapEntity(stopoverDTO.getMapEntity())
+        .mapEntity(MapEntity.builder().mapNo(stopoverDTO.mapNo).build())
         .build();
   }
 }
