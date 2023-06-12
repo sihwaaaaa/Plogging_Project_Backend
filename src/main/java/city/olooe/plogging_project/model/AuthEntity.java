@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +41,12 @@ public class AuthEntity implements Serializable{
   @Id
   private String authority; // 권한 타입
 
+  @JoinColumn(name = "memberNo")
   @ManyToOne(fetch = FetchType.LAZY)
-  private MemberEntity memberEntity;
+  @JsonIgnore
+  private MemberEntity member;
+
+  public void setMember(MemberEntity member) {
+    this.member = member;
+  }
 }
