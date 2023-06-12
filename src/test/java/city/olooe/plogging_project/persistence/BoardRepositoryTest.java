@@ -20,6 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
  * @brief : 게시글 관련 Repository test
  */
 
+
+@EqualsAndHashCode
+@ToString
 @SpringBootTest
 @Slf4j
 public class BoardRepositoryTest {
