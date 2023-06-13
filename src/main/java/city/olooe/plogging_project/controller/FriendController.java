@@ -1,8 +1,6 @@
 package city.olooe.plogging_project.controller;
 
-import city.olooe.plogging_project.dto.friend.CreateFriendDTO;
 import city.olooe.plogging_project.dto.friend.FriendDTO;
-import city.olooe.plogging_project.dto.friend.PutFriendDTO;
 import city.olooe.plogging_project.dto.ResponseDTO;
 import city.olooe.plogging_project.model.FriendEntity;
 import city.olooe.plogging_project.service.FriendService;
@@ -99,11 +97,11 @@ public class FriendController {
         return ResponseEntity.ok().body(ResponseDTO.builder().data(friendDTOS).build());
     }
 
-    // 플친 신청 취소하기
-    @PutMapping("cancel")
-    public ResponseEntity<?> cancelRequest(@AuthenticationPrincipal String userId, @RequestBody FriendDTO toMember) {
-        List<FriendEntity> friendEntities = friendService.
-    }
+//    // 플친 신청 취소하기
+//    @PutMapping("cancel")
+//    public ResponseEntity<?> cancelRequest(@AuthenticationPrincipal String userId, @RequestBody FriendDTO toMember) {
+//        List<FriendEntity> friendEntities = friendService.
+//    }
 
 
 
