@@ -1,6 +1,7 @@
 package city.olooe.plogging_project.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class MemberService {
       log.warn(msg + "{}", userId);
       throw new RuntimeException(msg);
     }
-
+//    memberEntity.set(Collections.singletonList(Authority.builder().name("ROLE_USER").build()));
     return memberRepository.save(memberEntity);
   }
 
@@ -51,12 +52,14 @@ public class MemberService {
    * @return: MemberEntity
    */
   public MemberEntity getByCredentials(final String userId, final String password, PasswordEncoder encoder) {
-      final MemberEntity originalMember = memberRepository.findByUserId(userId);
+      final MemberEntity originalMember = memberRepository.findByUserId(userId)
+              .orElseThrow(() -> new UsernameNotFoundException("회원이 존재하지 않습니다."));
 
       if(originalMember != null && encoder.matches(password, originalMember.getPassword())) return originalMember; // 회원이 존재하지 않으면 0
       
       return null;
 
   }
+
 
 }

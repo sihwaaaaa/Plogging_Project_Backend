@@ -45,6 +45,7 @@ public class MemberEntity implements Serializable {
   private String email; // 이메일
   private Date regDate; // 등록일자
   private String address; // 주소
+  private String addressDetail; // 세부 주소
   private String nickName; // 닉네임
   private String birth; // 생년월일
   private String gender; // 성별
@@ -56,8 +57,13 @@ public class MemberEntity implements Serializable {
     this.userName = userName;
     this.email = email;
   }
-  // @OneToMany(mappedBy = "memberEntity")
-  // private List<AuthEntity> authEntities = new ArrayList<>();
+   @OneToMany(mappedBy = "member")
+   private List<AuthEntity> authEntities = new ArrayList<>();
+
+  public void setAuthEntities(List<AuthEntity> authEntities) {
+    this.authEntities = authEntities;
+    authEntities.forEach(o -> o.setMember(this));
+  }
   //
   // // @OneToMany(mappedBy = "host")
   // // private List<ChallengeEntity> challengeEntities = new ArrayList<>();

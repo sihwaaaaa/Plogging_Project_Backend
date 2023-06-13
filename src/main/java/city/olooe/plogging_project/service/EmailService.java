@@ -1,11 +1,14 @@
 package city.olooe.plogging_project.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Random;
 import javax.mail.MessagingException;
 import javax.mail.Message.RecipientType;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +21,9 @@ public class EmailService {
   @Autowired
   private JavaMailSender emailSender;
 
-  public static String ePw = createKey();
+  public String ePw = "";
 
-  private MimeMessage createMessage(String to) throws MessagingException {
+  private MimeMessage createMessage(String to) throws MessagingException, UnsupportedEncodingException {
     log.info("{}", to);
     log.info("{}", ePw);
 
@@ -42,12 +45,11 @@ public class EmailService {
     msg += ePw + "</strong></div></br>";
     msg += "</div>";
     message.setText(msg, "utf-8", "html");
-    message.setFrom(setFrom);
-
+    message.setFrom(new InternetAddress(setFrom,"Plogging"));
     return message;
   }
 
-  public static String createKey() {
+  public String createKey() {
     StringBuffer key = new StringBuffer();
     Random rnd = new Random();
 
@@ -73,8 +75,9 @@ public class EmailService {
     return key.toString();
   }
 
-  public String sendMessage(String to) throws MessagingException {
 
+  public String sendMessage(String to) throws MessagingException, UnsupportedEncodingException {
+    ePw = createKey();
     MimeMessage message = createMessage(to); // 수신자를 포함한 message를 생성
     emailSender.send(message);
 
