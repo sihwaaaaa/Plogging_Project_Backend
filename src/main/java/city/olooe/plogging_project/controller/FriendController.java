@@ -68,7 +68,7 @@ public class FriendController {
     }
 
     // 플친 단일 조회
-
+    // 플친 전체 조회
     @GetMapping("all")
     public ResponseEntity<?> findAll(){
         List<FriendEntity> friendEntities = friendService.allFriend();
