@@ -21,6 +21,8 @@ import org.springframework.test.annotation.Rollback;
 
 import city.olooe.plogging_project.model.map.MapEntity;
 import city.olooe.plogging_project.model.map.StopoverEntity;
+import city.olooe.plogging_project.persistence.MapRepository;
+import city.olooe.plogging_project.persistence.StopoverRepository;
 
 
 @SpringBootTest

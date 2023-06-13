@@ -1,4 +1,4 @@
-package city.olooe.plogging_project.persistence.map;
+package city.olooe.plogging_project.persistence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -13,6 +13,6 @@ import city.olooe.plogging_project.model.map.LocationEntity;
  * 
  * @brief: LocationEntity jpa 구현체
  */
-public interface LocationRepository extends JpaRepository<LocationEntity, String> {
+public interface LocationRepository extends JpaRepository<LocationEntity, Long> {
 
 }

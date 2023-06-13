@@ -1,6 +1,9 @@
 package city.olooe.plogging_project.persistence.map;
 
+import java.util.List;
 import java.util.Map;
+
+import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,8 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import city.olooe.plogging_project.model.map.MapEntity;
 import city.olooe.plogging_project.model.map.StopoverEntity;
-import city.olooe.plogging_project.persistence.map.MapRepository;
-import city.olooe.plogging_project.persistence.map.StopoverRepository;
+import city.olooe.plogging_project.persistence.MapRepository;
+import city.olooe.plogging_project.persistence.StopoverRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
@@ -49,6 +52,15 @@ public class MapRepositoryTest {
         
         // then
         // stopoverRepository.save(StopoverEntity.builder().stopoverNo(stopoverRepository.findByMapNo().mapEntity(mapEntity).build());
+  }
+  @Test
+  @DisplayName("경로 조회 테스트")
+  @Transactional
+  public void readRoute(){
+      MapEntity mapEntity = mapRepository.findById(1L).orElse(null);
+      List<StopoverEntity> stopoverEntities =  mapEntity.getStops();
+      stopoverEntities.forEach(stop -> System.out.println(stop));
+    
   }
 
 }
