@@ -33,7 +33,7 @@ public class OAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
       Authentication authentication) throws IOException, ServletException {
     TokenProvider tokenProvider = new TokenProvider();
     String userId = ((ApplicationOAuth2User) authentication.getPrincipal()).getName();
-    String token = tokenProvider.create(authentication);
+    String token = tokenProvider.oauthCreateToken(authentication);
     String username = repository.findByUserId(userId).toString();
 
     Optional<Cookie> oCookie = Arrays.stream(request.getCookies())

@@ -1,5 +1,6 @@
 package city.olooe.plogging_project.config;
 
+import city.olooe.plogging_project.security.RedirectUrlCookieFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.web.filter.CorsFilter;
 
@@ -38,9 +40,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   private OAuthSuccessHandler oAuthSuccessHandler;
 
+  @Autowired
+  private RedirectUrlCookieFilter redirectUrlFilter;
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.cors()
+    http
+            .cors()
         .and()
         .csrf()
         .disable()
@@ -64,11 +70,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .successHandler(oAuthSuccessHandler)
         .and()
+        .logout()
+        .logoutSuccessUrl("/")
+        .and()
         .exceptionHandling()
         .authenticationEntryPoint(new Http403ForbiddenEntryPoint());
 
     // jwtAuthenticationFilter, CorsFilter.class
     http.addFilterAfter(jwtAuthenticationFilter, CorsFilter.class);
+    http.addFilterBefore(redirectUrlFilter, OAuth2AuthorizationRequestRedirectFilter.class);
   }
 
   @Bean

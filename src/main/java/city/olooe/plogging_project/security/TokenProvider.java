@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -23,16 +25,22 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class TokenProvider {
-  private static final String SECRET_KEY = "1234";
 
-  public String create(MemberEntity memberEntity) {
-    Date expiryDate = Date.from(Instant.now().plus(1, ChronoUnit.DAYS));
+  @Value("${app.jwtSecretKey}")
+  private String jwtSecretKey;
+
+  @Value("${app.jwtExpiration}")
+  private int jwtExpiration;
+
+  public String userCreateToken(final MemberEntity memberEntity) {
+
+    Date expiryDate = Date.from(Instant.now()
+            .plus(jwtExpiration, ChronoUnit.DAYS));
     // String s = String.valueOf(member);
     return Jwts.builder()
-        .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
-        // .signWith(SECRET_KEY, SignatureAlgorithm.HS512)
+        .signWith(SignatureAlgorithm.HS512, jwtSecretKey)
         .setSubject(memberEntity.getUserId())
-        .setIssuer("myApp")
+            .setIssuer("myApp")
         .setIssuedAt(new Date())
         .setExpiration(expiryDate)
         .compact();
@@ -40,22 +48,22 @@ public class TokenProvider {
 
   public String validateAndGetUserId(String token) {
     Claims claims = Jwts.parser()
-        .setSigningKey(SECRET_KEY)
+        .setSigningKey(jwtSecretKey)
         .parseClaimsJws(token)
         .getBody();
 
     return claims.getSubject();
   }
 
-  public String create(Authentication authentication) {
+  public String oauthCreateToken(Authentication authentication) {
     ApplicationOAuth2User userPrincipal = (ApplicationOAuth2User) authentication.getPrincipal();
-    Date expiryDate = Date.from(Instant.now().plus(1, ChronoUnit.DAYS));
+    Date expiryDate = Date.from(Instant.now().plus(jwtExpiration, ChronoUnit.DAYS));
 
     return Jwts.builder()
       .setSubject(userPrincipal.getName())
       .setIssuedAt(new Date())
       .setExpiration(expiryDate)
-        .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+        .signWith(SignatureAlgorithm.HS512, jwtSecretKey)
       .compact();
   }
 }
