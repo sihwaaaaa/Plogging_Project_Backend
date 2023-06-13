@@ -48,7 +48,7 @@ public class RewardService {
      * @Brief 포인트 유형 별 조회
      */
     @Transactional
-    public List<RewardEntity> GetRewardTypeList(RewardEntity rewardEntity) {
-        return rewardRepository.findAllByType(rewardEntity.getType());
+    public List<RewardEntity> GetRewardTypeList(String type) {
+        return rewardRepository.findAllByType(RewardTypeStatus.valueOf(type));
     }
 }
