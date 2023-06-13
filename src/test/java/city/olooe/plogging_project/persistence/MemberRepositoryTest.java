@@ -12,6 +12,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import city.olooe.plogging_project.model.AuthEntity;
+import city.olooe.plogging_project.model.AuthType;
 // import city.olooe.plogging_project.model.AuthEntity;
 import city.olooe.plogging_project.model.MemberEntity;
 import lombok.extern.slf4j.Slf4j;
@@ -26,14 +28,29 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberRepositoryTest {
 
   @Autowired
-  MemberRepository memberRepository;
+  private MemberRepository memberRepository;
+
+  @Autowired
+  private AuthRepository authRepository;
 
   @DisplayName("회원 생성 테스트")
   @Test
   public void createMember() {
-    MemberEntity member = MemberEntity.builder().userId("root2").password("12345").userName("김연재")
+
+    MemberEntity member = MemberEntity.builder().userId("november123").password("wkwjsrj5!").userName("연재")
         .email("root1234@gmail.com").build();
+
     log.info("{}", memberRepository.save(member));
+  }
+
+  @DisplayName("회원 권한 적용 테스트")
+  @Test
+  public void authTest() {
+
+    AuthEntity auth = AuthEntity.builder().memberNo(memberRepository.findByUserId("dreamer5"))
+        .authority(AuthType.ROLE_MEMBER).build();
+
+    authRepository.save(auth);
   }
 
   @DisplayName("회원 목록 조회 테스트")
