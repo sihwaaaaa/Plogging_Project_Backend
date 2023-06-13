@@ -49,4 +49,20 @@ public class RewardDTO {
                 .detail(rewardDTO.getDetail())
                 .type(RewardTypeStatus.valueOf(rewardDTO.getType())).build();
     }
+
+    /**
+     * @author : 이재원
+     * @date: 23.06.13     *
+     * @param: -
+     * @return: entity     *
+     * @brief: DTO -> entity
+     */
+    public RewardEntity changeEntity() {
+        return RewardEntity.builder()
+                .rewardNo(rewardNo)
+                .type(RewardTypeStatus.valueOf(getType()))
+                .name(name)
+                .detail(detail)
+                .build();
+    }
 }
