@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -32,21 +34,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tbl_auth")
-public class AuthEntity implements Serializable{
+public class AuthEntity implements Serializable {
 
   @Id
-  @JoinColumn(name = "memberNo")
-  private Long no; // 권한 번호
+  @ManyToOne(fetch = FetchType.LAZY, targetEntity = MemberEntity.class)
+  @JoinColumn(name = "memberNo", referencedColumnName = "memberNo")
+  private Long memberNo; // 멤버 PK
 
   @Id
-  private String authority; // 권한 타입
-
-  @JoinColumn(name = "memberNo")
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JsonIgnore
-  private MemberEntity member;
-
-  public void setMember(MemberEntity member) {
-    this.member = member;
-  }
+  @Enumerated(EnumType.STRING)
+  private AuthType authority; // 권한 타입
 }
