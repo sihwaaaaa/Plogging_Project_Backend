@@ -1,64 +1,93 @@
-//package city.olooe.plogging_project.service;
-//
-//import city.olooe.plogging_project.model.FriendEntity;
-//import city.olooe.plogging_project.model.MemberEntity;
-//import city.olooe.plogging_project.persistence.FriendRepository;
-//import city.olooe.plogging_project.persistence.MemberRepository;
-//import lombok.extern.slf4j.Slf4j;
-//import org.junit.jupiter.api.Test;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//
-//import java.util.List;
-//
-//
-//@SpringBootTest
-//@Slf4j
-//class FriendServiceTest {
-//
-//    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-//
-//    @Autowired
-//    FriendRepository friendRepository;
-//
-//    @Autowired
-//    MemberRepository memberRepository;
-//
-//    @Autowired
-//    FriendService friendService;
-//
-//    @Autowired
-//    MemberService memberService;
+package city.olooe.plogging_project.service;
 
-//    @Test
-//    public void test나에게친구중_특정상황_PENDING() {
-//        MemberEntity mem = memberRepository.findById(2L).orElseThrow(() -> new RuntimeException("없는 회원"));
-//        friendRepository.findByToMemberAndStatus(mem, FriendStatus.PENDING).forEach(f -> {
-//        f.setStatus(FriendStatus.FRIEND);
-//        log.info("{}", f);
-//        friendRepository.save(f.convert());
-//        });
-//    }
+import city.olooe.plogging_project.model.FriendEntity;
+import city.olooe.plogging_project.model.FriendStatusType;
+import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.persistence.FriendRepository;
+import city.olooe.plogging_project.persistence.MemberRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 //
-//    @Test
-//    void 플친요청() {
-//        // given
-//        MemberEntity fromMember = memberService.create(new MemberEntity("olooe", "1234", "응공", "olooe@olooe.city"));
-//        logger.warn("from {}", fromMember);
-//        MemberEntity toMember = memberService.create(new MemberEntity("seolha", "1234", "서라", "seolha@olooe.city"));
-//        logger.warn("to {}", toMember);
 //
-//        FriendEntity friendEntity = friendService.requestFriend(new FriendEntity(fromMember, toMember));
-//        logger.warn("friend {} ", friendEntity);
-//        // when
-//        //Long savedFriendId = friendService.requestFriend(friendEntity).getFriendNo();
+@SpringBootTest
+@Slf4j
+class FriendServiceTest {
 //
-//        // then
-//        //assertEquals(friendEntity, friendRepository.findByFriendNo(savedFriendId));
-//    }
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+//
+    @Autowired
+    FriendRepository friendRepository;
+
+    @Autowired
+    MemberRepository memberRepository;
+
+    @Autowired
+    FriendService friendService;
+
+    @Autowired
+    MemberService memberService;
+
+    @Test
+    @DisplayName("팔로워 리스트")
+    public void followerList() {
+        List<FriendEntity> friendEntities = friendService.getFriendListToMe("olooe", FriendStatusType.FRIEND.getKey());
+        log.warn("팔로워 리스트 : {}", friendEntities.stream().map(FriendEntity::getFriendNo).collect(Collectors.toList()));
+    }
+
+    @Test
+    @DisplayName("팔로잉 리스트")
+    public void followingList() {
+        List<FriendEntity> friendEntities = friendService.GetMyFriendList("olooe", FriendStatusType.FRIEND.getKey());
+        log.warn("팔로잉 리스트 : {}", friendEntities.stream().map(FriendEntity::getFriendNo).collect(Collectors.toList()));
+    }
+
+
+    @Test
+    @DisplayName("플친요청")
+    void requestFriend() {
+
+        List<FriendEntity> friendEntities = friendService.requestFriend("root1357", 64L);
+
+        logger.warn("플친요청 테스트 플친대기리스트 : {}", friendEntities.size());
+    }
+
+    @Test
+    @DisplayName("플친 거절 및 플친 삭제")
+    void removeFriend() {
+        List<FriendEntity> beforeFriends = friendService.GetMyFriendList("root1357", FriendStatusType.FRIEND.getKey());
+        logger.warn("삭제 전 플친 리스트 : {}", beforeFriends);
+        List<FriendEntity> afterFriends = friendService.removeFriend("root1357", 6L);
+        logger.warn("삭제 후 플친 리스트 : {}", afterFriends);
+    }
+
+    @Test
+    @DisplayName("플친 요청 승인")
+    void acceptFriend() {
+        List<FriendEntity> beforeFriends = friendService.GetMyFriendList("root1357", FriendStatusType.FRIEND.getKey());
+        logger.warn("승인 전 플친 리스트 : {}", beforeFriends.stream().toString());
+        List<FriendEntity> afterFriends = friendService.acceptRequest("root1357", 8L);
+        logger.warn("승인 후 플친 리스트 : {}", afterFriends.stream().toString());
+
+    }
+
+    @Test
+    @DisplayName("플친 차단")
+    void blockFriend() {
+        List<FriendEntity> beforeBlocked = friendService.GetMyFriendList("root1357", FriendStatusType.BLOCK.getKey());
+        logger.warn("전 차단 리스트 : {}", beforeBlocked.stream().toString());
+        List<FriendEntity> afterBlocked = friendService.blockFriend("root1357", 8L);
+        logger.warn("후 차단 리스트 : {}", afterBlocked.stream().toString());
+    }
+
 //
 //    @Test
 //    void 나의플친리스트() {
@@ -97,4 +126,4 @@
 //        String status = friendService.getStatus(fromMember, toMember);
 //        logger.warn("친구상태 : {}", status);
 //    }
-//}
+}

@@ -55,6 +55,13 @@ public interface FriendRepository extends JpaRepository<FriendEntity, Long> {
      */
     List<FriendEntity> findByToMemberAndStatus(MemberEntity toMember, FriendStatusType status);
 
+    /**
+     * @Author 천은경
+     * @Date 23.06.11
+     * @Breif 모든 플친 리스트 (상태 무관)
+     */
+    List<FriendEntity> findAll();
+
 
 //    /**
 //     * @author 천은경

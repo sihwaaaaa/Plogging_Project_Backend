@@ -15,3 +15,10 @@ public class ResponseDTO {
   private String error;
   private List<?> data;
 }
+
+//public class ResponseDTO<T> {
+//  private String error;
+//  private T data;
+//}
+
+
