@@ -23,19 +23,16 @@ public class CustomUserDetails implements UserDetailsService {
     @Autowired
     private MemberRepository memberRepository;
 
-
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        MemberEntity member = memberRepository.findByUserName(userName)
-                .orElseThrow(() -> new UsernameNotFoundException("그러한 회원은 존재하지 않습니다 : " + userName));
+        MemberEntity member = memberRepository.findByUserName(userName);
         return new ApplicationUserPrincipal(member);
     }
 
     @Transactional
     public UserDetails loadUserByUserId(String userId) throws UsernameNotFoundException {
-        MemberEntity member = memberRepository.findByUserId(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("그러한 회원은 존재하지 않습니다 : " + userId));
+        MemberEntity member = memberRepository.findByUserId(userId);
         return new ApplicationUserPrincipal(member);
     }
 }
