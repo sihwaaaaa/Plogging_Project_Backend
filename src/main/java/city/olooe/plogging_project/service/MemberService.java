@@ -40,7 +40,7 @@ public class MemberService {
       log.warn(msg + "{}", userId);
       throw new RuntimeException(msg);
     }
-//    memberEntity.set(Collections.singletonList(Authority.builder().name("ROLE_USER").build()));
+    // memberEntity.set(Collections.singletonList(Authority.builder().name("ROLE_USER").build()));
     return memberRepository.save(memberEntity);
   }
 
@@ -52,14 +52,13 @@ public class MemberService {
    * @return: MemberEntity
    */
   public MemberEntity getByCredentials(final String userId, final String password, PasswordEncoder encoder) {
-      final MemberEntity originalMember = memberRepository.findByUserId(userId)
-              .orElseThrow(() -> new UsernameNotFoundException("회원이 존재하지 않습니다."));
+    final MemberEntity originalMember = memberRepository.findByUserId(userId);
 
-      if(originalMember != null && encoder.matches(password, originalMember.getPassword())) return originalMember; // 회원이 존재하지 않으면 0
-      
-      return null;
+    if (originalMember != null && encoder.matches(password, originalMember.getPassword()))
+      return originalMember; // 회원이 존재하지 않으면 0
+
+    return null;
 
   }
-
 
 }
