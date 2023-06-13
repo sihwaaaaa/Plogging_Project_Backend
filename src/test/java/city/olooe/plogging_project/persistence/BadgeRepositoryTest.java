@@ -2,13 +2,15 @@ package city.olooe.plogging_project.persistence;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import city.olooe.plogging_project.model.BadgeEntity;
-import lombok.extern.slf4j.Slf4j;
+
+
 
 @SpringBootTest
 @Slf4j
@@ -24,7 +26,7 @@ public class BadgeRepositoryTest {
                 .name("뱃지 이름")
                 .point(2000L)
                 .build();
-        log.info("뱃지 생성 Test : {}", badgeRepository.save(badgeEntity));
+//        log.info("뱃지 생성 Test : {}", badgeRepository.save(badgeEntity));
     }
 
     @Test
@@ -34,7 +36,7 @@ public class BadgeRepositoryTest {
                 .name("수정된 뱃지 이름")
                 .point(-1000L)
                 .build();
-        log.info("{}", badgeRepository.save(badgeEntity));
+//        log.info("{}", badgeRepository.save(badgeEntity));
     }
 
     @Test
@@ -42,7 +44,7 @@ public class BadgeRepositoryTest {
     public void findAllBadge() {
         List<BadgeEntity> badgeEntities = badgeRepository.findAll();
 
-        log.info("{}", badgeEntities);
+//        log.info("{}", badgeEntities);
     }
 
     @Test

@@ -1,4 +1,4 @@
-package city.olooe.plogging_project.model;
+package city.olooe.plogging_project.model.map;
 
 import java.util.ArrayList;
 import java.util.Date;

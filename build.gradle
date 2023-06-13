@@ -48,8 +48,9 @@ dependencies {
     // // https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-client
 	implementation 'org.springframework.security:spring-security-oauth2-client:5.6.1'
 
-    // https://mvnrepository.com/artifact/org.mybatis/mybatis
-    implementation group: 'org.mybatis', name: 'mybatis', version: '3.5.13'
+    implementation group: 'org.mybatis', name: 'mybatis', version: '3.5.6'
+    
+    implementation 'org.locationtech.proj4j:proj4j:1.2.2'
 
     // SLF4J API
     implementation 'org.slf4j:slf4j-api:1.7.32'
