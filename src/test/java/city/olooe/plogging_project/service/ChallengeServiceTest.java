@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import city.olooe.plogging_project.model.ChallengeMemberEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,11 +39,11 @@ public class ChallengeServiceTest {
     public void createChallengeTest() {
         ChallengeDTO challengeDTO = ChallengeDTO.builder()
                 .blind(true)
-                .host(MemberEntity.builder().memberNo(12L).build())
+                .memberNo(12L)
                 .title("챌린지 서비스 테스트")
                 .content("챌린지 서비스 테스트 내용")
                 .personnel(5L)
-                .status(ChallengeStatus.CHALLENGEBEFORE)
+                .status(ChallengeStatus.CHALLENGEBEFORE.getKey())
                 .build();
         ChallengeEntity challengeEntity = challengeService.createChallenge(challengeDTO);
         log.info("{}",challengeEntity);
@@ -82,13 +83,26 @@ public class ChallengeServiceTest {
         log.info("{}", challengeDTOS);
     }
 
+    /**
+     * @author : 김민수
+     * @date: '23.06.11
+     *
+     * @param: -
+     * @return: -
+     *
+     * @brief: 챌린지 삭제 테스트
+     */
     @Test
     @Transactional
     public void deleteTest(){
         // 테스트 데이터 설정
         Long chNo = 10L;
+        ChallengeMemberEntity challengeMemberEntity = new ChallengeMemberEntity();
+
         challengeService.delete(chNo);
     }
+
+
 
 
 }

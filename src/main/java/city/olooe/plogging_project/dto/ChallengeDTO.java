@@ -1,19 +1,22 @@
 package city.olooe.plogging_project.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.ChallengeStatus;
 import city.olooe.plogging_project.model.MemberEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.*;
+import org.springframework.beans.PropertyAccessor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ChallengeDTO {
     /*
      * @author : 김민수
@@ -24,14 +27,14 @@ public class ChallengeDTO {
      */
     private Long chNo;
     private Boolean blind;
-    private MemberEntity host;
+    private Long memberNo;
     private String title;
     private String content;
     private Long personnel;
-    private Date regDate;
-    private Date startDate;
-    private Date endDate;
-    private ChallengeStatus status;
+    private LocalDate regDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private String status;
 
     /*
      * @author : 김민수
@@ -47,7 +50,7 @@ public class ChallengeDTO {
     public ChallengeDTO(final ChallengeEntity chEntity) {
         this.chNo = chEntity.getChNo();
         this.blind = chEntity.getBlind();
-        this.host = chEntity.getHost();
+        this.memberNo = chEntity.getHost().getMemberNo();
         this.title = chEntity.getContent();
         this.content = chEntity.getContent();
         this.personnel = chEntity.getPersonnel();
@@ -71,7 +74,7 @@ public class ChallengeDTO {
         return ChallengeEntity.builder()
                 .chNo(challengeDTO.getChNo())
                 .blind(challengeDTO.getBlind())
-                .host(challengeDTO.getHost())
+                .host(MemberEntity.builder().memberNo(challengeDTO.memberNo).build())
                 .title(challengeDTO.getTitle())
                 .content(challengeDTO.getContent())
                 .personnel(challengeDTO.getPersonnel())
@@ -91,9 +94,9 @@ public class ChallengeDTO {
      * @brief: DTO -> entity
      */
     public ChallengeEntity toChallengeEntity() {
-        return ChallengeEntity.builder().chNo(chNo).host(host).blind(blind).title(title).content(content)
+        return ChallengeEntity.builder().chNo(chNo).host(MemberEntity.builder().memberNo(memberNo).build()).blind(blind).title(title).content(content)
                 .personnel(personnel)
-                .regDate(regDate).startDate(startDate).endDate(endDate).status(status).build();
+                .regDate(regDate).startDate(startDate).endDate(endDate).status(ChallengeStatus.CHALLENGEBEFORE).build();
     }
 
 }

@@ -1,5 +1,6 @@
 package city.olooe.plogging_project.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -41,7 +42,7 @@ public class ChallengeScheduleEntity {
     @JoinColumn(name = "mapNo")
     private MapEntity mapNo; // 추천경로 맵의 번호
 
-    private Date startDate; // 플로깅 시작날짜 시간
-    private Date endDate; // 플로깅 끝나는 날짜 시간
-    private Date regDate; // 생성날짜
+    private LocalDate startDate; // 플로깅 시작날짜 시간
+    private LocalDate endDate; // 플로깅 끝나는 날짜 시간
+    private LocalDate regDate; // 생성날짜
 }

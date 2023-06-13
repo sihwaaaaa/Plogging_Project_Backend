@@ -17,7 +17,7 @@ import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.model.RewardEntity;
 import city.olooe.plogging_project.persistence.ChallengeRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
-import city.olooe.plogging_project.persistence.PloggingRepository;
+//import city.olooe.plogging_project.persistence.PloggingRepository;
 import city.olooe.plogging_project.persistence.RewardRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -73,10 +73,10 @@ public class RewardService {
      * @param: Long id
      * @return: rewardNo
      */
-    @Transactional
-    public RewardEntity getReward(Long id) {
-        return rewardRepository.findById(id).orElseThrow();
-    }
+//    @Transactional
+//    public RewardEntity getReward(Long id) {
+//        return rewardRepository.findById(id).orElseThrow();
+//    }
 
     /**
      * @author: 이재원

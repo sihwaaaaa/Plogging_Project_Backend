@@ -1,16 +1,18 @@
 package city.olooe.plogging_project.service;
 
+import city.olooe.plogging_project.dto.BoardDTO;
+import city.olooe.plogging_project.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Member;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import city.olooe.plogging_project.dto.ChallengeDTO;
 import city.olooe.plogging_project.dto.ChallengeMemberDTO;
-import city.olooe.plogging_project.model.ChallengeEntity;
-import city.olooe.plogging_project.model.ChallengeStatus;
 import city.olooe.plogging_project.persistence.ChallengeMemberRepository;
 import city.olooe.plogging_project.persistence.ChallengeRepository;
 import city.olooe.plogging_project.persistence.ChallengeScheduleRepository;
@@ -88,6 +90,7 @@ public class ChallengeService {
      */
      @Transactional
      public void delete(Long chNo) {
+         // 챌린지 맴버삭제, 챌린지 일정삭제 , 챌린지 일정에 참여중인 참여삭제
      ChallengeEntity challengeEntity = challengeRepository.findByChNo(chNo);
      validate(challengeEntity);
      challengeRepository.delete(challengeEntity);
@@ -104,6 +107,22 @@ public class ChallengeService {
     public Long challengeJoin(ChallengeMemberDTO challengeMemberDTO) {
         return challengeMemberRepository.save(challengeMemberDTO.toChallengeMemberEntity()).getCmemberNo();
     }
+
+    /**
+     * @author : 김민수
+     * @date: '23.06.11
+     *
+     * @param: chNo
+     *
+     * @brief: 챌린지 맴버 삭제서비스
+     */
+    public void cmemberDelete(ChallengeEntity chNo, MemberEntity memberNo ){
+        ChallengeMemberEntity challengeMemberEntity = challengeMemberRepository.findByChNoAndChallenger(chNo,memberNo);
+        cmemberValidate(challengeMemberEntity);
+        challengeMemberRepository.delete(challengeMemberEntity);
+    }
+
+
 
     /**
      * @author 김민수
@@ -134,6 +153,24 @@ public class ChallengeService {
         else if (challengeEntity.getStatus() == null) {
             throw new RuntimeException("empty status");
         }
+    }
+
+    /**
+     * @author 김민수
+     * @date 23.06.09
+     * @param ChallengeMemberEntity
+     * @brief: 챌린지 member Null 검사
+     */
+    private void cmemberValidate(final ChallengeMemberEntity challengeMemberEntity) {
+        // member null
+        if (challengeMemberEntity.getChNo() == null) {
+            throw new RuntimeException("chNo member");
+        }
+        // title null
+        else if (challengeMemberEntity.getChallenger() == null) {
+            throw new RuntimeException("Challenger title");
+        }
+
     }
 
 }

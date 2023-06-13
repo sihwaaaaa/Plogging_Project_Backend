@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 public class ScheduleMemberDTO {
 
     private Long smno;
-    private Long cmemberNo;
+    private Long memberNo;
     private Long scheduleNo;
+
+    private Long chNo;
 }
