@@ -1,4 +1,4 @@
-package city.olooe.plogging_project.dto;
+package city.olooe.plogging_project.dto.friend;
 
 import city.olooe.plogging_project.model.FriendEntity;
 import city.olooe.plogging_project.model.FriendStatusType;
@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 
 /**
@@ -19,23 +21,31 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
+@DynamicInsert
+@DynamicUpdate
 public class FriendDTO {
     private Long fromMemberNo;
+    private String fromMemberId;
     private Long toMemberNo;
+    private String toMemberId;
     private String status;
 
     // Entity를 Dto로 변환
     public FriendDTO(final FriendEntity friendEntity) {
         fromMemberNo = friendEntity.getFromMember().getMemberNo();
+        fromMemberId = friendEntity.getFromMember().getUserId();
         toMemberNo = friendEntity.getToMember().getMemberNo();
+        toMemberId = friendEntity.getToMember().getUserId();
         status = friendEntity.getStatus().getKey();
     }
 
     // DTO를 Entity로 변환
     public static FriendEntity toEntity(final FriendDTO friendDTO) {
         return FriendEntity.builder()
-                .fromMember(MemberEntity.builder().memberNo(friendDTO.fromMemberNo).build())
-                .toMember(MemberEntity.builder().memberNo(friendDTO.toMemberNo).build())
+                .fromMember(MemberEntity.builder().memberNo(friendDTO.fromMemberNo).userId(friendDTO.fromMemberId).build())
+                .toMember(MemberEntity.builder().memberNo(friendDTO.toMemberNo).userId(friendDTO.toMemberId).build())
                 .status(FriendStatusType.valueOf(friendDTO.status)).build();
     }
+
 }
+
