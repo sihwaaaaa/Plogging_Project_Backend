@@ -6,9 +6,12 @@ import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.persistence.FriendRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Member;
 import java.util.List;
 
 /**
@@ -20,6 +23,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class FriendService {
 
     private final FriendRepository friendRepository;
@@ -30,94 +34,141 @@ public class FriendService {
     /**
      * @Author 천은경
      * @Date 23.06.06
-     * @param fromMemberNo
+     * @param userId
      * @param toMemberNo
      * @return FriendEntity
      * @Brief 플친 신청
      */
-    public FriendEntity requestFriend(Long fromMemberNo, Long toMemberNo) {
-        FriendEntity friendEntity = new FriendEntity(toEntity(fromMemberNo), toEntity(toMemberNo));
+    public List<FriendEntity> requestFriend(String userId, Long toMemberNo) {
+        // Entity 생성
+        MemberEntity fromMember = memberRepository.findByUserId(userId);
+        MemberEntity toMember = toEntityWithNo(toMemberNo);
+        FriendEntity friendEntity = new FriendEntity(fromMember, toMember);
         // 유효성 검사
-        validate(friendEntity);
-        // 저장 및 반환
-        return friendRepository.save(friendEntity);
+        //validate(friendEntity);
+        // 저장
+        friendRepository.save(friendEntity);
+        // 신청 리스트 반환
+        return friendRepository.findByFromMemberAndStatus(fromMember,
+                FriendStatusType.PENDING);
     }
+
+    public List<FriendEntity> allFriend() {
+        return friendRepository.findAll();
+    }
+
 
     /**
      * @Author 천은경
      * @Date 23.06.06
-     * @param memberNo
+     * @param userId
      * @param status
      * @return List<FriendEntity>
      * @Brief 나의 팔로잉 상태별 플친 리스트 조회 : 요청대기 / 플친중 / 차단
      */
     @Transactional(readOnly = true)
-    public List<FriendEntity> GetMyFriendList(Long memberNo, String status) {
-        return friendRepository.findByFromMemberAndStatus(toEntity(memberNo), FriendStatusType.valueOf(status));
+    public List<FriendEntity> GetMyFriendList(String userId, String status) {
+
+        return friendRepository.findByFromMemberAndStatus(memberRepository.findByUserId(userId),
+                FriendStatusType.valueOf(status));
     }
 
     /**
      * @Author 천은경
      * @Date 23.06.06
-     * @param memberNo
+     * @param userId
      * @param status
      * @return List<FriendEntity>
      * @Brief 나의 팔로워 상태별 플친 리스트 조회 : 요청대기 / 플친중 / 차단
      */
     @Transactional(readOnly = true)
-    public List<FriendEntity> getFriendListToMe(Long memberNo, String status){
-        return friendRepository.findByToMemberAndStatus(toEntity(memberNo), FriendStatusType.valueOf(status));
+    public List<FriendEntity> getFriendListToMe(String userId, String status){
+        MemberEntity fromMember = memberRepository.findByUserId(userId);
+
+        return friendRepository.findByToMemberAndStatus(fromMember, FriendStatusType.valueOf(status));
     }
 
     /**
      * @Author 천은경
      * @Date 23.06.07
+     * @param userId
      * @param fromMemberNo
-     * @param toMemberNo
      * @Brief 플친 요청 수락
      */
-    public void acceptFriendRequest(Long fromMemberNo, Long toMemberNo) {
-       FriendEntity friendEntity = friendRepository.findByFromMemberAndToMember(toEntity(fromMemberNo), toEntity(toMemberNo));
-       friendEntity.setFriend();
+    public List<FriendEntity> acceptRequest(String userId, Long fromMemberNo) {
+        // 현재 로그인 유저 엔티티 변환
+        MemberEntity toMember = memberRepository.findByUserId(userId);
+        // 상대와의 플친 확인
+        FriendEntity friendEntity = friendRepository.findByFromMemberAndToMember(toEntityWithNo(fromMemberNo), toMember);
+        // 플친 요청 수락
+        friendRepository.save(friendEntity.setFriend());
+        // 수락 후 나의 플친 리스트 반환
+        return friendRepository.findByToMemberAndStatus(toMember, FriendStatusType.PENDING);
     }
+
+    public List<FriendEntity> cancelRequest(String userId, Long toMemberNo) {
+        // 현재 로그인 유저 엔티티 변환
+        MemberEntity fromMember = memberRepository.findByUserId(userId);
+        // 상대와의 플친 확인
+        FriendEntity friendEntity = friendRepository.findByFromMemberAndToMember(fromMember, toEntityWithNo(toMemberNo));
+        // 플친 요청 취소 (삭제)
+        friendRepository.delete(friendEntity);
+        // 삭제 후 플친 요청 리스트 반환
+        return friendRepository.findByFromMemberAndStatus(fromMember, FriendStatusType.PENDING);
+    }
+
 
 
     /**
      * @Author 천은경
      * @Date 23.06.07
+     * @param userId
      * @param fromMemberNo
-     * @param toMemberNo
+     * @return 나의 플친 리스트
      * @Brief 플친 요청 거절 및 플친 삭제
      */
-    public void removeFriend(Long fromMemberNo, Long toMemberNo) {
-        FriendEntity friendEntity = friendRepository.findByFromMemberAndToMember(toEntity(fromMemberNo), toEntity(toMemberNo));
+    public List<FriendEntity> removeFriend(String userId, Long fromMemberNo) {
 
-        // 이미 플친인 경우는 플친 삭제이기 때문에, fromMember와 toMember가 교차된 FriendEntity도 삭제
-        if(friendEntity.getStatus().equals(FriendStatusType.FRIEND)){
-          FriendEntity convertedEntity = friendRepository.findByFromMemberAndToMember(toEntity(toMemberNo), toEntity(fromMemberNo));
+        // 현재 로그인 유저 엔티티 변환
+        MemberEntity toMember = memberRepository.findByUserId(userId);
+        // 팔로워 상태 확인
+        FriendEntity onFriend = friendRepository.findByFromMemberAndToMember(toEntityWithNo(fromMemberNo), toMember);
+
+        // 팔로워와 이미 플친인 경우는 요청 거절이 아닌 플친 삭제이기 때문에, fromMember와 toMember가 교차된 데이터도 삭제
+        if(onFriend.getStatus().equals(FriendStatusType.FRIEND)){
+          FriendEntity convertedEntity = friendRepository.findByFromMemberAndToMember(toMember, toEntityWithNo(fromMemberNo));
           friendRepository.delete(convertedEntity);
         }
+        // 플친 요청 거절 -> friendEntity 삭제
+        friendRepository.delete(onFriend);
 
-        friendRepository.delete(friendEntity);
+        // 삭제된 후, 나의 플친 리스트 반환
+        return friendRepository.findByToMemberAndStatus(toMember, FriendStatusType.PENDING);
     }
 
     /**
      * @Author 천은경
      * @Date 23.06.07
-     * @param fromMemberNo
+     * @param userId
      * @param toMemberNo
+     * @return 나의 차단 리스트
      * @Brief 상대방 차단. 상대방과 플친인 경우 또는 상대방이 요청 중인 경우 상대방에게서는 플친 삭제
      */
-    public void blockFriend(Long fromMemberNo, Long toMemberNo) {
+    public List<FriendEntity> blockFriend(String userId, Long toMemberNo) {
+
+        MemberEntity fromMember = memberRepository.findByUserId(userId);
+
         // 나에게서 차단
-        FriendEntity friendEntity = friendRepository.findByFromMemberAndToMember(toEntity(fromMemberNo), toEntity(toMemberNo));
+        FriendEntity friendEntity = friendRepository.findByFromMemberAndToMember(fromMember, toEntityWithNo(toMemberNo));
         friendEntity.setStatus(FriendStatusType.BLOCK);
 
         // 상대방과의 관계가 존재하면서, 관계가 플친중 또는 요청대기인 경우, 상대방에게서는 친구 삭제
-        FriendEntity convertedEntity = friendRepository.findByFromMemberAndToMember(toEntity(toMemberNo), toEntity(fromMemberNo));
+        FriendEntity convertedEntity = friendRepository.findByFromMemberAndToMember(toEntityWithNo(toMemberNo), fromMember);
         if(convertedEntity != null && convertedEntity.getStatus() != FriendStatusType.BLOCK) {
             friendRepository.delete(convertedEntity);
         }
+        // 나의 차단리스트 반환
+        return friendRepository.findByFromMemberAndStatus(fromMember, FriendStatusType.BLOCK);
     }
 
 
@@ -136,8 +187,10 @@ public class FriendService {
         else if (friendEntity.getToMember() == null) {
             throw new RuntimeException("empty toMember");
         }
-        // 이미 친구일 경우 x -> 멤버의 조회 메서드 필요? duplication
-        // 일방이 친구 요청 중일 경우 x
+        // 이미 친구 또는 요청중일 경우 x -> 멤버의 조회 메서드 필요? duplication
+        // 상대방이 친구 요청 중일 경우 x
+        // fromMember와 toMember가 같을 경우 x
+        // 차단 상태일 경우 x
     }
 
     /**
@@ -147,8 +200,13 @@ public class FriendService {
      * @return MemberEntity
      * @Brief memberNo로 MemberEntity를 반환하는 메서드
      */
-    private MemberEntity toEntity(Long memberNo) {
+    private MemberEntity toEntityWithNo(Long memberNo) {
         return MemberEntity.builder().memberNo(memberNo).build();
     }
+
+    private MemberEntity toEntityWithId(String userId) {
+        return MemberEntity.builder().userId(userId).build();
+    }
+
 
 }

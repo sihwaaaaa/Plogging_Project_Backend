@@ -2,6 +2,8 @@ package city.olooe.plogging_project.model;
 
 import city.olooe.plogging_project.persistence.FriendRepository;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -16,11 +18,14 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicInsert
+@DynamicUpdate
+@ToString
 @Table(name = "tbl_friend")
 public class FriendEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long friendNo; // pk
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = MemberEntity.class)
@@ -51,12 +56,14 @@ public class FriendEntity {
     /**
      * @Author 천은경
      * @Date 23.06.07
+     * @Return FriendEntity
      * @Brief FriendEntity의 status를 FRIEND로 변경, fromMember와 toMember가 교차된 FriendEntity를 생성함으로써 친구 요청 수락 기능 구현
      */
-    public void setFriend() {
-        this.status = FriendStatusType.FRIEND;
-        FriendEntity.builder().fromMember(this.getToMember()).toMember(this.getFromMember())
+    public FriendEntity setFriend() {
+        this.setStatus(FriendStatusType.FRIEND);
+        return FriendEntity.builder().fromMember(this.getToMember()).toMember(this.getFromMember())
                 .status(FriendStatusType.FRIEND).build();
     }
+
 
 }
