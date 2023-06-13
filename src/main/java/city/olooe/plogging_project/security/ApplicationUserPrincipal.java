@@ -32,7 +32,7 @@ public class ApplicationUserPrincipal implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return member.getAuthEntities().stream()
-                .map(o -> new SimpleGrantedAuthority(o.getAuthority())).collect(Collectors.toList());
+                .map(member -> new SimpleGrantedAuthority(member.getAuthority().getKey())).collect(Collectors.toList());
     }
 
 

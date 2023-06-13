@@ -3,6 +3,7 @@ package city.olooe.plogging_project.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -57,13 +58,14 @@ public class MemberEntity implements Serializable {
     this.userName = userName;
     this.email = email;
   }
-   @OneToMany(mappedBy = "member")
+
+   @OneToMany(mappedBy = "memberNo", cascade = CascadeType.ALL)
    private List<AuthEntity> authEntities = new ArrayList<>();
 
-  public void setAuthEntities(List<AuthEntity> authEntities) {
-    this.authEntities = authEntities;
-    authEntities.forEach(o -> o.setMember(this));
-  }
+//  public void setAuthEntities(List<AuthEntity> authEntities) {
+//    this.authEntities = authEntities;
+//    authEntities.forEach(o -> o.setMember(this));
+//  }
   //
   // // @OneToMany(mappedBy = "host")
   // // private List<ChallengeEntity> challengeEntities = new ArrayList<>();
