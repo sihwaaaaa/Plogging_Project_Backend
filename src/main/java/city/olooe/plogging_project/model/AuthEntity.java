@@ -34,6 +34,9 @@ public class AuthEntity implements Serializable {
   @Enumerated(EnumType.STRING)
   private AuthType authority; // 권한 타입
 
-
+  public AuthEntity(final MemberEntity memberEntity, final AuthType authType) {
+    this.memberNo = memberEntity;
+    this.authority = authType;
+  }
 
 }

@@ -5,7 +5,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import city.olooe.plogging_project.model.AuthEntity;
+import city.olooe.plogging_project.model.AuthType;
 import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.persistence.AuthRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,6 +23,9 @@ public class MemberService {
 
   @Autowired
   private MemberRepository memberRepository; // 멤버 jpa 구현체 빈 등록
+
+  @Autowired
+  private AuthRepository authRepository;
 
   /**
    * @author: 박연재
@@ -42,6 +48,11 @@ public class MemberService {
     }
     // memberEntity.set(Collections.singletonList(Authority.builder().name("ROLE_USER").build()));
     return memberRepository.save(memberEntity);
+  }
+
+  public void createAuth(final MemberEntity member) {
+    AuthEntity auth = new AuthEntity(member, AuthType.ROLE_MEMBER);
+    authRepository.save(auth);
   }
 
   /**

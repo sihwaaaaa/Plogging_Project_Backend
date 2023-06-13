@@ -119,6 +119,8 @@ public class MemberController {
           .build();
 
       MemberEntity registeredMember = memberService.create(member);
+      memberService.createAuth(registeredMember);
+
       MemberDTO responseMemberDTO = MemberDTO.builder()
           .memberNo(registeredMember.getMemberNo())
           .userId(registeredMember.getUserId())
@@ -139,8 +141,9 @@ public class MemberController {
   }
 
   @GetMapping("logout")
-  public String logoutPage(HttpServletRequest request, HttpServletResponse response){
-    new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+  public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+    new SecurityContextLogoutHandler().logout(request, response,
+        SecurityContextHolder.getContext().getAuthentication());
     return "redirect:/";
   }
 
