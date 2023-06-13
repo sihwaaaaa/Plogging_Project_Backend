@@ -31,14 +31,15 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
    * @param: userId
    * @return: MemberEntity
    */
-  Optional<MemberEntity> findByUserId(String userId);
+  MemberEntity findByUserId(String userId);
 
   /**
    * @author: 박연재
    * @param: userId
    * @return: MemberEntity
    */
-  Optional<MemberEntity> findByUserName(String userName);
+  MemberEntity findByUserName(String userName);
+
   /**
    * 
    * 
