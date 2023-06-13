@@ -43,6 +43,6 @@ public class RewardServiceTest {
                 .detail("detail service")
                 .build();
         rewardRepository.save(rewardEntity);
-        log.info("유형 별 조회 : {}", rewardService.GetRewardTypeList(rewardEntity));
+        // log.info("유형 별 조회 : {}", rewardService.GetRewardTypeList(rewardEntity));
     }
 }
