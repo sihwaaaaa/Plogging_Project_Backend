@@ -64,8 +64,7 @@ public class OauthUserServiceImpl extends DefaultOAuth2UserService {
 
       memberEntity = memberRepository.save(memberEntity);
     } else {
-      memberEntity = memberRepository.findByUserId(userId)
-              .orElseThrow(() -> new UsernameNotFoundException("회원이 존재하지 않습니다."));
+      memberEntity = memberRepository.findByUserId(userId);
     }
 
     log.info("Successfully pulled user info username {} authProvider {}", userId, authProvider);
