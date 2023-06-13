@@ -5,16 +5,13 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import city.olooe.plogging_project.model.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import city.olooe.plogging_project.model.ChallengeEntity;
-import city.olooe.plogging_project.model.ChallengeMemberEntity;
-import city.olooe.plogging_project.model.ChallengeScheduleEntity;
-import city.olooe.plogging_project.model.MapEntity;
-import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.model.map.MapEntity;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
@@ -47,6 +44,7 @@ public class ChallengeEntityTest {
                 .title("챌린지 생성 테스트")
                 .content("테스트 내용")
                 .personnel(5L)
+                .status(ChallengeStatus.CHALLENGEBEFORE)
                 .build();
         log.info("{}", challengeRepository.save(challengeEntity));
     }

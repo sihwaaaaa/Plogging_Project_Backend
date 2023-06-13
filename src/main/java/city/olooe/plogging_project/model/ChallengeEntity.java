@@ -1,5 +1,6 @@
 package city.olooe.plogging_project.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.hibernate.annotations.DynamicInsert;
 
 import lombok.AllArgsConstructor;
@@ -30,6 +32,7 @@ import lombok.ToString;
 @Table(name = "tbl_challenge")
 @DynamicInsert
 @ToString
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ChallengeEntity {
 
     @Id
@@ -45,9 +48,9 @@ public class ChallengeEntity {
     private String title; // 챌린지 제목
     private String content; // 챌린지 소개
     private Long personnel; // 챌린지원 수
-    private Date regDate; // 만든날짜
-    private Date startDate; // 시작날짜
-    private Date endDate; // 끝나는 날짜
+    private LocalDate regDate; // 만든날짜
+    private LocalDate startDate; // 시작날짜
+    private LocalDate endDate; // 끝나는 날짜
 
     @Enumerated(EnumType.STRING)
     @Setter

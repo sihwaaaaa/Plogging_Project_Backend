@@ -73,10 +73,10 @@ public class RewardService {
      * @param: Long id
      * @return: rewardNo
      */
-    @Transactional
-    public RewardEntity getReward(Long id) {
-        return rewardRepository.findById(id).orElseThrow();
-    }
+//    @Transactional
+//    public RewardEntity getReward(Long id) {
+//        return rewardRepository.findById(id).orElseThrow();
+//    }
 
     /**
      * @author: 이재원

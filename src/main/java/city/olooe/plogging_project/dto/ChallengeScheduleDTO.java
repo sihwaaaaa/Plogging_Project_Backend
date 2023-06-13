@@ -1,5 +1,6 @@
 package city.olooe.plogging_project.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -14,8 +15,8 @@ import lombok.NoArgsConstructor;
 public class ChallengeScheduleDTO {
     private Long scheduleNo;
     private Long chNo;
-    private Date startDate;
-    private Date endDate;
-    private Date regDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalDate regDate;
     private Long mapNo;
 }
