@@ -2,6 +2,8 @@ package city.olooe.plogging_project.persistence;
 
 import city.olooe.plogging_project.model.BoardEntity;
 import city.olooe.plogging_project.model.MemberEntity;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
