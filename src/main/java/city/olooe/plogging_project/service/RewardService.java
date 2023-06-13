@@ -97,7 +97,7 @@ public class RewardService {
      * @return: rewardNo
      */
     @Transactional
-    public List<RewardEntity> findAllReward() {
-        return rewardRepository.findAll(Sort.by(Direction.DESC, "rewardNo"));
+    public List<RewardEntity> GetRewardTypeList(String type) {
+        return rewardRepository.findAllByType(RewardTypeStatus.valueOf(type));
     }
 }
