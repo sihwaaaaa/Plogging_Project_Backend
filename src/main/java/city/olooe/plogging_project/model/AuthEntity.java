@@ -44,4 +44,5 @@ public class AuthEntity implements Serializable {
   @Id
   @Enumerated(EnumType.STRING)
   private AuthType authority; // 권한 타입
+
 }
