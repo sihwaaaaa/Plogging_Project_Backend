@@ -4,24 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * @author - 박연재
@@ -37,11 +23,14 @@ import lombok.NoArgsConstructor;
 public class AuthEntity implements Serializable {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long authNo;
+
   @ManyToOne(fetch = FetchType.LAZY, targetEntity = MemberEntity.class)
   @JoinColumn(name = "memberNo", referencedColumnName = "memberNo")
-  private Long memberNo; // 멤버 PK
+  @Setter
+  private MemberEntity memberNo; // 멤버 PK
 
-  @Id
   @Enumerated(EnumType.STRING)
   private AuthType authority; // 권한 타입
 

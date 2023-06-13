@@ -20,15 +20,15 @@ public class AuthDTO {
   private MemberEntity member;
 
   public AuthDTO(final AuthEntity entity) {
-    this.no = entity.getMemberNo();
+    this.no = entity.getMemberNo().getMemberNo();
     this.authority = entity.getAuthority();
     this.member = MemberEntity.builder()
-        .memberNo(entity.getMemberNo()).build();
+        .memberNo(entity.getMemberNo().getMemberNo()).build();
   }
 
   public static AuthEntity toEntity(final AuthDTO authDTO) {
     return AuthEntity.builder()
-        .memberNo(authDTO.getNo())
+        .memberNo(MemberEntity.builder().memberNo(authDTO.getNo()).build())
         .authority(authDTO.getAuthority())
         .build();
   }
