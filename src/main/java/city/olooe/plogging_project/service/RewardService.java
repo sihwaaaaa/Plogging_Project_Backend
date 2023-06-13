@@ -30,9 +30,9 @@ public class RewardService {
     /**
      * @Author 이재원
      * @Date 23.06.13
-     * @param rewardNo
+     * @param RewardStatus.type
      * @return List<RewardEntity>
-     * @Brief 리워드 내역 전체 조회
+     * @Brief 포인트 유형 별 조회
      */
     @Transactional
     public List<RewardEntity> GetRewardList() {
