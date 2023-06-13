@@ -30,9 +30,9 @@ public class RewardService {
     /**
      * @Author 이재원
      * @Date 23.06.13
-     * @param rewardNo
+     * @param RewardStatus.type
      * @return List<RewardEntity>
-     * @Brief 리워드 내역 전체 조회
+     * @Brief 포인트 유형 별 조회
      */
     @Transactional
     public List<RewardEntity> GetRewardList() {
@@ -45,56 +45,6 @@ public class RewardService {
      * @param RewardStatus.type
      * @return List<RewardEntity>
      * @Brief 포인트 유형 별 조회
-     */
-    // @Transactional
-    // public RewardEntity getReward(Long id) {
-    // return rewardRepository.findById(id).orElseThrow();
-    // }
-
-    /**
-     * @author: 이재원
-     * @date: 2023.06.07
-     * @brief: 랜덤박스 구성품 조회
-     * @param: pno, attach(IMG 미구현)
-     * @return: productEntities
-     */
-    // @Transactional
-    // public List<ProductEntity> findAllProduct() {
-    // return productRepository.findAll(Sort.by(Direction.DESC, "pno"));
-    // }
-
-    /**
-     * @author: 이재원
-     * @date: 2023.06.07
-     * @brief: 기부처 전체 조회
-     * @param: pno, attach(IMG 미구현)
-     * @return: productEntities
-     */
-    // @Transactional
-    // public List<DonationEntity> findAllDonation() {
-    // return donationRepository.findAll(Sort.by(Direction.DESC, "dno"));
-    // }
-
-    /**
-     * @author: 이재원
-     * @date: 2023.06.08
-     * @brief: 랭킹 서비스
-     * @param: pno, attach(IMG 미구현)
-     * @return: productEntities
-     */
-    // @Transactional
-    // public MemberPointEntity memberRank(RewardEntity rewardEntity) {
-    // MemberPointEntity memberPointEntity = MemberPointEntity.builder()
-    // .totalPoint(rewardEntity.getMemberPointEntity().getTotalPoint()).build();
-    // return null;
-    // }
-
-    /**
-     * @author: 이재원
-     * @date: 2023.06.08
-     * @brief: 리워드 전체 조회
-     * @param:
-     * @return: rewardNo
      */
     @Transactional
     public List<RewardEntity> GetRewardTypeList(String type) {
