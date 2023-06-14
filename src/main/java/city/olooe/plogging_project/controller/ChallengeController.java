@@ -4,6 +4,7 @@ import city.olooe.plogging_project.dto.ChallengeDTO;
 import city.olooe.plogging_project.dto.ResponseDTO;
 import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.ChallengeStatus;
+import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import city.olooe.plogging_project.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,7 @@ public class ChallengeController {
     }
 
     @PostMapping("/challenge")
-    public ResponseEntity<?> createChallenge(@RequestBody ChallengeDTO challengeDTO){
+    public ResponseEntity<?> createChallenge(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody ChallengeDTO challengeDTO){
 
         ChallengeEntity challengeEntity = challengeService.createChallenge(challengeDTO);
 
