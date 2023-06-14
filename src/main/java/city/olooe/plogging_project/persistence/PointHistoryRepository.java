@@ -37,4 +37,21 @@ public interface PointHistoryRepository extends JpaRepository<PointHistoryEntity
      * @Brief 멤버 번호를 조회하여 상태별 조회 메서드
      */
     List<PointHistoryEntity> findByType(RewardTypeStatus type);
+
+    /*
+     * @author 이재원
+     * @date 23.06.14
+     * @param MemberEntity
+     * @return MemberNo
+     * @Brief 멤버 번호 조회
+     */
+    PointHistoryEntity findByMemberNo(MemberEntity memberNo);
+    /*
+     * @author 이재원
+     * @date 23.06.14
+     * @param MemberEntity
+     * @return MemberNo
+     * @Brief 멤버 번호의 포인트를 누적
+     */
+    List<PointHistoryEntity> findByMemberNoAndPoint(MemberEntity memberNo, Long point);
 }

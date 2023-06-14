@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
 /**
  * @author : 이재원
  * @date: 23.06.09
@@ -27,7 +26,8 @@ public enum RewardTypeStatus {
     @Getter
     private final Long value;
 
-    private static final Map<String, Long> KEY_MAP = Collections.unmodifiableMap(Stream.of(values()).collect(Collectors.toMap(RewardTypeStatus::getKey, RewardTypeStatus::getValue)));
+    private static final Map<String, Long> KEY_MAP = Collections.unmodifiableMap(
+            Stream.of(values()).collect(Collectors.toMap(RewardTypeStatus::getKey, RewardTypeStatus::getValue)));
 
     public static RewardTypeStatus of(final String key) {
         return RewardTypeStatus.valueOf(KEY_MAP.get(key).toString());

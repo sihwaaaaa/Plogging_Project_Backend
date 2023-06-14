@@ -20,12 +20,17 @@ public class PointHistoryController {
 
     private final PointHistoryService historyService;
 
-    /**
+    /*
      * @Author 이재원
+     * 
      * @Date 23.06.13
+     * 
      * @param pointNo
+     * 
      * @param type
+     * 
      * @return List<PointHistoryDTO>
+     * 
      * @Brief 포인트 번호의 유형별 조회
      */
     @GetMapping("/{pointNo}/{type}")
@@ -39,11 +44,16 @@ public class PointHistoryController {
     }
 
     /*
-      @Author 이재원
+     * @Author 이재원
+     * 
      * @Date 23.06.13
+     * 
      * @param pointNo
+     * 
      * @param type
+     * 
      * @return List<PointHistoryDTO>
+     * 
      * @Brief 멤버 번호의 유형별 조회
      */
 
@@ -56,4 +66,17 @@ public class PointHistoryController {
                 .map(PointHistoryDTO::new)
                 .collect(Collectors.toList());
     }
+    /*
+     * @Author 이재원
+     * 
+     * @Date 23.06.13
+     * 
+     * @param type
+     * 
+     * @return List<PointEntity>
+     * 
+     * @Brief 포인트 유형별 조회
+     */
+    // @GetMapping("/{type}")
+    // public List<>
 }
