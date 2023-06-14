@@ -32,7 +32,7 @@ public interface PointHistoryRepository extends JpaRepository<PointHistoryEntity
     /**
      * @author 이재원
      * @date 23.06.12
-     * @param Type
+     * @param
      * @return List<PointHistoryEntity>
      * @Brief 멤버 번호를 조회하여 상태별 조회 메서드
      */
