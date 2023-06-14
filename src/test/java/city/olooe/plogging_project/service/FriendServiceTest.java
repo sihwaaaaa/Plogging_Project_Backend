@@ -88,6 +88,14 @@ class FriendServiceTest {
         logger.warn("후 차단 리스트 : {}", afterBlocked.stream().toString());
     }
 
+    @Test
+    @DisplayName("차단 취소 및 요청 취소")
+    void cancelFriend() {
+        List<FriendEntity> beforeCanceled = friendService.GetMyFriendList("root1357", FriendStatusType.PENDING.getKey());
+        logger.warn("전 취소 리스트 : {}", beforeCanceled.stream().toString());
+        List<FriendEntity> afterCanceled = friendService.cancelRequest("root1357", 15L);
+        logger.warn("후 취소 리스트 : {}", afterCanceled);
+    }
 //
 //    @Test
 //    void 나의플친리스트() {

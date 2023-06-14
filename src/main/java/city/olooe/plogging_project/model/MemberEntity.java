@@ -59,7 +59,7 @@ public class MemberEntity implements Serializable {
     this.email = email;
   }
 
-   @OneToMany(mappedBy = "memberNo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   @OneToMany(mappedBy = "memberNo", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
    private List<AuthEntity> authEntities = new ArrayList<>();
 
   public void setAuthEntities(List<AuthEntity> authEntities) {

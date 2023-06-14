@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Member;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +29,6 @@ public class FriendService {
 
     private final FriendRepository friendRepository;
     private final MemberRepository memberRepository;
-
 
 
     /**
@@ -102,22 +102,39 @@ public class FriendService {
         FriendEntity friendEntity = friendRepository.findByFromMemberAndToMember(toEntityWithNo(fromMemberNo), toMember);
         // 플친 요청 수락
         friendRepository.save(friendEntity.setFriend());
-        // 수락 후 나의 플친 리스트 반환
+        // 수락 후 나에게 온 요청 리스트 반환
         return friendRepository.findByToMemberAndStatus(toMember, FriendStatusType.PENDING);
     }
 
+    /**
+     * @Author 천은경
+     * @Date 23.06.13
+     * @param userId
+     * @param toMemberNo
+     * @return 팔로잉 요청 리스트 or 차단 리스트
+     * @Brief 보낸 플친 요청 취소하기 or 차단 취소 하기
+     */
     public List<FriendEntity> cancelRequest(String userId, Long toMemberNo) {
         // 현재 로그인 유저 엔티티 변환
         MemberEntity fromMember = memberRepository.findByUserId(userId);
         // 상대와의 플친 확인
         FriendEntity friendEntity = friendRepository.findByFromMemberAndToMember(fromMember, toEntityWithNo(toMemberNo));
-        // 플친 요청 취소 (삭제)
+//        FriendEntity friendEntity = FriendEntity.builder().fromMember(fromMember).toMember(MemberEntity.builder().memberNo(toMemberNo).build()).build();
+
+        // 플친 요청 취소 or 차단 취소 (데이터 삭제)
         friendRepository.delete(friendEntity);
-        // 삭제 후 플친 요청 리스트 반환
-        return friendRepository.findByFromMemberAndStatus(fromMember, FriendStatusType.PENDING);
+
+        // 반환 객체
+        // 요청 취소일 경우 요청리스트 반환, 차단 취소일 경우 차단리스트 반환
+        List<FriendEntity> returnList = new ArrayList<>();
+        if(friendEntity.getStatus().equals(FriendStatusType.BLOCK)){
+            returnList = friendRepository.findByFromMemberAndStatus(fromMember, FriendStatusType.BLOCK);
+        } else if(friendEntity.getStatus().equals(FriendStatusType.PENDING)) {
+            returnList = friendRepository.findByFromMemberAndStatus(fromMember, FriendStatusType.PENDING);
+        }
+
+        return returnList;
     }
-
-
 
     /**
      * @Author 천은경
@@ -125,7 +142,7 @@ public class FriendService {
      * @param userId
      * @param fromMemberNo
      * @return 나의 플친 리스트
-     * @Brief 플친 요청 거절 및 플친 삭제
+     * @Brief 플친 요청 거절 or 플친 삭제
      */
     public List<FriendEntity> removeFriend(String userId, Long fromMemberNo) {
 
@@ -151,7 +168,7 @@ public class FriendService {
      * @Date 23.06.07
      * @param userId
      * @param toMemberNo
-     * @return 나의 차단 리스트
+     * @return 나의 플친 리스트
      * @Brief 상대방 차단. 상대방과 플친인 경우 또는 상대방이 요청 중인 경우 상대방에게서는 플친 삭제
      */
     public List<FriendEntity> blockFriend(String userId, Long toMemberNo) {
@@ -167,10 +184,9 @@ public class FriendService {
         if(convertedEntity != null && convertedEntity.getStatus() != FriendStatusType.BLOCK) {
             friendRepository.delete(convertedEntity);
         }
-        // 나의 차단리스트 반환
-        return friendRepository.findByFromMemberAndStatus(fromMember, FriendStatusType.BLOCK);
+        // 나의 플친리스트 반환
+        return friendRepository.findByFromMemberAndStatus(fromMember, FriendStatusType.FRIEND);
     }
-
 
     /**
      * @author 천은경
@@ -203,10 +219,5 @@ public class FriendService {
     private MemberEntity toEntityWithNo(Long memberNo) {
         return MemberEntity.builder().memberNo(memberNo).build();
     }
-
-    private MemberEntity toEntityWithId(String userId) {
-        return MemberEntity.builder().userId(userId).build();
-    }
-
 
 }
