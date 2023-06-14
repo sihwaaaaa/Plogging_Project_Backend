@@ -54,7 +54,7 @@ public class PointHistoryService {
         PointHistoryEntity memberNo = pointHistoryRepository.findByMemberNo(historyDTO.getMemberNo());
         Long tradePoint = historyDTO.getPoint();
 
-        PointHistoryEntity historyEntity = new PointHistoryEntity(memberNo, tradePoint);
+        PointHistoryEntity historyEntity = new PointHistoryEntity();
         pointHistoryRepository.save(historyEntity);
 
         return pointHistoryRepository.findByMemberNoAndPoint(historyDTO.getMemberNo(), historyDTO.getPoint());
