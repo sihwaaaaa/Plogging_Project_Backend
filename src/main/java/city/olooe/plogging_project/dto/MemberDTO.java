@@ -1,12 +1,18 @@
 package city.olooe.plogging_project.dto;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import city.olooe.plogging_project.model.AuthEntity;
+import city.olooe.plogging_project.model.AuthType;
 import city.olooe.plogging_project.model.MemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import static java.util.stream.Collectors.*;
 
 /**
  * @author: 박연재
@@ -33,6 +39,7 @@ public class MemberDTO {
   private String birth; // 생년월일
   private String gender; // 성별
   private String authProvider; // 권한 공급자
+  private List<String> authList; // 권한
 
   /**
    * @author: 박연재
