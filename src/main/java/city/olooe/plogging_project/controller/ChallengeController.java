@@ -3,13 +3,16 @@ package city.olooe.plogging_project.controller;
 import city.olooe.plogging_project.dto.ChallengeDTO;
 import city.olooe.plogging_project.dto.ResponseDTO;
 import city.olooe.plogging_project.model.ChallengeEntity;
+import city.olooe.plogging_project.model.ChallengeStatus;
 import city.olooe.plogging_project.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -22,13 +25,14 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/challenge")
+@Slf4j
+//@RequestMapping("/challenge")
 public class ChallengeController {
 
     @Autowired
     private final ChallengeService challengeService;
 
-    @GetMapping()
+    @GetMapping("/challenge")
     public ResponseEntity<?> readChallenge(){
         List<ChallengeDTO> challengeDTOS = challengeService.serchAllCh();
         return ResponseEntity.ok().body(ResponseDTO.builder().data(challengeDTOS).build());
@@ -36,8 +40,10 @@ public class ChallengeController {
     }
 
     @PostMapping("/challenge")
-    public ResponseEntity<ChallengeEntity> createChallenge(@RequestBody ChallengeDTO challengeDTO){
+    public ResponseEntity<?> createChallenge(@RequestBody ChallengeDTO challengeDTO){
+
         ChallengeEntity challengeEntity = challengeService.createChallenge(challengeDTO);
+
         return ResponseEntity.ok(challengeEntity);
     }
 

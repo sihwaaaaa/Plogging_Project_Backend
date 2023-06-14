@@ -16,7 +16,7 @@ import org.springframework.beans.PropertyAccessor;
 @AllArgsConstructor
 @Builder
 @Getter
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ChallengeDTO {
     /*
      * @author : 김민수
@@ -31,9 +31,9 @@ public class ChallengeDTO {
     private String title;
     private String content;
     private Long personnel;
-    private LocalDate regDate;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private Date regDate;
+    private Date startDate;
+    private Date endDate;
     private String status;
 
     /*
@@ -95,8 +95,7 @@ public class ChallengeDTO {
      */
     public ChallengeEntity toChallengeEntity() {
         return ChallengeEntity.builder().chNo(chNo).host(MemberEntity.builder().memberNo(memberNo).build()).blind(blind).title(title).content(content)
-                .personnel(personnel)
-                .regDate(regDate).startDate(startDate).endDate(endDate).status(ChallengeStatus.CHALLENGEBEFORE).build();
+                .personnel(personnel).startDate(startDate).endDate(endDate).build();
     }
 
 }

@@ -1,5 +1,7 @@
 package city.olooe.plogging_project.service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -42,8 +44,10 @@ public class ChallengeServiceTest {
                 .memberNo(12L)
                 .title("챌린지 서비스 테스트")
                 .content("챌린지 서비스 테스트 내용")
+                .regDate(new Date())
+                .startDate(new Date())
+                .endDate(new Date())
                 .personnel(5L)
-                .status(ChallengeStatus.CHALLENGEBEFORE.getKey())
                 .build();
         ChallengeEntity challengeEntity = challengeService.createChallenge(challengeDTO);
         log.info("{}",challengeEntity);
