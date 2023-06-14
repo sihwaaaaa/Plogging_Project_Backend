@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Member;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class ChallengeService {
+public class  ChallengeService {
     @Autowired
     ChallengeRepository challengeRepository;
 
@@ -33,7 +34,7 @@ public class ChallengeService {
     /**
      * @author : 김민수
      * @date: '23.06.08
-     * 
+     *
      * @param: ChallengeDTO
      * @return: challengeDTO
      * 
@@ -44,6 +45,17 @@ public class ChallengeService {
 
         // 유효성 검사
         validate(challengeDTO.toChallengeEntity());
+
+//        LocalDate regDate =  challengeDTO.getRegDate();
+//        LocalDate start = challengeDTO.getStartDate();
+//        int result = regDate.compareTo(start);
+//
+//        if(result == 0)
+//            ChallengeStatus.CHALLENGEBEFORE.getValue();
+//        else if (result < 0)
+//            ChallengeStatus.CHALLENGEGOING.getValue();
+//        else
+//            ChallengeStatus.CHALLENGECLOSE.getValue();
 
         // return Long
         return challengeRepository.save(challengeDTO.toChallengeEntity());
@@ -131,6 +143,10 @@ public class ChallengeService {
      * @brief: 챌린지 유효성 Null 검사
      */
     private void validate(final ChallengeEntity challengeEntity) {
+//        Date regDate =  challengeEntity.getRegDate();
+//        Date start = challengeEntity.getStartDate();
+//        int result = regDate.compareTo(start);
+
         // member null
         if (challengeEntity.getHost() == null) {
             throw new RuntimeException("empty member");
@@ -148,10 +164,13 @@ public class ChallengeService {
             throw new RuntimeException("empty personnel");
         } else if (challengeEntity.getPersonnel() < 2 && challengeEntity.getPersonnel() > 10) {
             throw new RuntimeException("error personnel");
-        }
-        // status null
-        else if (challengeEntity.getStatus() == null) {
-            throw new RuntimeException("empty status");
+//        // result
+//        } else if(result == 0){
+//            ChallengeStatus.CHALLENGEBEFORE.getValue();
+//        } else if (result < 0){
+//            ChallengeStatus.CHALLENGEGOING.getValue();
+//        } else
+//            ChallengeStatus.CHALLENGECLOSE.getValue();
         }
     }
 
