@@ -33,6 +33,9 @@ public class CustomUserDetails implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUserId(String userId) throws UsernameNotFoundException {
         MemberEntity member = memberRepository.findByUserId(userId);
+        if (member == null) {
+            throw new UsernameNotFoundException("해당 유저가 존재하지 않는다.");
+        }
         return new ApplicationUserPrincipal(member);
     }
 }

@@ -1,5 +1,6 @@
 package city.olooe.plogging_project.controller;
 
+import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import city.olooe.plogging_project.security.CustomUserDetails;
 import org.apache.catalina.connector.Response;
 import org.apache.ibatis.javassist.compiler.ast.Member;
@@ -91,6 +92,14 @@ public class MemberController {
       final MemberDTO responseMemberDTO = MemberDTO.builder()
           .memberNo(member.getMemberNo())
           .userId(member.getUserId())
+          .email(member.getEmail())
+          .gender(member.getGender())
+          .address(member.getAddress())
+          .birth(member.getBirth())
+          .regDate(member.getRegDate())
+          .nickName(member.getNickName())
+          .userName(member.getUserName())
+          .regDate(member.getRegDate())
           .token(token)
           .build();
       return ResponseEntity.ok().body(responseMemberDTO);
@@ -141,10 +150,11 @@ public class MemberController {
   }
 
   @GetMapping("logout")
-  public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+  public void logoutPage(HttpServletRequest request, HttpServletResponse response) {
     new SecurityContextLogoutHandler().logout(request, response,
         SecurityContextHolder.getContext().getAuthentication());
-    return "redirect:/";
+    // response.
+    // return "redirect:/";
   }
 
   @PostMapping("/signup/emailConfirm")
@@ -156,4 +166,8 @@ public class MemberController {
     return ResponseEntity.ok().body(confirm);
   }
 
+  @GetMapping("mypage")
+  public String myPage(@AuthenticationPrincipal ApplicationUserPrincipal user) {
+    return null;
+  }
 }
