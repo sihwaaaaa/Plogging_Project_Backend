@@ -2,6 +2,13 @@ package city.olooe.plogging_project.controller;
 
 import java.util.List;
 
+import city.olooe.plogging_project.dto.ResponseDTO;
+import city.olooe.plogging_project.model.BoardEntity;
+import city.olooe.plogging_project.security.ApplicationUserPrincipal;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,9 +32,31 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 public class BoardController {
 
+  @Autowired
   private final BoardService boardService;
+
+  // 전체조회
+  /**
+   * @author : 김성진
+   * @date: '23.06.05
+   *
+   * @param: -
+   * @return: List
+   *
+   * @brief: 게시물 전체 조회
+   */
+  @GetMapping("/board")
+  public ResponseEntity<?> readBoard() {
+    List<BoardDTO> boardDTOS = boardService.searchAllBoard();
+//    log.info("{}",boardDTOS);
+    return ResponseEntity.ok().body(ResponseDTO.builder().data(boardDTOS).build());
+  }
+//  public List<BoardDTO> searchAllBoard() {
+//    return boardService.searchAllBoard();
+//  }
 
   /**
    * @author : 김성진
@@ -39,7 +68,7 @@ public class BoardController {
    * @brief: 게시물 작성
    */
   @PostMapping("/board")
-  public Long create(@RequestBody BoardDTO boardCreateDTO) {
+  public BoardEntity create(@RequestBody BoardDTO boardCreateDTO) {
     return boardService.create(boardCreateDTO);
   }
 
@@ -71,20 +100,7 @@ public class BoardController {
     return boardService.searchByBno(bno);
   }
 
-  // 전체조회
-  /**
-   * @author : 김성진
-   * @date: '23.06.05
-   * 
-   * @param: -
-   * @return: List
-   * 
-   * @brief: 게시물 전체 조회
-   */
-  @GetMapping("/board")
-  public List<BoardDTO> searchAllBoard() {
-    return boardService.searchAllBoard();
-  }
+
 
   /**
    * @author : 김성진
