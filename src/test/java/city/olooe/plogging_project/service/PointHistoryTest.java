@@ -41,19 +41,18 @@ public class PointHistoryTest {
 //    @Transactional
     public void testCreatePointHistory() {
         PointHistoryDTO historyDTO = PointHistoryDTO.builder()
-                .pointNo(PointHistoryDTO.builder().build().getPointNo())
-                .memberNo(MemberEntity.builder().memberNo(1L).build())
+                .memberNo(75L)
                 .type(RewardTypeStatus.Product.getKey())
                 .point(RewardTypeStatus.Product.getValue())
+                .rewardNo(1L)
                 .build();
-        PointHistoryEntity historyEntity = pointHistoryService.createPoint(historyDTO);
 
-
-        log.info("{}", historyEntity);
+        PointHistoryEntity historyEntity = PointHistoryDTO.toEntity(historyDTO);
+        log.info("{}", pointHistoryRepository.save(historyEntity));
     }
     @Test
     public void updatePointTest(PointHistoryDTO historyDTO, Long point) {
-        PointHistoryEntity memberNo = pointHistoryRepository.findByMemberNo(historyDTO.getMemberNo());
+//        PointHistoryEntity memberNo = pointHistoryRepository.findByMemberNo(historyDTO.getMemberNo());
 //        Long tradePoint = historyDTO.changePoint(point);
 
 //        PointHistoryEntity historyEntity = new PointHistoryEntity(memberNo, point);
@@ -75,18 +74,18 @@ public class PointHistoryTest {
         log.info("조회 test : {}", historyEntities);
     }
 
-    @Test
-    @DisplayName("포인트 멤버 별 조회 테스트")
-    public void testMemberNoType() {
-        // RewardTypeStatus typeStatus = RewardEntity.builder().build().getType();
-        PointHistoryDTO historyDTO = PointHistoryDTO.builder()
-                .memberNo(MemberEntity.builder().memberNo(1L).build())
-                .type(RewardTypeStatus.Product.getKey())
-                .build();
-        List<PointHistoryEntity> historyEntities = pointHistoryService.GetMemberList(historyDTO.getMemberNo(),
-                historyDTO.getType());
-        log.info("멤버 별 조회 Test : {}", historyEntities);
-    }
+//    @Test
+//    @DisplayName("포인트 멤버 별 조회 테스트")
+//    public void testMemberNoType() {
+//        // RewardTypeStatus typeStatus = RewardEntity.builder().build().getType();
+//        PointHistoryDTO historyDTO = PointHistoryDTO.builder()
+////                .memberNo(MemberEntity.builder().memberNo(1L).build())
+//                .type(RewardTypeStatus.Product.getKey())
+//                .build();
+////        List<PointHistoryEntity> historyEntities = pointHistoryService.GetMemberList(historyDTO.getMemberNo(),
+//                historyDTO.getType());
+//        log.info("멤버 별 조회 Test : {}", historyEntities);
+//    }
 
     @Test
     @DisplayName("포인트 유형 별 조회 테스트")
@@ -96,5 +95,28 @@ public class PointHistoryTest {
                 .build();
         List<PointHistoryEntity> historyEntities = pointHistoryService.findByTypeList(historyDTO.getType());
         log.info("Point Type : {}", historyEntities);
+    }
+
+//    @Test
+//    @DisplayName("누적 포인트 조회")
+//    public void totalPointTest() {
+//        Long totalPoint = pointHistoryService.findByTotalPoint();
+//        PointHistoryDTO historyDTO = PointHistoryDTO.builder()
+//                .memberNo(MemberEntity.builder().memberNo(1L).build())
+//                .point(totalPoint)
+//                .type(RewardTypeStatus.Product.getKey())
+//                .build();
+//        log.info("total point Test : {}", historyDTO);
+//    }
+
+    @Test
+    @DisplayName("멤버 번호를 통해 현재 포인트 조회")
+    public void sumPointTest() {
+//        PointHistoryDTO historyDTO = PointHistoryDTO.builder()
+//                .memberNo(MemberEntity.builder().memberNo(1L).build())
+//                .point(pointHistoryRepository.sumPoint(memberNo))
+//                .build();
+//        pointHistoryRepository.findById(memberNo.getMemberNo());
+//        log.info("현재 포인트 조회 : {}", pointHistoryRepository.sumPoint(historyDTO.getMemberNo()));
     }
 }
