@@ -31,9 +31,9 @@ public class ChallengeDTO {
     private String title;
     private String content;
     private Long personnel;
-    private Date regDate;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate regDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String status;
 
     /*
@@ -95,7 +95,7 @@ public class ChallengeDTO {
      */
     public ChallengeEntity toChallengeEntity() {
         return ChallengeEntity.builder().chNo(chNo).host(MemberEntity.builder().memberNo(memberNo).build()).blind(blind).title(title).content(content)
-                .personnel(personnel).startDate(startDate).endDate(endDate).build();
+                .personnel(personnel).startDate(startDate).endDate(endDate).status(ChallengeStatus.CHALLENGEBEFORE).build();
     }
 
 }

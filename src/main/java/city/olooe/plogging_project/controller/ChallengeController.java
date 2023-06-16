@@ -1,5 +1,6 @@
 package city.olooe.plogging_project.controller;
 
+import city.olooe.plogging_project.dto.BoardDTO;
 import city.olooe.plogging_project.dto.ChallengeDTO;
 import city.olooe.plogging_project.dto.ResponseDTO;
 import city.olooe.plogging_project.model.ChallengeEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -33,6 +35,7 @@ public class ChallengeController {
     @Autowired
     private final ChallengeService challengeService;
 
+    // 전체조회
     @GetMapping("/challenge")
     public ResponseEntity<?> readChallenge(){
         List<ChallengeDTO> challengeDTOS = challengeService.serchAllCh();
@@ -40,12 +43,20 @@ public class ChallengeController {
 
     }
 
+    // 단일조회
+    @GetMapping("/challenge/chDetail/{chNo}")
+    public ChallengeDTO searchByChNo(@PathVariable Long chNo) {
+        return challengeService.searchByChNo(chNo);
+    }
+
     @PostMapping("/challenge")
     public ResponseEntity<?> createChallenge(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody ChallengeDTO challengeDTO){
 
-        ChallengeEntity challengeEntity = challengeService.createChallenge(challengeDTO);
+        List<ChallengeEntity> challengeEntity = challengeService.createChallenge(challengeDTO,user.getMember().getMemberNo());
+        log.info("{}", user.getMember().getMemberNo());
+        List<ChallengeDTO> challengeDTOS = challengeEntity.stream().map(ChallengeDTO::new).collect(Collectors.toList());
 
-        return ResponseEntity.ok(challengeEntity);
+        return ResponseEntity.ok(ResponseDTO.builder().data(challengeDTOS).build());
     }
 
 }
