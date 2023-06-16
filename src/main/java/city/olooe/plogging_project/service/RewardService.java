@@ -27,7 +27,6 @@ public class RewardService {
 
     private final RewardRepository rewardRepository;
 
-
     /**
      * @Author 이재원
      * @Date 23.06.13
