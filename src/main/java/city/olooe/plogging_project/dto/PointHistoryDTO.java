@@ -14,7 +14,6 @@ public class PointHistoryDTO {
     private Long point; // 포인트
     private RewardEntity rewardNo; // 리워드 번호 FK
 
-
     public PointHistoryDTO(final PointHistoryEntity historyEntity) {
         this.pointNo = getPointNo();
         this.memberNo = getMemberNo();
@@ -22,7 +21,13 @@ public class PointHistoryDTO {
         this.point = getPoint();
         this.type = getType();
     }
-
+    public static PointHistoryDTO testEntity(PointHistoryEntity entity) {
+        PointHistoryDTO dto = new PointHistoryDTO();
+        dto.setMemberNo(dto.getMemberNo());
+        dto.setType(dto.getType());
+        dto.setPoint(dto.getPoint());
+        return dto;
+    }
     public static PointHistoryEntity toEntity(final PointHistoryDTO historyDTO) {
         return PointHistoryEntity.builder()
                 .pointNo(historyDTO.getPointNo())
@@ -32,11 +37,12 @@ public class PointHistoryDTO {
                 .point(historyDTO.getPoint())
                 .build();
     }
+
     /**
      * @author : 이재원
-     * @date: 23.06.12     *
+     * @date: 23.06.12 *
      * @param: -
-     * @return: entity     *
+     * @return: entity *
      * @brief: DTO -> entity
      */
     public PointHistoryEntity changeEntity() {
@@ -47,6 +53,11 @@ public class PointHistoryDTO {
                 .rewardNo(rewardNo)
                 .type(RewardTypeStatus.valueOf(getType()))
                 .build();
-//                .regDate(regDate).startDate(startDate).endDate(endDate).status(status).build();
+    }
+    public void TypeByValuePoint() {
+        this.point = RewardTypeStatus.valueOf(type).getValue();
+    }
+    public void TradePoint(Long value) {
+        this.point += value;
     }
 }
