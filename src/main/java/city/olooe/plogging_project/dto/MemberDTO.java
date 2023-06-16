@@ -36,9 +36,10 @@ public class MemberDTO {
   private String address; // 주소
   private String addressDetail; // 세부 주소
   private String nickName; // 닉네임
-  private String birth; // 생년월일
+  private Date birth; // 생년월일
   private String gender; // 성별
   private String authProvider; // 권한 공급자
+  private String intro;
   private List<String> authList; // 권한
 
   /**
@@ -47,21 +48,37 @@ public class MemberDTO {
    * @brief: 회원가입용 dto 생성
    * @param entity
    */
-  public MemberDTO(final MemberEntity entity) {
-    MemberDTO.builder()
-        .memberNo(entity.getMemberNo())
-        .userId(entity.getUserId())
-        .password(entity.getPassword())
-        .userName(entity.getUserName())
-        .email(entity.getEmail())
-        .regDate(entity.getRegDate())
-        .address(entity.getAddress())
-        .addressDetail(entity.getAddressDetail())
-        .nickName(entity.getNickName())
-        .birth(entity.getBirth())
-        .gender(entity.getGender())
-        .authProvider(entity.getAuthProvider())
-        .build();
+  // public MemberDTO(final MemberEntity entity) {
+
+  // MemberDTO.builder()
+  // .memberNo(entity.getMemberNo())
+  // .userId(entity.getUserId())
+  // .password(entity.getPassword())
+  // .userName(entity.getUserName())
+  // .email(entity.getEmail())
+  // .regDate(entity.getRegDate())
+  // .address(entity.getAddress())
+  // .addressDetail(entity.getAddressDetail())
+  // .nickName(entity.getNickName())
+  // .birth(entity.getBirth())
+  // .gender(entity.getGender())
+  // .authProvider(entity.getAuthProvider())
+  // .build();
+  // }
+
+  public MemberDTO(final MemberEntity memberEntity) {
+    this.memberNo = memberEntity.getMemberNo();
+    this.userId = memberEntity.getUserId();
+    this.password = memberEntity.getPassword();
+    this.userName = memberEntity.getUserName();
+    this.email = memberEntity.getEmail();
+    this.regDate = memberEntity.getRegDate();
+    this.address = memberEntity.getAddress();
+    this.addressDetail = memberEntity.getAddressDetail();
+    this.nickName = memberEntity.getNickName();
+    this.birth = memberEntity.getBirth();
+    this.gender = memberEntity.getGender();
+    this.authProvider = memberEntity.getAuthProvider();
   }
 
   /**

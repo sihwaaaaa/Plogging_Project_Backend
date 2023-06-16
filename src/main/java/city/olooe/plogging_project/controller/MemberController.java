@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import city.olooe.plogging_project.config.WebSecurityConfig;
@@ -112,10 +113,6 @@ public class MemberController {
   @PostMapping("signup")
   public ResponseEntity<?> registerMember(@RequestBody MemberDTO memberDTO) {
     try {
-      if (memberDTO == null || memberDTO.getPassword() == null) {
-        throw new Exception("유효하지 않는 패스워드 값");
-      }
-      System.out.println(memberDTO);
       MemberEntity member = MemberEntity.builder()
           .userId(memberDTO.getUserId())
           .password(securityConfig.getPasswordEncoder().encode(memberDTO.getPassword()))
@@ -127,6 +124,7 @@ public class MemberController {
           .gender(memberDTO.getGender())
           .build();
 
+      memberService.validateWithMember(member, memberDTO);
       MemberEntity registeredMember = memberService.create(member);
       memberService.createAuth(registeredMember);
 
@@ -149,6 +147,17 @@ public class MemberController {
     }
   }
 
+  @PostMapping("signup/checkId")
+  public ResponseEntity<?> checkUserId(@RequestParam String userId) throws Exception {
+    try {
+      memberService.validateWithUserId(userId);
+      return ResponseEntity.ok().body(userId);
+    } catch (Exception e) {
+      ResponseDTO resposneDTO = ResponseDTO.builder().error(e.getMessage()).build();
+      return ResponseEntity.badRequest().body(resposneDTO);
+    }
+  }
+
   @GetMapping("logout")
   public void logoutPage(HttpServletRequest request, HttpServletResponse response) {
     new SecurityContextLogoutHandler().logout(request, response,
@@ -164,10 +173,5 @@ public class MemberController {
       return ResponseEntity.badRequest().body("null");
     }
     return ResponseEntity.ok().body(confirm);
-  }
-
-  @GetMapping("mypage")
-  public String myPage(@AuthenticationPrincipal ApplicationUserPrincipal user) {
-    return null;
   }
 }

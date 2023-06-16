@@ -1,10 +1,14 @@
 package city.olooe.plogging_project.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import city.olooe.plogging_project.dto.MemberDTO;
 import city.olooe.plogging_project.model.AuthEntity;
 import city.olooe.plogging_project.model.AuthType;
 import city.olooe.plogging_project.model.MemberEntity;
@@ -72,4 +76,24 @@ public class MemberService {
 
   }
 
+  public void validateWithUserId(String userId) throws Exception {
+    List<MemberEntity> memberList = memberRepository.findAll();
+    Boolean isExistUserId = memberList.stream().map(member -> member.getUserId())
+        .anyMatch(existUserId -> userId == existUserId);
+    if (isExistUserId) {
+      throw new Exception("중복되는 회원 아이디가 존재합니다.");
+    }
+  }
+
+  /**
+   * @author 박연재
+   * @throws Exception
+   * @date 2023.06.16
+   * @brief 회원 유효성 검증
+   */
+  public void validateWithMember(final MemberEntity member, MemberDTO dto) throws Exception {
+    if (member.getUserId() == dto.getUserId() || member.getEmail() == dto.getEmail()) {
+      throw new Exception("중복되는 값이 존재합니다.");
+    }
+  }
 }
