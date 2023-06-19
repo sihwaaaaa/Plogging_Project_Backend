@@ -10,14 +10,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.model.PointHistoryEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
-@RestController
 @Slf4j
+@RestController
 @RequestMapping("history")
 @RequiredArgsConstructor
 public class PointHistoryController {

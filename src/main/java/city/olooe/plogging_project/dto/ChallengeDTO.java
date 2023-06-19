@@ -99,7 +99,7 @@ public class ChallengeDTO {
      */
     public ChallengeEntity toChallengeEntity() {
         return ChallengeEntity.builder().chNo(chNo).host(MemberEntity.builder().memberNo(memberNo).build()).blind(blind).title(title).content(content)
-                .personnel(personnel).startDate(startDate).endDate(endDate).build();
+                .personnel(personnel).startDate(startDate).endDate(endDate).status(ChallengeStatus.CHALLENGEBEFORE).build();
     }
 
 }

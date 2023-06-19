@@ -1,10 +1,11 @@
 package city.olooe.plogging_project.service;
 
-import city.olooe.plogging_project.dto.MemberDTO;
 import city.olooe.plogging_project.model.*;
 import city.olooe.plogging_project.model.map.MapEntity;
 import city.olooe.plogging_project.model.map.PloggingEntity;
 import city.olooe.plogging_project.persistence.*;
+import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.persistence.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -85,4 +86,5 @@ public class AdminService {
     public List<MapEntity> getMapAll() {return mapRepository.findAll();}
 
     // 추천경로별 경유지 정보 확인
+
 }

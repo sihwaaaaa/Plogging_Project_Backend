@@ -90,9 +90,9 @@ public class FriendController {
      * @Brief 플친 신청하기
      */
     @PostMapping("request")
-    public ResponseEntity<?> requestFriend(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody FriendDTO friendNo) {
+    public ResponseEntity<?> requestFriend(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody FriendDTO friendDTO) {
 
-        List<FriendEntity> friendEntities = friendService.requestFriend(user.getMember().getMemberNo(), friendNo.getToMemberNo());
+        List<FriendEntity> friendEntities = friendService.requestFriend(user.getMember().getMemberNo(), friendDTO.getToMemberNo());
         List<FriendDTO> friendDTOS = friendEntities.stream()
                 .map(FriendDTO::new)
                 .collect(toList());

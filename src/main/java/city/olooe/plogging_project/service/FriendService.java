@@ -35,7 +35,7 @@ public class FriendService {
     /**
      * @Author 천은경
      * @Date 23.06.06
-     * @param userId
+     * @param fromMemberNo
      * @param toMemberNo
      * @return FriendEntity
      * @Brief 플친 신청
@@ -68,7 +68,7 @@ public class FriendService {
     /**
      * @Author 천은경
      * @Date 23.06.06
-     * @param userId
+     * @param memberNo
      * @param status
      * @return List<FriendEntity>
      * @Brief 나의 팔로잉 상태별 플친 리스트 조회 : 요청대기 / 플친중 / 차단
@@ -83,7 +83,7 @@ public class FriendService {
     /**
      * @Author 천은경
      * @Date 23.06.06
-     * @param userId
+     * @param memberNo
      * @param status
      * @return List<FriendEntity>
      * @Brief 나의 팔로워 상태별 플친 리스트 조회 : 요청대기 / 플친중 / 차단
@@ -98,7 +98,7 @@ public class FriendService {
     /**
      * @Author 천은경
      * @Date 23.06.07
-     * @param userId
+     * @param toMemberNo
      * @param fromMemberNo
      * @Brief 플친 요청 수락
      */
@@ -116,7 +116,7 @@ public class FriendService {
     /**
      * @Author 천은경
      * @Date 23.06.13
-     * @param userId
+     * @param fromMemberNo
      * @param toMemberNo
      * @return 팔로잉 요청 리스트 or 차단 리스트
      * @Brief 보낸 플친 요청 취소하기 or 차단 취소 하기
@@ -146,7 +146,7 @@ public class FriendService {
     /**
      * @Author 천은경
      * @Date 23.06.07
-     * @param userId
+     * @param toMemberNo
      * @param fromMemberNo
      * @return 나의 플친 리스트
      * @Brief 플친 요청 거절 or 플친 삭제
@@ -173,7 +173,7 @@ public class FriendService {
     /**
      * @Author 천은경
      * @Date 23.06.07
-     * @param userId
+     * @param fromMemberNo
      * @param toMemberNo
      * @return 나의 플친 리스트
      * @Brief 상대방 차단. 상대방과 플친인 경우 또는 상대방이 요청 중인 경우 상대방에게서는 플친 삭제
@@ -194,8 +194,6 @@ public class FriendService {
         // 나의 플친리스트 반환
         return friendRepository.findByFromMemberAndStatus(fromMember, FriendStatusType.FRIEND);
     }
-
-
 
     /**
      * @author 천은경

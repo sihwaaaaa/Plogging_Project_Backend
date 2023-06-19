@@ -6,6 +6,9 @@ import city.olooe.plogging_project.dto.map.PloggingDTO;
 import city.olooe.plogging_project.model.*;
 import city.olooe.plogging_project.model.map.MapEntity;
 import city.olooe.plogging_project.model.map.PloggingEntity;
+import city.olooe.plogging_project.dto.MemberDTO;
+import city.olooe.plogging_project.dto.ResponseDTO;
+import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import city.olooe.plogging_project.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +39,7 @@ public class AdminController {
      */
     @GetMapping("member")
     public ResponseEntity<?> getMembers(@AuthenticationPrincipal ApplicationUserPrincipal user) {
-        List<MemberEntity> members = adminService.getMemberAll();
+        List<MemberEntity> members = adminService.getAll();
 
         List<MemberDTO> memberDTOS = members.stream()
                 .map(member -> MemberDTO.builder()
@@ -47,9 +50,9 @@ public class AdminController {
                         .birth(member.getBirth())
                         .gender(member.getGender())
                         .authProvider(member.getAuthProvider())
-//                        .authList(member.getAuthEntities().stream()
-//                                .map(auth -> auth.getAuthority().getKey())
-//                                .collect(toList()))
+                        .authList(member.getAuthEntities().stream()
+                                .map(auth -> auth.getAuthority().getKey())
+                                .collect(toList()))
                         .build())
                 .collect(toList());
 
