@@ -35,7 +35,6 @@ public class RewardController {
 
     @GetMapping("/list/{type}")
     public List<RewardEntity> GetRewardType(@PathVariable String type) {
-
         return rewardService.GetRewardTypeList(type);
     }
 }
