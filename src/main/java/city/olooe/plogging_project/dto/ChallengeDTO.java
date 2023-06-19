@@ -7,6 +7,7 @@ import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.ChallengeStatus;
 import city.olooe.plogging_project.model.MemberEntity;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import org.springframework.beans.PropertyAccessor;
@@ -31,8 +32,11 @@ public class ChallengeDTO {
     private String title;
     private String content;
     private Long personnel;
+    @JsonFormat
     private Date regDate;
+    @JsonFormat
     private Date startDate;
+    @JsonFormat
     private Date endDate;
     private String status;
 

@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /*
  * @author : 천은경
@@ -37,6 +38,9 @@ public interface FriendRepository extends JpaRepository<FriendEntity, Long> {
      */
     FriendEntity findByFromMemberAndToMember(MemberEntity fromMember, MemberEntity toMember);
 
+    @Query("select f.status from FriendEntity f where f.fromMember = :fromMember and f.toMember = :toMember")
+    Optional<FriendStatusType> findStatusBy(MemberEntity fromMember, MemberEntity toMember);
+
     /**
      * @author 천은경
      * @date 23.06.06
@@ -61,17 +65,5 @@ public interface FriendRepository extends JpaRepository<FriendEntity, Long> {
      * @Breif 모든 플친 리스트 (상태 무관)
      */
     List<FriendEntity> findAll();
-
-
-//    /**
-//     * @author 천은경
-//     * @date 23.06.06
-//     * @param fromMember
-//     * @param toMember
-//     * @return String status
-//     * @Brief 플친 상태 단일 조회
-//     */
-//    @Query("select f.status from FriendEntity f where f.fromMember = :fromMember and f.toMember = :toMember")
-//    String statusOfFriend(@Param("fromMember") MemberEntity fromMember,@Param("toMember") MemberEntity toMember);
 
 }

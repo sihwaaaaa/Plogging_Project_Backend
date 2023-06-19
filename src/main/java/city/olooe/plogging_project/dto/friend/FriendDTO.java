@@ -24,6 +24,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @DynamicUpdate
 public class FriendDTO {
+    private Long friendNo;
     private Long fromMemberNo;
     private String fromMemberId;
     private Long toMemberNo;
@@ -32,6 +33,7 @@ public class FriendDTO {
 
     // Entity를 Dto로 변환
     public FriendDTO(final FriendEntity friendEntity) {
+        friendNo = friendEntity.getFriendNo();
         fromMemberNo = friendEntity.getFromMember().getMemberNo();
         fromMemberId = friendEntity.getFromMember().getUserId();
         toMemberNo = friendEntity.getToMember().getMemberNo();
@@ -42,6 +44,7 @@ public class FriendDTO {
     // DTO를 Entity로 변환
     public static FriendEntity toEntity(final FriendDTO friendDTO) {
         return FriendEntity.builder()
+                .friendNo(MemberEntity.builder().memberNo(friendDTO.friendNo).build().getMemberNo())
                 .fromMember(MemberEntity.builder().memberNo(friendDTO.fromMemberNo).userId(friendDTO.fromMemberId).build())
                 .toMember(MemberEntity.builder().memberNo(friendDTO.toMemberNo).userId(friendDTO.toMemberId).build())
                 .status(FriendStatusType.valueOf(friendDTO.status)).build();

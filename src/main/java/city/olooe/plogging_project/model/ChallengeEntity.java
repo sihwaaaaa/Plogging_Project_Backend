@@ -1,7 +1,9 @@
 package city.olooe.plogging_project.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -47,4 +49,7 @@ public class ChallengeEntity {
     @Enumerated(EnumType.STRING)
     @Setter
     private ChallengeStatus status; // 챌린지 진행전 / 진행중 / 마감 / 인원마감 / 챌린지 종료
+
+    @OneToMany(mappedBy = "chNo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ChallengeMemberEntity> ChallengeMembers = new ArrayList<>();
 }

@@ -36,7 +36,7 @@ public class FriendController {
     @GetMapping("/fromMe/{status}")
     public ResponseEntity<?> myFriendList(@AuthenticationPrincipal ApplicationUserPrincipal user, @PathVariable String status) {
 
-        List<FriendEntity> friendEntities = friendService.GetMyFriendList(user.getMember().getUserId(), status);
+        List<FriendEntity> friendEntities = friendService.GetMyFriendList(user.getMember().getMemberNo(), status);
 
         List<FriendDTO> friendDTOS = friendEntities.stream()
                 .map(FriendDTO::new)
@@ -57,7 +57,7 @@ public class FriendController {
     public ResponseEntity<?> friendListToMe(@AuthenticationPrincipal ApplicationUserPrincipal user, @PathVariable String status) {
     //ResponseEntity<ResponseDTO<List<FriendDTO>>>
 
-        List<FriendEntity> friendEntities = friendService.getFriendListToMe(user.getMember().getUserId(), status);
+        List<FriendEntity> friendEntities = friendService.getFriendListToMe(user.getMember().getMemberNo(), status);
 
         List<FriendDTO> friendDTOS = friendEntities.stream()
                 .map(FriendDTO::new)
@@ -66,7 +66,12 @@ public class FriendController {
         return ResponseEntity.ok().body(ResponseDTO.builder().data(friendDTOS).build());
     }
 
-    // 플친 전체 조회
+    /**
+     * @Author 천은경
+     * @Date 23.06.06
+     * @return 플친 리스트
+     * @Brief 플친 전체 조회
+     */
     @GetMapping("all")
     public ResponseEntity<?> findAll(){
         List<FriendEntity> friendEntities = friendService.allFriend();
@@ -85,10 +90,9 @@ public class FriendController {
      * @Brief 플친 신청하기
      */
     @PostMapping("request")
-    public ResponseEntity<?> requestFriend(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody FriendDTO friendDTO) {
+    public ResponseEntity<?> requestFriend(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody FriendDTO friendNo) {
 
-        List<FriendEntity> friendEntities = friendService.requestFriend(user.getMember().getUserId(), friendDTO.getToMemberNo());
-
+        List<FriendEntity> friendEntities = friendService.requestFriend(user.getMember().getMemberNo(), friendNo.getToMemberNo());
         List<FriendDTO> friendDTOS = friendEntities.stream()
                 .map(FriendDTO::new)
                 .collect(toList());
@@ -106,7 +110,7 @@ public class FriendController {
      */
     @DeleteMapping("cancel")
     public ResponseEntity<?> cancelRequest(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody FriendDTO toMember) {
-        List<FriendEntity> friendEntities = friendService.cancelRequest(user.getMember().getUserId(), toMember.getToMemberNo());
+        List<FriendEntity> friendEntities = friendService.cancelRequest(user.getMember().getMemberNo(), toMember.getToMemberNo());
         List<FriendDTO> friendDTOS = friendEntities.stream()
                 .map(FriendDTO::new)
                 .collect(toList());
@@ -124,7 +128,7 @@ public class FriendController {
     @PutMapping("accept")
     public ResponseEntity<?> acceptFriend(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody FriendDTO fromMember){
         log.warn("플친 수락 데이터 확인 : {}", fromMember.getFromMemberNo());
-        List<FriendEntity> friendEntities = friendService.acceptRequest(user.getMember().getUserId(), fromMember.getFromMemberNo());
+        List<FriendEntity> friendEntities = friendService.acceptRequest(user.getMember().getMemberNo(), fromMember.getFromMemberNo());
         List<FriendDTO> friendDTOS = friendEntities.stream()
                 .map(FriendDTO::new)
                 .collect(toList());
@@ -142,7 +146,7 @@ public class FriendController {
     @DeleteMapping("reject")
     public ResponseEntity<?> removeFriend(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody FriendDTO fromMember){
 
-        List<FriendEntity> friendEntities = friendService.removeFriend(user.getMember().getUserId(), fromMember.getFromMemberNo());
+        List<FriendEntity> friendEntities = friendService.removeFriend(user.getMember().getMemberNo(), fromMember.getFromMemberNo());
 
         List<FriendDTO> friendDTOS = friendEntities.stream()
                 .map(FriendDTO::new)
@@ -162,7 +166,7 @@ public class FriendController {
     @PutMapping("block")
     public ResponseEntity<?> blockFriend(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody FriendDTO toMember){
 
-        List<FriendEntity> blockedFriends = friendService.blockFriend(user.getMember().getUserId(), toMember.getToMemberNo());
+        List<FriendEntity> blockedFriends = friendService.blockFriend(user.getMember().getMemberNo(), toMember.getToMemberNo());
 
         List<FriendDTO> friendDTOS = blockedFriends.stream()
                 .map(FriendDTO::new)

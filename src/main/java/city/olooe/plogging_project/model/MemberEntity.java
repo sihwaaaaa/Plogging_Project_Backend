@@ -69,6 +69,11 @@ public class MemberEntity implements Serializable {
     }
   }
 
+  @OneToMany(mappedBy = "challenger", fetch = FetchType.LAZY)
+  private List<ChallengeMemberEntity> myChallenges = new ArrayList<>();
+
+
+
   // // @OneToMany(mappedBy = "host")
   // // private List<ChallengeEntity> challengeEntities = new ArrayList<>();
   //

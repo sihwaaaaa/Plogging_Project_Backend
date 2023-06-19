@@ -1,12 +1,13 @@
 package city.olooe.plogging_project.persistence;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import city.olooe.plogging_project.model.MemberEntity;
+
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author: 박연재
@@ -50,6 +51,17 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
    * @return Boolean
    */
   Boolean existsByUserId(String userId);
+
+
+  /**
+   * @Author 천은경
+   * @Date 23.06.15
+   * @param keyword
+   * @param pageable
+   * @return 회원 리스트
+   * @Brief userId, userName, nickName 으로 회원 검색
+   */
+  Page<MemberEntity> findByUserIdContainingIgnoreCase(String keyword, Pageable pageable);
 
   // /**
   // * @author: 박연재

@@ -1,18 +1,17 @@
 package city.olooe.plogging_project.controller;
 
+import city.olooe.plogging_project.dto.member.MemberSearchDTO;
+import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import city.olooe.plogging_project.security.CustomUserDetails;
-import org.apache.catalina.connector.Response;
-import org.apache.ibatis.javassist.compiler.ast.Member;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.jaas.SecurityContextLoginModule;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import city.olooe.plogging_project.config.WebSecurityConfig;
@@ -27,6 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 
@@ -92,6 +93,7 @@ public class MemberController {
           .memberNo(member.getMemberNo())
           .userId(member.getUserId())
           .token(token)
+          .authList(member.getAuthEntities().stream().map(s -> s.getAuthority().getKey()).collect(Collectors.toList()))
           .build();
       return ResponseEntity.ok().body(responseMemberDTO);
     } else {
@@ -154,6 +156,23 @@ public class MemberController {
       return ResponseEntity.badRequest().body("null");
     }
     return ResponseEntity.ok().body(confirm);
+  }
+
+  /**
+   * @Author 천은경
+   * @Date 23.06.15
+   * @param keyword
+   * @return 회원 리스트
+   * @Breif userId, userName, nickName 으로 회원 검색
+   */
+  @GetMapping("/search")
+  public ResponseEntity<?> searchMember(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestParam String keyword,
+                                        @PageableDefault(sort = "memberNo", size = 5
+                                        , direction = Sort.Direction.DESC) Pageable pageable) {
+
+    Page<MemberSearchDTO> memberDTOS = memberService.searchMember(user, keyword, pageable);
+
+    return ResponseEntity.ok().body(ResponseDTO.builder().data(memberDTOS).build());
   }
 
 }

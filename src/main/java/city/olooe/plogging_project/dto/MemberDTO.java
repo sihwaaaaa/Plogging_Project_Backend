@@ -7,10 +7,12 @@ import java.util.stream.Collectors;
 import city.olooe.plogging_project.model.AuthEntity;
 import city.olooe.plogging_project.model.AuthType;
 import city.olooe.plogging_project.model.MemberEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import static java.util.stream.Collectors.*;
 
@@ -23,6 +25,7 @@ import static java.util.stream.Collectors.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Slf4j
 public class MemberDTO {
 
   private String token; // 토큰 문자열
@@ -32,6 +35,7 @@ public class MemberDTO {
   private String password; // 회원 비밀번호
   private String userName; // 회원 닉네임
   private String email; // 이메일
+  @JsonFormat
   private Date regDate; // 등록일자
   private String address; // 주소
   private String addressDetail; // 세부 주소
@@ -48,20 +52,18 @@ public class MemberDTO {
    * @param entity
    */
   public MemberDTO(final MemberEntity entity) {
-    MemberDTO.builder()
-        .memberNo(entity.getMemberNo())
-        .userId(entity.getUserId())
-        .password(entity.getPassword())
-        .userName(entity.getUserName())
-        .email(entity.getEmail())
-        .regDate(entity.getRegDate())
-        .address(entity.getAddress())
-        .addressDetail(entity.getAddressDetail())
-        .nickName(entity.getNickName())
-        .birth(entity.getBirth())
-        .gender(entity.getGender())
-        .authProvider(entity.getAuthProvider())
-        .build();
+    this.memberNo = entity.getMemberNo();
+    this.userId = entity.getUserId();
+    this.password = entity.getPassword();
+    this.userName = entity.getUserName();
+    this.email = entity.getEmail();
+    this.regDate = entity.getRegDate();
+    this.address = entity.getAddress();
+    this.addressDetail = entity.getAddressDetail();
+    this.nickName = entity.getNickName();
+    this.birth = entity.getBirth();
+    this.gender = entity.getGender();
+    this.authProvider = entity.getAuthProvider();
   }
 
   /**

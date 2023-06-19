@@ -1,5 +1,7 @@
 package city.olooe.plogging_project.config;
 
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -25,5 +27,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(MAX_AGE_SECS);
+    }
+
+    private static final String defaultFormat = "yyyy-MM-dd";
+
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer customizer() {
+        return b -> b.simpleDateFormat(defaultFormat);
     }
 }

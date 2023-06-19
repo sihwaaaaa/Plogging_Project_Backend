@@ -3,6 +3,7 @@ package city.olooe.plogging_project.dto.map;
 import java.util.Date;
 
 import city.olooe.plogging_project.model.map.PloggingEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,9 @@ public class PloggingDTO {
   private Long ploggingNo;// pk
   private Long userMapNo; // 브릿지 테이블pk
   private String type; // 유형 (제자리시작 / 목표지설정 / 추천경로 / 챌린지경로)
+  @JsonFormat
   private Date ploggingTime; // 이동시간
+  @JsonFormat
   private Date regDate; // 플로깅 날짜(insert날짜)
   private Integer distance; // 이동 거리
   private Boolean status; // 성공여부
