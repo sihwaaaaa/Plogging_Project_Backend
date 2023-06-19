@@ -33,9 +33,9 @@ import lombok.ToString;
 public class StopoverEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long stopoverNo; // pk
-  private Double stopoverX; // 경유지 x좌표
-  private Double stopoverY; // 경유지 x좌표
+  private Long viaPointId; // pk
+  private Double viaX; // 경유지 x좌표
+  private Double viaY; // 경유지 x좌표
   private Integer stopoverIdx;
   // @ManyToOne(fetch = FetchType.LAZY)
   @ManyToOne

@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,6 +37,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
+@DynamicUpdate
 // @ToString
 @EqualsAndHashCode
 @Entity(name = "tbl_map")
@@ -56,6 +58,7 @@ public class MapEntity {
   //1대다 관계 지정 추후 리스트를 통해 관리할 경우 사용
   @OneToMany(mappedBy = "mapEntity")
   private List<StopoverEntity> stops; // 경유지 목록
+
 
 
 }

@@ -62,6 +62,11 @@ dependencies {
 
     // 메일 인증용 디펜던시
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    //데이터 파싱용
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
+
 }
 
 tasks.named('test') {

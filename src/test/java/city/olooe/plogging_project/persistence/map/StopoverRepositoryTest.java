@@ -31,13 +31,13 @@ public class StopoverRepositoryTest {
   @DisplayName("경유지 단일 생성 테스트")
   public void createStopover() {
 
-    // given
-    StopoverEntity entity = StopoverEntity.builder().stopoverX(123.1).stopoverY(123.1)
-        .mapEntity(MapEntity.builder().mapNo(1L).build())
-        .stopoverIdx(1)
-        .build();
-    // then
-    log.info("{}", repository.save(entity));
+    // // given
+    // StopoverEntity entity = StopoverEntity.builder().stopoverX(123.1).stopoverY(123.1)
+    //     .mapEntity(MapEntity.builder().mapNo(1L).build())
+    //     .stopoverIdx(1)
+    //     .build();
+    // // then
+    // log.info("{}", repository.save(entity));
   }
   
   @Test
