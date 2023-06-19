@@ -1,19 +1,25 @@
 package city.olooe.plogging_project.persistence;
 
-import java.util.Collections;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import city.olooe.plogging_project.model.AuthEntity;
 import city.olooe.plogging_project.model.AuthType;
+import city.olooe.plogging_project.model.ChallengeEntity;
 // import city.olooe.plogging_project.model.AuthEntity;
 import city.olooe.plogging_project.model.MemberEntity;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +38,12 @@ public class MemberRepositoryTest {
 
   @Autowired
   private AuthRepository authRepository;
+
+  @Autowired
+  private ChallengeRepository challengeRepository;
+
+  @Autowired
+  private ChallengeMemberRepository challengeMemberRepository;
 
   @DisplayName("회원 생성 테스트")
   @Test
@@ -84,5 +96,14 @@ public class MemberRepositoryTest {
   @Test
   public void testClass() {
     log.info("{}", memberRepository.getClass().getName());
+  }
+
+  @DisplayName("해당 멤버의 챌린지 조회")
+  @Test
+  public void testChallenge() {
+    log.info("{}", challengeRepository.findByHost(memberRepository.findByUserId("pkkj88888888888888")));
+
+    List<ChallengeEntity> challenges = challengeRepository.findByHost(memberRepository.findByUserId("pkkj"));
+
   }
 }
