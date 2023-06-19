@@ -4,7 +4,6 @@ import javax.persistence.*;
 
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
-
 import java.io.Serializable;
 import java.util.Date;
 
