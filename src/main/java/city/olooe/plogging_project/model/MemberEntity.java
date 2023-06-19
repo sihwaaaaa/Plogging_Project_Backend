@@ -14,6 +14,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 
+import city.olooe.plogging_project.model.map.PloggingEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -73,9 +74,9 @@ public class MemberEntity implements Serializable {
   @OneToMany(mappedBy = "challenger", fetch = FetchType.LAZY)
   private List<ChallengeMemberEntity> myChallenges = new ArrayList<>();
 
-  // // @OneToMany(mappedBy = "host")
-  // // private List<ChallengeEntity> challengeEntities = new ArrayList<>();
-  //
-  // @OneToMany(mappedBy = "memberEntity")
-  // private List<RewardEntity> rewardEntities = new ArrayList<>();
+  @OneToMany(mappedBy = "chNo", fetch = FetchType.LAZY)
+  private List<ChallengeEntity> myChallengesDetail = new ArrayList<>();
+
+  // @OneToMany(mappedBy = "chNo")
+  // private List<PloggingEntity> ploggingEntities = new ArrayList<>();
 }

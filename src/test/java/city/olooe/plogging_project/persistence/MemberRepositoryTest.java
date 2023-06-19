@@ -29,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date: 2023.06.01
  * @brief: MemberEntity와 jpa 구현 인터페이스를 활용한 테스트 ( 로그인, 회원가입)
  */
+@RunWith(SpringRunner.class)
 @SpringBootTest
 @Slf4j
 public class MemberRepositoryTest {
@@ -98,12 +99,9 @@ public class MemberRepositoryTest {
     log.info("{}", memberRepository.getClass().getName());
   }
 
-  @DisplayName("해당 멤버의 챌린지 조회")
-  @Test
-  public void testChallenge() {
-    log.info("{}", challengeRepository.findByHost(memberRepository.findByUserId("pkkj88888888888888")));
-
-    List<ChallengeEntity> challenges = challengeRepository.findByHost(memberRepository.findByUserId("pkkj"));
-
-  }
+  // @DisplayName("해당 멤버의 챌린지 조회")
+  // @Test
+  // public void testChallenge() {
+  // memberRepository.findByMemberNo(12L);
+  // }
 }

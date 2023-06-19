@@ -104,9 +104,9 @@ public class MemberService {
       MemberSearchDTO memberSearchDTO = new MemberSearchDTO(member);
       Pageable top3 = PageRequest.of(0, 3);
       memberSearchDTO.setChallenges(challengeRepository.findMyChallenges(member, top3)
-              .stream().map(ChallengeEntity::getTitle).collect(Collectors.toList()));
+          .stream().map(ChallengeEntity::getTitle).collect(Collectors.toList()));
       memberSearchDTO.setFriendStatus(friendRepository.findStatusBy(user.getMember(), member)
-              .orElse(FriendStatusType.NOTHING).getKey());
+          .orElse(FriendStatusType.NOTHING).getKey());
       return memberSearchDTO;
     });
 
@@ -133,4 +133,5 @@ public class MemberService {
       throw new Exception("중복되는 값이 존재합니다.");
     }
   }
+
 }
