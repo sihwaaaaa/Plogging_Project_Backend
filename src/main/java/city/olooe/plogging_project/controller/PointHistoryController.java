@@ -129,4 +129,33 @@ public class PointHistoryController {
 
         return ResponseEntity.ok().body(historyDTO);
     }
+    /*
+     * @Author 이재원
+     *
+     * @Date 23.06.19
+     *
+     * @param product
+     *
+     * @param Principal
+     *
+     * @return responseDTO
+     *
+     * @Brief 랜덤박스 신청 기능 메서드
+     */
+    @PostMapping("/product")
+    public ResponseEntity<?> registerProduct(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody PointHistoryDTO dto) {
+
+        PointHistoryEntity historyEntity = PointHistoryEntity.builder()
+                .memberNo(MemberEntity.builder().memberNo(user.getMember().getMemberNo()).build())
+                .point(dto.getPoint())
+                .type(RewardTypeStatus.Product)
+                .rewardNo(RewardEntity.builder().rewardNo(dto.getRewardNo()).build())
+                .build();
+
+        PointHistoryEntity createDonation = historyService.createPoint(historyEntity);
+
+        PointHistoryDTO historyDTO = new PointHistoryDTO(createDonation);
+
+        return ResponseEntity.ok().body(historyDTO);
+    }
 }
