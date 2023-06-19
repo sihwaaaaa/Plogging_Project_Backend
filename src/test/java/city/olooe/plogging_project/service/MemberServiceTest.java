@@ -31,4 +31,10 @@ public class MemberServiceTest {
     memberService.getByCredentials("root", "1234567", securityConfig.getPasswordEncoder());
   }
 
+  @DisplayName("회원가입 회원 아이디 중복 확인")
+  @Test
+  public void testCheckValidateUserId() throws Exception {
+    memberService.validateWithUserId("pkkj");
+  }
+
 }

@@ -5,6 +5,9 @@ import city.olooe.plogging_project.model.*;
 import city.olooe.plogging_project.persistence.ChallengeRepository;
 import city.olooe.plogging_project.persistence.FriendRepository;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import city.olooe.plogging_project.dto.MemberDTO;
 import city.olooe.plogging_project.model.AuthEntity;
 import city.olooe.plogging_project.model.AuthType;
 import city.olooe.plogging_project.model.MemberEntity;
@@ -86,7 +90,9 @@ public class MemberService {
   /**
    * @Author 천은경
    * @Date 23.06.15
-   * @param member
+   * @param user
+   * @param keyword
+   * @param pageable
    * @return 회원 리스트
    * @Brief userId or userName or nickName 으로 회원 검색
    */
@@ -107,4 +113,24 @@ public class MemberService {
     return memberDTOS;
   }
 
+  public void validateWithUserId(String userId) throws Exception {
+    List<MemberEntity> memberList = memberRepository.findAll();
+    Boolean isExistUserId = memberList.stream().map(member -> member.getUserId())
+        .anyMatch(existUserId -> userId == existUserId);
+    if (isExistUserId) {
+      throw new Exception("중복되는 회원 아이디가 존재합니다.");
+    }
+  }
+
+  /**
+   * @author 박연재
+   * @throws Exception
+   * @date 2023.06.16
+   * @brief 회원 유효성 검증
+   */
+  public void validateWithMember(final MemberEntity member, MemberDTO dto) throws Exception {
+    if (member.getUserId() == dto.getUserId() || member.getEmail() == dto.getEmail()) {
+      throw new Exception("중복되는 값이 존재합니다.");
+    }
+  }
 }

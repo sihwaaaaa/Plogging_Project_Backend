@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import city.olooe.plogging_project.config.WebSecurityConfig;
@@ -92,6 +94,14 @@ public class MemberController {
       final MemberDTO responseMemberDTO = MemberDTO.builder()
           .memberNo(member.getMemberNo())
           .userId(member.getUserId())
+          .email(member.getEmail())
+          .gender(member.getGender())
+          .address(member.getAddress())
+          .birth(member.getBirth())
+          .regDate(member.getRegDate())
+          .nickName(member.getNickName())
+          .userName(member.getUserName())
+          .regDate(member.getRegDate())
           .token(token)
           .authList(member.getAuthEntities().stream().map(s -> s.getAuthority().getKey()).collect(Collectors.toList()))
           .build();
@@ -105,10 +115,6 @@ public class MemberController {
   @PostMapping("signup")
   public ResponseEntity<?> registerMember(@RequestBody MemberDTO memberDTO) {
     try {
-      if (memberDTO == null || memberDTO.getPassword() == null) {
-        throw new Exception("유효하지 않는 패스워드 값");
-      }
-      System.out.println(memberDTO);
       MemberEntity member = MemberEntity.builder()
           .userId(memberDTO.getUserId())
           .password(securityConfig.getPasswordEncoder().encode(memberDTO.getPassword()))
@@ -120,6 +126,7 @@ public class MemberController {
           .gender(memberDTO.getGender())
           .build();
 
+      memberService.validateWithMember(member, memberDTO);
       MemberEntity registeredMember = memberService.create(member);
       memberService.createAuth(registeredMember);
 
@@ -142,11 +149,23 @@ public class MemberController {
     }
   }
 
+  @PostMapping("signup/checkId")
+  public ResponseEntity<?> checkUserId(@RequestParam String userId) throws Exception {
+    try {
+      memberService.validateWithUserId(userId);
+      return ResponseEntity.ok().body(userId);
+    } catch (Exception e) {
+      ResponseDTO resposneDTO = ResponseDTO.builder().error(e.getMessage()).build();
+      return ResponseEntity.badRequest().body(resposneDTO);
+    }
+  }
+
   @GetMapping("logout")
-  public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+  public void logoutPage(HttpServletRequest request, HttpServletResponse response) {
     new SecurityContextLogoutHandler().logout(request, response,
         SecurityContextHolder.getContext().getAuthentication());
-    return "redirect:/";
+    // response.
+    // return "redirect:/";
   }
 
   @PostMapping("/signup/emailConfirm")
@@ -163,7 +182,7 @@ public class MemberController {
    * @Date 23.06.15
    * @param keyword
    * @return 회원 리스트
-   * @Breif userId, userName, nickName 으로 회원 검색
+   * @Breif userId로 회원 검색
    */
   @GetMapping("/search")
   public ResponseEntity<?> searchMember(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestParam String keyword,

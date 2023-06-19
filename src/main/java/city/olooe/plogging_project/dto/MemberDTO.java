@@ -42,9 +42,11 @@ public class MemberDTO {
   private String address; // 주소
   private String addressDetail; // 세부 주소
   private String nickName; // 닉네임
-  private String birth; // 생년월일
+  @JsonFormat
+  private Date birth; // 생년월일
   private String gender; // 성별
   private String authProvider; // 권한 공급자
+  private String intro;
   private List<String> authList; // 권한
 
   /**
@@ -53,19 +55,19 @@ public class MemberDTO {
    * @brief: 회원가입용 dto 생성
    * @param entity
    */
-  public MemberDTO(final MemberEntity entity) {
-    this.memberNo = entity.getMemberNo();
-    this.userId = entity.getUserId();
-    this.password = entity.getPassword();
-    this.userName = entity.getUserName();
-    this.email = entity.getEmail();
-    this.regDate = entity.getRegDate();
-    this.address = entity.getAddress();
-    this.addressDetail = entity.getAddressDetail();
-    this.nickName = entity.getNickName();
-    this.birth = entity.getBirth();
-    this.gender = entity.getGender();
-    this.authProvider = entity.getAuthProvider();
+  public MemberDTO(final MemberEntity memberEntity) {
+    this.memberNo = memberEntity.getMemberNo();
+    this.userId = memberEntity.getUserId();
+    this.password = memberEntity.getPassword();
+    this.userName = memberEntity.getUserName();
+    this.email = memberEntity.getEmail();
+    this.regDate = memberEntity.getRegDate();
+    this.address = memberEntity.getAddress();
+    this.addressDetail = memberEntity.getAddressDetail();
+    this.nickName = memberEntity.getNickName();
+    this.birth = memberEntity.getBirth();
+    this.gender = memberEntity.getGender();
+    this.authProvider = memberEntity.getAuthProvider();
   }
 
   /**

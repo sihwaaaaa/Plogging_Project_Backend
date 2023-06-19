@@ -48,9 +48,10 @@ public class MemberEntity implements Serializable {
   private String address; // 주소
   private String addressDetail; // 세부 주소
   private String nickName; // 닉네임
-  private String birth; // 생년월일
+  private Date birth; // 생년월일
   private String gender; // 성별
   private String authProvider; // oauth 2.0 연동 공급자
+  private String intro;
 
   public MemberEntity(String userId, String password, String userName, String email) {
     this.userId = userId;
@@ -59,8 +60,8 @@ public class MemberEntity implements Serializable {
     this.email = email;
   }
 
-   @OneToMany(mappedBy = "memberNo", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   private List<AuthEntity> authEntities = new ArrayList<>();
+  @OneToMany(mappedBy = "memberNo", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  private List<AuthEntity> authEntities = new ArrayList<>();
 
   public void setAuthEntities(List<AuthEntity> authEntities) {
     this.authEntities = authEntities;
