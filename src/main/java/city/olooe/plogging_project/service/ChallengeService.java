@@ -1,7 +1,8 @@
 package city.olooe.plogging_project.service;
 
-import city.olooe.plogging_project.dto.BoardDTO;
+import city.olooe.plogging_project.dto.*;
 import city.olooe.plogging_project.model.*;
+import city.olooe.plogging_project.persistence.SchedulMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +13,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import city.olooe.plogging_project.dto.ChallengeDTO;
-import city.olooe.plogging_project.dto.ChallengeMemberDTO;
 import city.olooe.plogging_project.persistence.ChallengeMemberRepository;
 import city.olooe.plogging_project.persistence.ChallengeRepository;
 import city.olooe.plogging_project.persistence.ChallengeScheduleRepository;
@@ -30,6 +29,9 @@ public class  ChallengeService {
 
     @Autowired
     ChallengeScheduleRepository challengeScheduleRepository;
+
+    @Autowired
+    SchedulMemberRepository schedulMemberRepository;
 
     /**
      * @author : 김민수
@@ -105,9 +107,6 @@ public class  ChallengeService {
      @Transactional
      public void delete(Long chNo) {
          // 챌린지 맴버삭제, 챌린지 일정삭제 , 챌린지 일정에 참여중인 참여삭제
-     ChallengeEntity challengeEntity = challengeRepository.findByChNo(chNo);
-     validate(challengeEntity);
-     challengeRepository.delete(challengeEntity);
      }
 
     /**
@@ -118,8 +117,11 @@ public class  ChallengeService {
      * 
      * @brief: 챌린지 가입 서비스
      */
-    public Long challengeJoin(ChallengeMemberDTO challengeMemberDTO) {
-        return challengeMemberRepository.save(challengeMemberDTO.toChallengeMemberEntity()).getCmemberNo();
+    public ChallengeMemberEntity challengeJoin(ChallengeMemberDTO challengeMemberDTO, Long chNo, Long memberNo) {
+        ChallengeMemberEntity challengeMemberEntity = challengeMemberDTO.toChallengeMemberEntity();
+        challengeMemberEntity.setChNo(ChallengeEntity.builder().chNo(chNo).build());
+        challengeMemberEntity.setChallenger(MemberEntity.builder().memberNo(memberNo).build());
+        return challengeMemberRepository.save(challengeMemberEntity);
     }
 
     /**
@@ -130,11 +132,80 @@ public class  ChallengeService {
      *
      * @brief: 챌린지 맴버 삭제서비스
      */
-    public void cmemberDelete(ChallengeEntity chNo, MemberEntity memberNo ){
-        ChallengeMemberEntity challengeMemberEntity = challengeMemberRepository.findByChNoAndChallenger(chNo,memberNo);
+    public void cmemberDelete(ChallengeMemberDTO challengeMemberDTO){
+        ChallengeMemberEntity challengeMemberEntity = challengeMemberDTO.toChMemberDelete();
         cmemberValidate(challengeMemberEntity);
         challengeMemberRepository.delete(challengeMemberEntity);
     }
+    /**
+     * @author : 김민수
+     * @date: '23.06.11
+     *
+     * @param: challengeScheduleDTO
+     *
+     * @brief: 챌린지 챌린지 일정생성
+     * @return: ChallengeScheduleEntity
+     */
+    public ChallengeScheduleEntity scheduleCreate(ChallengeScheduleDTO challengeScheduleDTO){
+        ChallengeScheduleEntity challengeScheduleEntity = challengeScheduleDTO.toChallengeScheduleEntity();
+        return challengeScheduleRepository.save(challengeScheduleEntity);
+    }
+
+    /**
+     * @author : 김민수
+     * @date: '23.06.11
+     *
+     * @param: challengeScheduleDTO
+     *
+     * @brief: 챌린지 일정참여
+     * @return: ChallengeScheduleEntity
+     */
+    // 챌린지번호, 챌린저(챌린지맴버)번호, 일정번호
+    public SchedulMemberEntity scheduleJoin(ScheduleMemberDTO scheduleMemberDTO){
+        SchedulMemberEntity schedulMemberEntity = scheduleMemberDTO.toschedulMemberEntity();
+        return schedulMemberRepository.save(schedulMemberEntity);
+    }
+
+    /**
+     * @author : 김민수
+     * @date: '23.06.11
+     *
+     * @param: challengeScheduleDTO
+     *
+     * @brief: 챌린지 일정참여 취소
+     * @return: ChallengeScheduleEntity
+     */
+    public void scheduleCancle(ScheduleMemberDTO scheduleMemberDTO){
+        // 챌린지 일정참여 취소 - 챌린지No, 챌린지 일정No, 맴버No 필요
+        SchedulMemberEntity schedulMemberEntity = scheduleMemberDTO.toScheduleCancle();
+        schedulMemberRepository.delete(schedulMemberEntity);
+    }
+
+    /**
+     * @author : 김민수
+     * @date: '23.06.16
+     *
+     * @param: challengeScheduleDTO
+     *
+     * @brief: 챌린지 일정삭제
+     * @return: ChallengeScheduleEntity
+     */
+//    public void scheduleDelete(Long smno, ChallengeScheduleDTO challengeScheduleDTO){
+//        // 챌린지 일정삭제 - 스케쥴No, 챌린지No 필요
+//        // 일정에 참여한 인원있다면 해당인원 일정참여 취소 시킨후 삭제진행
+//        SchedulMemberEntity schedulMemberEntity = schedulMemberRepository.findBySmno(smno);
+//        if(schedulMemberEntity != null){
+//            schedulMemberEntity.getSmno();
+//            schedulMemberEntity.getChNo();
+//            schedulMemberEntity.getChallenger();
+//            schedulMemberEntity.getScheduleNo();
+//            schedulMemberRepository.delete(schedulMemberEntity);
+//        }
+//        ChallengeScheduleEntity chSchDelete = challengeScheduleDTO.toChallengeDelete();
+//        challengeScheduleRepository.delete(chSchDelete);
+//    }
+
+
 
 
 

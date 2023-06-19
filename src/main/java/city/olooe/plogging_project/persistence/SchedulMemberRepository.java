@@ -1,5 +1,7 @@
 package city.olooe.plogging_project.persistence;
 
+import city.olooe.plogging_project.dto.ChallengeScheduleDTO;
+import city.olooe.plogging_project.dto.ScheduleMemberDTO;
 import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.ChallengeScheduleEntity;
 import city.olooe.plogging_project.model.MemberEntity;
@@ -13,5 +15,7 @@ import java.lang.reflect.Member;
 public interface SchedulMemberRepository extends JpaRepository<SchedulMemberEntity,Long> {
 
     SchedulMemberEntity findBySmno(Long smno);
+//    SchedulMemberEntity findBySmno(ScheduleMemberDTO smno);
     SchedulMemberEntity findByChNoAndScheduleNoAndChallenger (ChallengeEntity chNo, ChallengeScheduleEntity scheduleNo, MemberEntity memberNo);
+//    SchedulMemberEntity findByChNoAndScheduleNoAndChallenger (ChallengeScheduleDTO challengeScheduleDTO);
 }

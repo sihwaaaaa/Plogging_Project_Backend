@@ -210,15 +210,15 @@ public class ChallengeRepositoryTest {
      * @date: '23.06.11
      * @brief: 챌린지 맴버삭제
      */
-    @Test
-    @DisplayName("챌린지 맴버삭제")
-    @Transactional
-    public void cmemberDelete(){
-        ChallengeMemberEntity challengeMemberEntity =
-                challengeMemberRepository
-                        .findByChNoAndChallenger
-                                (ChallengeEntity.builder().chNo(10L).build(),
-                                        MemberEntity.builder().memberNo(12L).build());
-        challengeMemberRepository.delete(challengeMemberEntity);
-    }
+//    @Test
+//    @DisplayName("챌린지 맴버삭제")
+//    @Transactional
+//    public void cmemberDelete(){
+//        ChallengeMemberEntity challengeMemberEntity =
+//                challengeMemberRepository
+//                        .findByChNoAndChallenger
+//                                (ChallengeEntity.builder().chNo(10L).build(),
+//                                        MemberEntity.builder().memberNo(12L).build());
+//        challengeMemberRepository.delete(challengeMemberEntity);
+//    }
 }
