@@ -16,9 +16,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StopoverDTO {
-  private Long stopoverNo; // pk
-  private Double stopoverX; // 경유지 x좌표
-  private Double stopoverY; // 경유지 x좌표
+  private Long viaPointId; // pk
+  private Double viaX; // 경유지 x좌표
+  private Double viaY; // 경유지 x좌표
   private Integer stopoverIdx; // 경유지 순서
   private Long mapNo; // 경유지를 가지고 있는 맵
 
@@ -32,9 +32,9 @@ public class StopoverDTO {
    * @brief: entity -> DTO
    */
   public StopoverDTO(final StopoverEntity entity) {
-    this.stopoverNo = entity.getStopoverNo();
-    this.stopoverX = entity.getStopoverX();
-    this.stopoverY = entity.getStopoverY();
+    this.viaPointId = entity.getViaPointId();
+    this.viaX = entity.getViaX();
+    this.viaY = entity.getViaY();
     this.stopoverIdx = entity.getStopoverIdx();
     this.mapNo = entity.getMapEntity().getMapNo();
   }
@@ -49,13 +49,13 @@ public class StopoverDTO {
    * @brief: DTO -> Entity
    */
 
-  public static StopoverEntity toEntity(final StopoverDTO stopoverDTO) {
+  public  StopoverEntity toEntity() {
     return StopoverEntity.builder()
-        .stopoverNo(stopoverDTO.getStopoverNo())
-        .stopoverX(stopoverDTO.getStopoverX())
-        .stopoverY(stopoverDTO.getStopoverY())
-        .stopoverIdx(stopoverDTO.getStopoverIdx())
-        .mapEntity(MapEntity.builder().mapNo(stopoverDTO.mapNo).build())
+        .viaPointId(viaPointId)
+        .viaX(viaX)
+        .viaY(viaY)
+        .stopoverIdx(stopoverIdx)
+        .mapEntity(MapEntity.builder().mapNo(mapNo).build())
         .build();
   }
 }
