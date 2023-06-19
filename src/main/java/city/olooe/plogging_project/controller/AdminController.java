@@ -39,7 +39,7 @@ public class AdminController {
      */
     @GetMapping("member")
     public ResponseEntity<?> getMembers(@AuthenticationPrincipal ApplicationUserPrincipal user) {
-        List<MemberEntity> members = adminService.getAll();
+        List<MemberEntity> members = adminService.getMemberAll();
 
         List<MemberDTO> memberDTOS = members.stream()
                 .map(member -> MemberDTO.builder()
@@ -86,10 +86,13 @@ public class AdminController {
     @GetMapping("point")
     public ResponseEntity<?> getPoints(@AuthenticationPrincipal ApplicationUserPrincipal user){
         List<PointHistoryEntity> points = adminService.getPointHistoryAll();
+        points.forEach(p -> log.warn("entity {}", p));
 
         List<PointHistoryDTO> pointHistoryDTOS = points.stream()
                 .map(PointHistoryDTO::new)
                 .collect(toList());
+        pointHistoryDTOS.forEach(p -> log.warn("dto {}", p));
+
         return ResponseEntity.ok().body(ResponseDTO.builder().data(pointHistoryDTOS).build());
     }
 
