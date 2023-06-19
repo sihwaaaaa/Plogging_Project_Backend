@@ -1,6 +1,7 @@
 package city.olooe.plogging_project.dto;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import city.olooe.plogging_project.model.BoardEntity;
 import city.olooe.plogging_project.model.MemberEntity;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardDTO {
-  private MemberEntity memberEntity; // 작성하는 회원
+  private Long memberNo; // 작성하는 회원
   private String userId; // 작성한 회원 아이디
   private Long bno; // 게시글 번호(PK)
   private String title; // 게시글 제목
@@ -42,7 +43,7 @@ public class BoardDTO {
    * @brief: DTO -> entity
    */
   public BoardEntity toEntity() {
-    return BoardEntity.builder().memberEntity(memberEntity).title(title).content(content).category(category).build();
+    return BoardEntity.builder().memberEntity(MemberEntity.builder().memberNo(memberNo).build()).title(title).content(content).category(category).regDate(new Date()).build();
   }
 
   /**
@@ -56,7 +57,7 @@ public class BoardDTO {
    */
   @Builder
   public BoardDTO(MemberEntity memberEntity, String title, String content, Integer category) {
-    this.memberEntity = memberEntity;
+    this.memberNo = memberEntity.getMemberNo();
     this.title = title;
     this.content = content;
     this.category = category;
@@ -92,6 +93,9 @@ public class BoardDTO {
     this.userId = boardEntity.getMemberEntity().getUserId();
     this.title = boardEntity.getTitle();
     this.content = boardEntity.getContent();
+//    this.regDate = boardEntity.getRegDate();
+    this.category = boardEntity.getCategory();
+
   }
 
 }

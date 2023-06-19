@@ -34,7 +34,8 @@ public class PloggingEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long ploggingNo;// pk
-  private Long userMapNo; // 브릿지 테이블pk
+  private Long mapNo;// fk
+  private Long memberNo;// fk
   private String type; // 유형 (제자리시작 / 목표지설정 / 추천경로 / 챌린지경로)
   private Date ploggingTime; // 이동시간
   private Date regDate; // 플로깅 날짜(insert날짜)

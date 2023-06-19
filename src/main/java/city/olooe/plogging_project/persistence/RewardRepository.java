@@ -17,7 +17,7 @@ import city.olooe.plogging_project.model.RewardEntity;
  */
 @Repository
 public interface RewardRepository extends JpaRepository<RewardEntity, Long> {
-    RewardEntity findByType(RewardTypeStatus type);
+    List<RewardEntity> findByType(RewardTypeStatus type);
 
 
     List<RewardEntity> findAllByType(RewardTypeStatus type);

@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import city.olooe.plogging_project.model.RewardEntity;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 
 @SpringBootTest
@@ -37,11 +38,19 @@ public class RewardRepositoryTest {
     }
 
     @Test
-    @DisplayName("리워드 유형 조회 테스트")
+    @DisplayName("리워드 유형 조회 테스트(랜덤박스 구성품)")
     @Transactional
-    public void findByTypeTest() {
-        RewardEntity rewardEntity = rewardRepository.findByType(RewardTypeStatus.Challenge);
+    public void findByProductListTest() {
+        List<RewardEntity> productlist = rewardRepository.findByType(RewardTypeStatus.Product);
 
-        log.info("{}", rewardEntity);
+        log.info("{}", productlist);
+    }
+
+    @Test
+    @DisplayName("리워드 유형 조회 테스트(기부처)")
+    public void findByDonationListTest() {
+        List<RewardEntity> donationlist = rewardRepository.findAllByType(RewardTypeStatus.Donation);
+
+        log.info("{}", donationlist);
     }
 }

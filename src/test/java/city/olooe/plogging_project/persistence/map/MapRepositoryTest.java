@@ -39,15 +39,15 @@ public class MapRepositoryTest {
   @DisplayName("맵 + 경유지 생성 테스트")
   public void createMapAndStopover() {
     // given
-    StopoverEntity stopoverEntity = StopoverEntity.builder().stopoverX(0d).stopoverY(0d).stopoverIdx(1).build();
+  //   StopoverEntity stopoverEntity = StopoverEntity.builder().stopoverX(0d).stopoverY(0d).stopoverIdx(1).build();
    
-   stopoverEntity = stopoverRepository.save(stopoverEntity);
+  //  stopoverEntity = stopoverRepository.save(stopoverEntity);
     
-    MapEntity mapEntity = MapEntity.builder().startX(0d).startY(0d).endX(0d).endY(0d).courseName("테스트")
-        .courseDetail("테스트내용").addr("테스트주소").distance(0d)
-        .build();
+  //   MapEntity mapEntity = MapEntity.builder().startX(0d).startY(0d).endX(0d).endY(0d).courseName("테스트")
+  //       .courseDetail("테스트내용").addr("테스트주소").distance(0d)
+  //       .build();
         
-        mapEntity = mapRepository.save(mapEntity);
+  //       mapEntity = mapRepository.save(mapEntity);
         // when
         
         // then

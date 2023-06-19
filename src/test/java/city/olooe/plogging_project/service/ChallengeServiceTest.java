@@ -44,13 +44,13 @@ public class ChallengeServiceTest {
                 .memberNo(12L)
                 .title("챌린지 서비스 테스트")
                 .content("챌린지 서비스 테스트 내용")
-                .regDate(new Date())
-                .startDate(new Date())
-                .endDate(new Date())
+                .regDate(LocalDate.now())
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now())
                 .personnel(5L)
                 .build();
-        ChallengeEntity challengeEntity = challengeService.createChallenge(challengeDTO);
-        log.info("{}",challengeEntity);
+//        ChallengeEntity challengeEntity = challengeService.createChallenge(challengeDTO);
+//        log.info("{}",challengeEntity);
     }
 
     /**

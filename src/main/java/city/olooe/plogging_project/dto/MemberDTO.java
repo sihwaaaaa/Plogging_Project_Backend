@@ -7,10 +7,14 @@ import java.util.stream.Collectors;
 import city.olooe.plogging_project.model.AuthEntity;
 import city.olooe.plogging_project.model.AuthType;
 import city.olooe.plogging_project.model.MemberEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import static java.util.stream.Collectors.*;
 
 import static java.util.stream.Collectors.*;
 
@@ -23,6 +27,7 @@ import static java.util.stream.Collectors.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Slf4j
 public class MemberDTO {
 
   private String token; // 토큰 문자열
@@ -32,10 +37,12 @@ public class MemberDTO {
   private String password; // 회원 비밀번호
   private String userName; // 회원 닉네임
   private String email; // 이메일
+  @JsonFormat
   private Date regDate; // 등록일자
   private String address; // 주소
   private String addressDetail; // 세부 주소
   private String nickName; // 닉네임
+  @JsonFormat
   private Date birth; // 생년월일
   private String gender; // 성별
   private String authProvider; // 권한 공급자
@@ -48,24 +55,6 @@ public class MemberDTO {
    * @brief: 회원가입용 dto 생성
    * @param entity
    */
-  // public MemberDTO(final MemberEntity entity) {
-
-  // MemberDTO.builder()
-  // .memberNo(entity.getMemberNo())
-  // .userId(entity.getUserId())
-  // .password(entity.getPassword())
-  // .userName(entity.getUserName())
-  // .email(entity.getEmail())
-  // .regDate(entity.getRegDate())
-  // .address(entity.getAddress())
-  // .addressDetail(entity.getAddressDetail())
-  // .nickName(entity.getNickName())
-  // .birth(entity.getBirth())
-  // .gender(entity.getGender())
-  // .authProvider(entity.getAuthProvider())
-  // .build();
-  // }
-
   public MemberDTO(final MemberEntity memberEntity) {
     this.memberNo = memberEntity.getMemberNo();
     this.userId = memberEntity.getUserId();

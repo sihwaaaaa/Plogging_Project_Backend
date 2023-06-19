@@ -12,7 +12,8 @@ import lombok.RequiredArgsConstructor;
 public enum FriendStatusType {
     PENDING("PENDING", "플친요청대기"), // 플친 요청 대기
     FRIEND("FRIEND", "플친중"), // 플친
-    BLOCK("BLOCK", "차단"); // 차단
+    BLOCK("BLOCK", "차단"), // 차단
+    NOTHING("NOTHING", "비플친"); //비플친
 
     @Getter
     private final String key;

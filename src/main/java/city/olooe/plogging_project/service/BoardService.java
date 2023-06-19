@@ -40,8 +40,9 @@ public class BoardService {
    * @brief: 게시물 작성 서비스
    */
   @Transactional
-  public Long create(BoardDTO boardCreateDTO) {
-    return boardRepository.save(boardCreateDTO.toEntity()).getBno();
+  public BoardEntity create(BoardDTO boardCreateDTO) {
+    return boardRepository.save(boardCreateDTO.toEntity());
+    //저장할때 bno를 어케 알아요?
   }
 
   /**

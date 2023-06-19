@@ -71,19 +71,19 @@ public class MapDTO {
    * 
    * @brief: MapDTO를 MapEntity로 변환
    */
-  // public static MapEntity toEntity(final MapDTO mapDTO) {
-  //   return MapEntity.builder()
-  //       .mapNo(mapDTO.getMapNo())
-  //       .startX(mapDTO.getStartX())
-  //       .startY(mapDTO.getStartY())
-  //       .endX(mapDTO.getEndX())
-  //       .endY(mapDTO.getEndY())
-  //       .courseName(mapDTO.getCourseName())
-  //       .courseDetail(mapDTO.getCourseDetail())
-  //       .addr(mapDTO.getAddr())
-  //       .distance(mapDTO.getDistance())
-  //       .time(mapDTO.getTime())
-  //       .stops(mapDTO.getStops())
-  //       .build();
-  // }
+  public MapEntity toEntity() {
+    return MapEntity.builder()
+        .mapNo(mapNo)
+        .startX(startX)
+        .startY(startY)
+        .endX(endX)
+        .endY(endY)
+        .courseName(courseName)
+        .courseDetail(courseDetail)
+        .addr(addr)
+        .distance(distance)
+        .time(time)
+        .stops(stops.stream().map(StopoverDTO::toEntity).collect(Collectors.toList()))
+        .build();
+  }
 }

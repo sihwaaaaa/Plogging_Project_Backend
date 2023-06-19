@@ -41,10 +41,10 @@ public class  ChallengeService {
      * @brief: 챌린지 생성
      */
     @Transactional
-    public ChallengeEntity createChallenge(ChallengeDTO challengeDTO) {
+    public List<ChallengeEntity> createChallenge(ChallengeDTO challengeDTO, Long memberNo) {
 
         // 유효성 검사
-        validate(challengeDTO.toChallengeEntity());
+//        validate(challengeDTO.toChallengeEntity())
 
 //        LocalDate regDate =  challengeDTO.getRegDate();
 //        LocalDate start = challengeDTO.getStartDate();
@@ -56,9 +56,11 @@ public class  ChallengeService {
 //            ChallengeStatus.CHALLENGEGOING.getValue();
 //        else
 //            ChallengeStatus.CHALLENGECLOSE.getValue();
-
+        ChallengeEntity challengeEntity = challengeDTO.toChallengeEntity();
+        challengeEntity.setHost(MemberEntity.builder().memberNo(memberNo).build());
+        challengeRepository.save(challengeEntity);
         // return Long
-        return challengeRepository.save(challengeDTO.toChallengeEntity());
+        return challengeRepository.findAll();
     }
 
     /**

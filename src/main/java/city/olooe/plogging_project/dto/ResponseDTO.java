@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ResponseDTO {
+public class ResponseDTO<T> {
   private String error;
-  private List<?> data;
+  private T data;
 }
 
 //public class ResponseDTO<T> {
