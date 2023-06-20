@@ -43,9 +43,9 @@ public class ChallengeServiceTest {
                 .memberNo(12L)
                 .title("챌린지 서비스 테스트")
                 .content("챌린지 서비스 테스트 내용")
-                .regDate(LocalDate.now())
-                .startDate(LocalDate.now())
-                .endDate(LocalDate.now())
+                .regDate(new Date())
+                .startDate(new Date())
+                .endDate(new Date())
                 .personnel(5L)
                 .build();
 //        ChallengeEntity challengeEntity = challengeService.createChallenge(challengeDTO);

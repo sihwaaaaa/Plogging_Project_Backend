@@ -138,4 +138,18 @@ public class ChallengeEntityTest {
         ChallengeScheduleEntity challengeScheduleEntity = challengeScheduleRepository.findByScheduleNo(2L);
         challengeScheduleRepository.delete(challengeScheduleEntity);
     }
+
+    /**
+     * @author : 김민수
+     * @date: '23.06.05
+     * @brief: 챌린지별 인원 카운트
+     */
+    @Test
+    @DisplayName("챌린지별 인원수")
+    public void challengeMemberCount(){
+        // 필요한 파라미터, ChMemberEntity  chNo, Challenge chNo
+        ChallengeMemberEntity challengeMemberEntity = challengeMemberRepository.findByChNo(10L);
+        ChallengeEntity entity = challengeRepository.findByChNo(10L);
+        log.info("{}", challengeRepository.findChallengeMemberCount(challengeMemberEntity,entity));
+    }
 }
