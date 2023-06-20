@@ -70,7 +70,6 @@ public class PloggingController {
     public void createPlogging(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody Map<String,Object> dtos){
       PloggingDTO ploggingDTO = objectMapper.convertValue(dtos.get("plogging"), PloggingDTO.class);
       MapDTO mapDTO = objectMapper.convertValue(dtos.get("map"), MapDTO.class);
-
       ploggingService.insertPlogging(ploggingDTO, user.getMember().getMemberNo(),mapDTO);
     }
 

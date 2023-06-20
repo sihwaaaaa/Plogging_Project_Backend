@@ -73,8 +73,9 @@ public class PloggingService {
   public void insertPlogging(PloggingDTO dto, Long memberNo,MapDTO mapDTO) {
     
     if (mapDTO.getMapNo() == null) {
-    Long  mapNo = repository.save(mapDTO.toEntityNotStops()).getMapNo();
+    Long mapNo = repository.save(mapDTO.toEntityNotStops()).getMapNo();
       dto.setMapNo(mapNo);
+      log.info("{}",mapNo);
     }else{
       dto.setMapNo(mapDTO.getMapNo());
     }
