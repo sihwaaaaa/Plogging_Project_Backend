@@ -21,6 +21,7 @@ import city.olooe.plogging_project.model.AuthType;
 import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.persistence.AuthRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import java.util.stream.Collectors;
 
@@ -30,17 +31,14 @@ import java.util.stream.Collectors;
  * @brief: 비즈니스 계층의 회원 서비스
  */
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class MemberService {
 
-  @Autowired
-  private MemberRepository memberRepository; // 멤버 jpa 구현체 빈 등록
-  @Autowired
-  private AuthRepository authRepository;
-  @Autowired
-  private ChallengeRepository challengeRepository;
-  @Autowired
-  private FriendRepository friendRepository;
+  private final MemberRepository memberRepository; // 멤버 jpa 구현체 빈 등록
+  private final AuthRepository authRepository;
+  private final ChallengeRepository challengeRepository;
+  private final FriendRepository friendRepository;
 
   /**
    * @author: 박연재

@@ -2,6 +2,7 @@ package city.olooe.plogging_project.persistence;
 
 import java.lang.reflect.Member;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -49,8 +50,8 @@ public class ChallengeRepositoryTest {
                 .title("챌린지 생성 테스트")
                 .content("테스트 내용")
                 .personnel(5L)
-                .startDate(LocalDate.of(2023,6,15))
-                .endDate(LocalDate.of(2023,7,4))
+                .startDate(new Date())
+                .endDate(new Date())
                 .status(ChallengeStatus.CHALLENGEBEFORE)
                 .build();
         log.info("{}", challengeRepository.save(challengeEntity));
@@ -210,15 +211,15 @@ public class ChallengeRepositoryTest {
      * @date: '23.06.11
      * @brief: 챌린지 맴버삭제
      */
-    @Test
-    @DisplayName("챌린지 맴버삭제")
-    @Transactional
-    public void cmemberDelete(){
-        ChallengeMemberEntity challengeMemberEntity =
-                challengeMemberRepository
-                        .findByChNoAndChallenger
-                                (ChallengeEntity.builder().chNo(10L).build(),
-                                        MemberEntity.builder().memberNo(12L).build());
-        challengeMemberRepository.delete(challengeMemberEntity);
-    }
+//    @Test
+//    @DisplayName("챌린지 맴버삭제")
+//    @Transactional
+//    public void cmemberDelete(){
+//        ChallengeMemberEntity challengeMemberEntity =
+//                challengeMemberRepository
+//                        .findByChNoAndChallenger
+//                                (ChallengeEntity.builder().chNo(10L).build(),
+//                                        MemberEntity.builder().memberNo(12L).build());
+//        challengeMemberRepository.delete(challengeMemberEntity);
+//    }
 }

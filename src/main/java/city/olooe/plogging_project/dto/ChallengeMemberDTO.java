@@ -1,5 +1,6 @@
 package city.olooe.plogging_project.dto;
 
+import java.lang.reflect.Member;
 import java.util.Date;
 
 import city.olooe.plogging_project.model.ChallengeEntity;
@@ -16,8 +17,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ChallengeMemberDTO {
     private Long cmemberNo;
-    private ChallengeEntity chNo;
-    private MemberEntity challenger;
+    private Long chNo;
+    private Long challenger;
     private Date regDate;
 
     /*
@@ -34,8 +35,8 @@ public class ChallengeMemberDTO {
     public static ChallengeMemberEntity chToEntity(final ChallengeMemberDTO challengeMemberDTO) {
         return ChallengeMemberEntity.builder()
                 .cmemberNo(challengeMemberDTO.getCmemberNo())
-                .chNo(challengeMemberDTO.getChNo())
-                .challenger(challengeMemberDTO.getChallenger())
+                .chNo(ChallengeEntity.builder().chNo(challengeMemberDTO.chNo).build())
+                .challenger(MemberEntity.builder().memberNo(challengeMemberDTO.challenger).build())
                 .regDate(challengeMemberDTO.regDate)
                 .build();
     }
@@ -50,7 +51,24 @@ public class ChallengeMemberDTO {
      * @brief: DTO -> entity
      */
     public ChallengeMemberEntity toChallengeMemberEntity() {
-        return ChallengeMemberEntity.builder().cmemberNo(cmemberNo).chNo(chNo).challenger(challenger).regDate(regDate)
+        return ChallengeMemberEntity.builder().cmemberNo(cmemberNo).chNo(ChallengeEntity.builder().chNo(chNo).build())
+                .challenger(MemberEntity.builder().memberNo(challenger).build()).regDate(regDate)
+                .build();
+    }
+
+
+    /**
+     * @author : 김민수
+     * @date: 23.06.16
+     *
+     * @param: -
+     * @return: entity
+     *
+     * @brief: DTO -> entity
+     */
+    public ChallengeMemberEntity toChMemberDelete() {
+        return ChallengeMemberEntity.builder().cmemberNo(cmemberNo)
+                .chNo(ChallengeEntity.builder().chNo(chNo).build()).challenger(MemberEntity.builder().memberNo(challenger).build())
                 .build();
     }
 

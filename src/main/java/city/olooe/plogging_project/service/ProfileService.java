@@ -1,13 +1,17 @@
 package city.olooe.plogging_project.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import city.olooe.plogging_project.model.BoardEntity;
 import city.olooe.plogging_project.model.ChallengeEntity;
+import city.olooe.plogging_project.model.ChallengeMemberEntity;
 import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.model.map.PloggingEntity;
 import city.olooe.plogging_project.persistence.BoardRepository;
 import city.olooe.plogging_project.persistence.ChallengeMemberRepository;
 import city.olooe.plogging_project.persistence.ChallengeRepository;
@@ -19,32 +23,41 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class ProfileService {
 
-  @Autowired
-  private MemberRepository memberRepository;
+  private final MemberRepository memberRepository;
 
-  @Autowired
-  private ChallengeRepository challengeRepository;
+  private final ChallengeRepository challengeRepository;
 
-  @Autowired
-  private PointHistoryRepository pointHistoryRepository;
+  private final PointHistoryRepository pointHistoryRepository;
 
-  @Autowired
-  private BoardRepository boardRepository;
+  private final BoardRepository boardRepository;
 
-  @Autowired
-  private PloggingRepository ploggingRepository;
+  private final PloggingRepository ploggingRepository;
 
-  @Autowired
-  private ChallengeMemberRepository challengeMemberRepository;
+  private final ChallengeMemberRepository challengeMemberRepository;
 
-  @Autowired
-  private ChallengeScheduleRepository challengeScheduleRepository;
+  private final ChallengeScheduleRepository challengeScheduleRepository;
 
-  public List<ChallengeEntity> searchByMember(final MemberEntity member) {
-    return challengeRepository.findByMember(member, Pageable.unpaged());
+  public List<ChallengeEntity> searchChallengeDetailByMember(final MemberEntity member) {
+    // List<ChallengeMemberEntity> challengeMemberEntities =
+    // challengeMemberRepository.findByChallenger(member);
+    return memberRepository.findByUserId(member.getUserId()).getMyChallengesDetail();
   }
+
+  public List<PloggingEntity> searchPloggingByMember(final MemberEntity member) {
+    return memberRepository.findByUserId(member.getUserId()).getPloggingEntities();
+  }
+
+  public List<BoardEntity> searchBoardByMember(final MemberEntity member) {
+    return memberRepository.findByUserId(member.getUserId()).getBoardEntities();
+  }
+
+  // public List<ChallengeMemberEntity> searchChallengesByMember(final
+  // MemberEntity member) {
+  // return memberRepository.findByUserId(member.getUserId()).getMyChallenges();
+  // }
 
 }

@@ -86,4 +86,18 @@ public class MapDTO {
         .stops(stops.stream().map(StopoverDTO::toEntity).collect(Collectors.toList()))
         .build();
   }
+  public MapEntity toEntityNotStops() {
+    return MapEntity.builder()
+        .mapNo(mapNo)
+        .startX(startX)
+        .startY(startY)
+        .endX(endX)
+        .endY(endY)
+        .courseName(courseName)
+        .courseDetail(courseDetail)
+        .addr(addr)
+        .distance(distance)
+        .time(time)
+        .build();
+  }
 }

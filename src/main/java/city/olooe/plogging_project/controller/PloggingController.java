@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,13 +65,14 @@ public class PloggingController {
         // }
         return ResponseEntity.ok().body(dto);
     }
-    @PostMapping("/startPage")
-    public void createPlogging(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody PloggingDTO ploggingDTO){
-      log.info("{}",ploggingDTO);
-      // ploggingService.insertPlogging(ploggingDTO, user.getMember().getMemberNo(),mapDTO);
-      return ;
+    ObjectMapper objectMapper = new ObjectMapper();
+    @PutMapping("/startPage")
+    public void createPlogging(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody Map<String,Object> dtos){
+      PloggingDTO ploggingDTO = objectMapper.convertValue(dtos.get("plogging"), PloggingDTO.class);
+      MapDTO mapDTO = objectMapper.convertValue(dtos.get("map"), MapDTO.class);
+
+      ploggingService.insertPlogging(ploggingDTO, user.getMember().getMemberNo(),mapDTO);
     }
-// ObjectMapper objectMapper = new ObjectMapper();
 
     //받을때 맵 스트링 오브젝트로 받아와서 변경 해야함 json의 시작은 항상 {}
     // @PutMapping("/updateLon")

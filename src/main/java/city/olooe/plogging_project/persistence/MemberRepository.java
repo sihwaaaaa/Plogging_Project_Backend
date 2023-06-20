@@ -67,14 +67,14 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
    */
   Page<MemberEntity> findByUserIdContainingIgnoreCase(String keyword, Pageable pageable);
 
-  /**
-   * @author 박연재
-   * @date 2023-06-19
-   * @brief 해당 멤버의 챌린지들을 최신 등록순으로 조회
-   * @param member
-   * @param pageable
-   * @return
-   */
+  // /**
+  // * @author 박연재
+  // * @date 2023-06-19
+  // * @brief 해당 멤버의 챌린지들을 최신 등록순으로 조회
+  // * @param member
+  // * @param pageable
+  // * @return
+  // */
   // @Query("select tm\r\n" + //
   // "from MemberEntity tm\r\n" + //
   // "join tm.myChallenges tc\r\n" +
