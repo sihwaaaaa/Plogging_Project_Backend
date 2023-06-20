@@ -16,4 +16,7 @@ public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Long
     // Optional<ChallengeEntity> findByChNoOptional(Long chNo);
     ChallengeEntity findByChNoAndHost(Long chNo, Long host);
     List<ChallengeEntity> findChallengeEntityByOrderByChNoDesc();
+
+    @Query("select ch from ChallengeEntity ch left join ch.ChallengeMembers cm where cm.challenger = :member order by cm.cmemberNo")
+    List<ChallengeEntity> findMyChallenges(MemberEntity member, Pageable pageable);
 }
