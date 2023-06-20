@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.*;
 
@@ -29,7 +30,6 @@ import lombok.ToString;
  * @brief: 멤버 엔티티
  */
 @DynamicInsert
-@ToString
 @Entity
 @Getter
 @Builder
@@ -77,6 +77,12 @@ public class MemberEntity implements Serializable {
   @OneToMany(mappedBy = "chNo", fetch = FetchType.LAZY)
   private List<ChallengeEntity> myChallengesDetail = new ArrayList<>();
 
+  @OneToMany(mappedBy = "memberNo", fetch = FetchType.LAZY)
+  private List<PloggingEntity> ploggingEntities = new ArrayList<>();
+
+  @OneToMany(mappedBy = "memberEntity", fetch = FetchType.LAZY)
+  private List<BoardEntity> boardEntities = new ArrayList<>();
   // @OneToMany(mappedBy = "chNo")
   // private List<PloggingEntity> ploggingEntities = new ArrayList<>();
+
 }
