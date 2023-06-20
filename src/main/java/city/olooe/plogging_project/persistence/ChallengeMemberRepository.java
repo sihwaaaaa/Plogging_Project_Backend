@@ -16,5 +16,7 @@ import java.lang.reflect.Member;
 public interface ChallengeMemberRepository extends JpaRepository<ChallengeMemberEntity, Long> {
     ChallengeMemberEntity findByCmemberNo(Long cmemberNo);
 
+    ChallengeMemberEntity findByChNo(Long chNo);
+
     ChallengeMemberEntity findByChNoAndChallenger(ChallengeMemberDTO chNo, ChallengeMemberDTO challenger);
 }

@@ -25,7 +25,6 @@ import lombok.ToString;
 @Entity
 @Table(name = "tbl_challenge")
 @DynamicInsert
-@ToString
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ChallengeEntity {
 
