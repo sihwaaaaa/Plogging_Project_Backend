@@ -53,8 +53,13 @@ public class MemberDTO {
   private String intro;
   private List<String> authList; // 권한
 
-  private List<ChallengeEntity> challengeEntities = new ArrayList<>();
-  private List<ChallengeMemberEntity> challengeMemberEntities = new ArrayList<>();
+//  private List<ChallengeEntity> challengeEntities = new ArrayList<>();
+//  private List<ChallengeMemberEntity> challengeMemberEntities = new ArrayList<>();
+
+
+  // 연재야! dto에서는 entity를 사용하지 않아야 해~~ List<String>이라던가 List<Long> 같이 바꾸는게 어떠니?
+  // -은경
+
 
   /**
    * @author: 박연재
@@ -75,8 +80,7 @@ public class MemberDTO {
     this.birth = memberEntity.getBirth();
     this.gender = memberEntity.getGender();
     this.authProvider = memberEntity.getAuthProvider();
-    this.challengeEntities = memberEntity.getMyChallengesDetail();
-    this.challengeMemberEntities = memberEntity.getMyChallenges();
+//    this.challengeEntities = memberEntity.getChallengeEntities();
   }
 
   /**

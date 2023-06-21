@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import city.olooe.plogging_project.dto.BoardDTO;
+import city.olooe.plogging_project.dto.community.BoardDTO;
 import city.olooe.plogging_project.dto.ChallengeDTO;
 import city.olooe.plogging_project.dto.ChallengeMemberDTO;
 import city.olooe.plogging_project.dto.MemberDTO;
 import city.olooe.plogging_project.dto.PointHistoryDTO;
 import city.olooe.plogging_project.dto.ResponseDTO;
 import city.olooe.plogging_project.dto.map.PloggingDTO;
-import city.olooe.plogging_project.model.BoardEntity;
+import city.olooe.plogging_project.model.community.BoardEntity;
 import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.ChallengeMemberEntity;
 import city.olooe.plogging_project.model.MemberEntity;

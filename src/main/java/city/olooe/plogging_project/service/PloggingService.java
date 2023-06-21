@@ -10,11 +10,11 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import city.olooe.plogging_project.dto.BoardDTO;
+import city.olooe.plogging_project.dto.community.BoardDTO;
 import city.olooe.plogging_project.dto.map.MapDTO;
 import city.olooe.plogging_project.dto.map.PloggingDTO;
 import city.olooe.plogging_project.dto.map.StopoverDTO;
-import city.olooe.plogging_project.model.BoardEntity;
+import city.olooe.plogging_project.model.community.BoardEntity;
 import city.olooe.plogging_project.model.map.MapEntity;
 import city.olooe.plogging_project.model.map.StopoverEntity;
 import city.olooe.plogging_project.persistence.MapRepository;
