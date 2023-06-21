@@ -48,23 +48,6 @@ public interface PointHistoryRepository extends JpaRepository<PointHistoryEntity
      */
     List<PointHistoryEntity> findByStatus(boolean status);
 
-    /*
-     * @author 이재원
-     * @date 23.06.14
-     * @param MemberEntity
-     * @return MemberNo
-     * @Brief 멤버 번호 조회
-     */
-//    PointHistoryEntity findByMemberNo(MemberEntity memberNo);
-    /*
-     * @author 이재원
-     * @date 23.06.14
-     * @param MemberEntity
-     * @return MemberNo
-     * @Brief 멤버 번호의 포인트를 누적
-     */
-//    List<PointHistoryEntity> findByMemberNoAndPoint(MemberEntity memberNo, Long point);
-
     @Query(value = "SELECT sum(point) FROM PointHistoryEntity")
     public Long totalPoint();
 
@@ -72,4 +55,18 @@ public interface PointHistoryRepository extends JpaRepository<PointHistoryEntity
     public Long sumPoint(@Param("memberNo") MemberEntity memberNo);
 
     List<PointHistoryEntity> findByMemberNo(MemberEntity memberEntity);
+
+//    @Query(value = "SELECT ph.memberNo, ph.type, sum(ph.point) FROM MemberEntity m LEFT JOIN PointHistoryEntity ph on m.memberNo = ph.memberNo WHERE m.memberNo = :memberNo")
+//    public List<PointHistoryEntity> findByPointList(@Param("memberNo") MemberEntity memberNo);
+
+//    @Query(value = "select tp.memberNo, sum(tp.point), RANK() OVER (ORDER BY sum (tp.point) DESC) RANK from PointHistoryEntity tp")
+//    public List<PointHistoryEntity> findByPointList(MemberEntity memberEntity);
+//
+//    @Query(value = "select tp.memberNo, sum(tp.point), RANK() OVER (order by sum (tp.point) DESC) rank from PointHistoryEntity tp")
+//    public List<PointHistoryEntity> findByPointList2(Long memberNo);
 }
+//    select tp.memberNo, sum(tp.point),
+//        RANK() OVER (ORDER BY sum(tp.point) DESC) RANK2
+//        from tbl_pointhistory tp
+//        group by tp.memberNo
+//        order by 2 desc limit 5;

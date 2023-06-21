@@ -20,7 +20,7 @@ public class RewardController {
     @AutoConfigureOrder
     private final RewardService rewardService;
 
-    /*
+    /**
      * @Author 이재원
      * @Date 23.06.13
      * @param rewardNo
@@ -33,6 +33,13 @@ public class RewardController {
         return rewardService.GetRewardList();
     }
 
+    /**
+     * @Author 이재원
+     * @Date 23.06.13
+     * @param type
+     * @return GetRewardTypeList
+     * @Brief 리워드 전체 조회
+     */
     @GetMapping("/list/{type}")
     public List<RewardEntity> GetRewardType(@PathVariable String type) {
         return rewardService.GetRewardTypeList(type);
