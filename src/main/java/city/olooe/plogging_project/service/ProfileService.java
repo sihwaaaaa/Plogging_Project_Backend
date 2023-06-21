@@ -29,35 +29,23 @@ public class ProfileService {
 
   private final MemberRepository memberRepository;
 
-  private final ChallengeRepository challengeRepository;
-
-  private final PointHistoryRepository pointHistoryRepository;
-
-  private final BoardRepository boardRepository;
-
-  private final PloggingRepository ploggingRepository;
-
-  private final ChallengeMemberRepository challengeMemberRepository;
-
-  private final ChallengeScheduleRepository challengeScheduleRepository;
-
-  public List<ChallengeEntity> searchChallengeDetailByMember(final MemberEntity member) {
-    // List<ChallengeMemberEntity> challengeMemberEntities =
-    // challengeMemberRepository.findByChallenger(member);
-    return memberRepository.findByUserId(member.getUserId()).getMyChallengesDetail();
+  public MemberEntity searchChallengeDetailByMember(final MemberEntity member) {
+    return memberRepository.containChallengeByMemberEntity(member);
   }
 
-  public List<PloggingEntity> searchPloggingByMember(final MemberEntity member) {
-    return memberRepository.findByUserId(member.getUserId()).getPloggingEntities();
+  public MemberEntity searchPloggingByMember(final MemberEntity member) {
+    return memberRepository.containPloggingByMemberEntity(member);
+  }
+
+  public MemberEntity searchPointHistoryByMember(final MemberEntity member) {
+    return memberRepository.containPointHistoryByMemberEntity(member);
   }
 
   public List<BoardEntity> searchBoardByMember(final MemberEntity member) {
     return memberRepository.findByUserId(member.getUserId()).getBoardEntities();
   }
 
-  // public List<ChallengeMemberEntity> searchChallengesByMember(final
-  // MemberEntity member) {
-  // return memberRepository.findByUserId(member.getUserId()).getMyChallenges();
-  // }
+
+
 
 }

@@ -38,91 +38,74 @@ import city.olooe.plogging_project.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author 박연재
+ * 
+ * @date 23.06.22
+ * 
+ * @brief 프로필 관련 기능
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("profile")
 @Slf4j
 public class ProfileController {
 
-  private final PointHistoryService pointService;
-
-  // private final ChallengeService challengeService;
   private final MemberService memberService;
-
   private final ProfileService profileService;
 
-  // private final ProfileService boardService;
 
-  @GetMapping("challenge")
+  /**
+   * @author 박연재
+   * @date 23.06.22
+   * @param member
+   * @return
+   */
+  @GetMapping({"challenge", "plogging", "point"})
   public ResponseEntity<?> challenge(@AuthenticationPrincipal ApplicationUserPrincipal member) {
+    // return responseContent(profileService.searchChallengeDetailByMember(member.getMember()), "챌린저 내역 불러오기 실패!");
+    return responseContent(memberService.getMember(member.getMember()), "챌린저 내역 불러오기 실패!");
+  }
 
-    // 해당 회원의 모든 챌린지들 조회 ( 페이져 = false )
+  // @GetMapping("plogging")
+  // public ResponseEntity<?> plogging(@AuthenticationPrincipal ApplicationUserPrincipal member) {
+  //   return responseContent(profileService.searchPloggingByMember(member.getMember()), "플로깅 내역 조회 실패!");
+  // }
+
+  // @GetMapping("board")
+  // public ResponseEntity<?> myBoard(@AuthenticationPrincipal ApplicationUserPrincipal member) {
+  //   try {
+  //     List<BoardEntity> boardEntities = profileService.searchBoardByMember(member.getMember());
+  //     log.info("{}", boardEntities);
+  //     List<BoardDTO> boardDTOs = boardEntities.stream().map(BoardDTO::new).collect(Collectors.toList());
+  //     ResponseDTO response = ResponseDTO.builder().data(boardDTOs).build();
+  //     return ResponseEntity.ok().body(response);
+  //   } catch (Exception e) {
+  //     ResponseDTO response = ResponseDTO.builder().error("실패!").build();
+  //     return ResponseEntity.badRequest().body(response);
+  //   }
+  // }
+
+  // @GetMapping("point")
+  // public ResponseEntity<?> point(@AuthenticationPrincipal ApplicationUserPrincipal member) {
+  //   return responseContent(profileService.searchPointHistoryByMember(member.getMember()), "포인트 내역 조회 실패!");
+  // }
+
+  // @GetMapping("declare")
+  // public void declare(@AuthenticationPrincipal ApplicationUserPrincipal member) {
+
+  // }
+
+  private ResponseEntity<?> responseContent(MemberEntity member, String errorMsg){
+    ResponseDTO response = null;
     try {
-      // List<ChallengeMemberEntity> challengeMemberEntities = profileService.search
-      List<ChallengeEntity> challengeEntities = profileService.searchChallengeDetailByMember(member.getMember());
-
-      // List<> challengeEntities = profileService.searchByMember(member.getMember());
-      List<ChallengeDTO> challengeDTOs = challengeEntities.stream().map(ChallengeDTO::new)
-          .collect(Collectors.toList());
-      // System.out.println(challengeDTOs);
-      ResponseDTO response = ResponseDTO.builder().data(challengeDTOs).build();
+      MemberDTO memberDTO = new MemberDTO(member);
+      response = ResponseDTO.builder().data(memberDTO).build();
       return ResponseEntity.ok().body(response);
     } catch (Exception e) {
-      ResponseDTO response = ResponseDTO.builder().error("실패!").build();
+      response = ResponseDTO.builder().error(errorMsg).build();
       return ResponseEntity.badRequest().body(response);
     }
+    
   }
-
-  @GetMapping("plogging")
-  public ResponseEntity<?> plogging(@AuthenticationPrincipal ApplicationUserPrincipal member) {
-    try {
-      List<PloggingEntity> ploggingEntities = profileService.searchPloggingByMember(member.getMember());
-
-      log.info("{}", ploggingEntities);
-      List<PloggingDTO> ploggingDTOs = ploggingEntities.stream().map(PloggingDTO::new).collect(Collectors.toList());
-      ResponseDTO response = ResponseDTO.builder().data(ploggingDTOs).build();
-      return ResponseEntity.ok().body(response);
-    } catch (Exception e) {
-      ResponseDTO response = ResponseDTO.builder().error("실패!").build();
-      return ResponseEntity.badRequest().body(response);
-    }
-  }
-
-  @GetMapping("board")
-  public ResponseEntity<?> myBoard(@AuthenticationPrincipal ApplicationUserPrincipal member) {
-    try {
-      List<BoardEntity> boardEntities = profileService.searchBoardByMember(member.getMember());
-      log.info("{}", boardEntities);
-      List<BoardDTO> boardDTOs = boardEntities.stream().map(BoardDTO::new).collect(Collectors.toList());
-      ResponseDTO response = ResponseDTO.builder().data(boardDTOs).build();
-      return ResponseEntity.ok().body(response);
-    } catch (Exception e) {
-      ResponseDTO response = ResponseDTO.builder().error("실패!").build();
-      return ResponseEntity.badRequest().body(response);
-    }
-  }
-
-  @GetMapping("point")
-  public ResponseEntity<?> point(@AuthenticationPrincipal ApplicationUserPrincipal member) {
-
-    try {
-      List<PointHistoryEntity> pointList = pointService.GetMemberList(member.getMember(),
-          RewardTypeStatus.Donation.getKey());
-      List<PointHistoryDTO> pointDto = pointList.stream().map(PointHistoryDTO::new).collect(Collectors.toList());
-      log.info("{}", pointList);
-      // log.info("{}", o.get(0).getPointNo());
-      // log.info("{}", pointDto.get(0).getPointNo());
-      ResponseDTO responseDTO = ResponseDTO.builder().data(pointDto).build();
-      return ResponseEntity.ok().body(responseDTO);
-    } catch (Exception e) {
-      ResponseDTO responseDTO = ResponseDTO.builder().error("포인트 내역 불러오기 실패!").build();
-      return ResponseEntity.badRequest().body(responseDTO);
-    }
-  }
-
-  @GetMapping("declare")
-  public void declare(@AuthenticationPrincipal ApplicationUserPrincipal member) {
-
-  }
-
 }
