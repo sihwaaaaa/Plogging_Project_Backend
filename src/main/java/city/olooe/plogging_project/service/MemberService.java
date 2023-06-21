@@ -19,6 +19,7 @@ import city.olooe.plogging_project.dto.MemberDTO;
 import city.olooe.plogging_project.model.AuthEntity;
 import city.olooe.plogging_project.model.AuthType;
 import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.model.friend.FriendStatusType;
 import city.olooe.plogging_project.persistence.AuthRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +62,10 @@ public class MemberService {
     }
     // memberEntity.set(Collections.singletonList(Authority.builder().name("ROLE_USER").build()));
     return memberRepository.save(memberEntity);
+  }
+
+  public MemberEntity getMember(final MemberEntity memberEntity){
+    return memberRepository.findByUserId(memberEntity.getUserId());
   }
 
   public void createAuth(final MemberEntity member) {

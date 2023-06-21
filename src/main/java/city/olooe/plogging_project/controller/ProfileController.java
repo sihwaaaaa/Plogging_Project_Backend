@@ -64,7 +64,7 @@ public class ProfileController {
   @GetMapping({"challenge", "plogging", "point"})
   public ResponseEntity<?> challenge(@AuthenticationPrincipal ApplicationUserPrincipal member) {
     // return responseContent(profileService.searchChallengeDetailByMember(member.getMember()), "챌린저 내역 불러오기 실패!");
-    return responseContent(memberService.getMember(member.getMember()), "챌린저 내역 불러오기 실패!");
+    return responseContent(profileService.searchChallengeDetailByMember(member.getMember()), "챌린저 내역 불러오기 실패!");
   }
 
   // @GetMapping("plogging")
