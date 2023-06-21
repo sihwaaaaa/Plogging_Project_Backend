@@ -21,6 +21,7 @@ import city.olooe.plogging_project.model.AuthType;
 import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.persistence.AuthRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import java.util.stream.Collectors;
 
@@ -30,17 +31,14 @@ import java.util.stream.Collectors;
  * @brief: 비즈니스 계층의 회원 서비스
  */
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class MemberService {
 
-  @Autowired
-  private MemberRepository memberRepository; // 멤버 jpa 구현체 빈 등록
-  @Autowired
-  private AuthRepository authRepository;
-  @Autowired
-  private ChallengeRepository challengeRepository;
-  @Autowired
-  private FriendRepository friendRepository;
+  private final MemberRepository memberRepository; // 멤버 jpa 구현체 빈 등록
+  private final AuthRepository authRepository;
+  private final ChallengeRepository challengeRepository;
+  private final FriendRepository friendRepository;
 
   /**
    * @author: 박연재
@@ -113,13 +111,13 @@ public class MemberService {
     return memberDTOS;
   }
 
-  public void validateWithUserId(String userId) throws Exception {
+  public String validateWithUserId(String userId) throws Exception {
     List<MemberEntity> memberList = memberRepository.findAll();
-    Boolean isExistUserId = memberList.stream().map(member -> member.getUserId())
-        .anyMatch(existUserId -> userId == existUserId);
-    if (isExistUserId) {
-      throw new Exception("중복되는 회원 아이디가 존재합니다.");
+    System.out.println(memberList.stream().map(member -> member.getUserId()).anyMatch(id -> id.equals(userId)));
+    if (memberList.stream().map(member -> member.getUserId()).anyMatch(id -> id.equals(userId))) {
+      return null;
     }
+    return userId;
   }
 
   /**

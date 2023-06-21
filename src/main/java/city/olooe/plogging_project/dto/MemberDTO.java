@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import city.olooe.plogging_project.model.AuthEntity;
 import city.olooe.plogging_project.model.AuthType;
+import city.olooe.plogging_project.model.ChallengeEntity;
+import city.olooe.plogging_project.model.ChallengeMemberEntity;
 import city.olooe.plogging_project.model.MemberEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -15,6 +17,8 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import static java.util.stream.Collectors.*;
+
+import java.util.ArrayList;
 
 import static java.util.stream.Collectors.*;
 
@@ -49,6 +53,9 @@ public class MemberDTO {
   private String intro;
   private List<String> authList; // 권한
 
+  private List<ChallengeEntity> challengeEntities = new ArrayList<>();
+  private List<ChallengeMemberEntity> challengeMemberEntities = new ArrayList<>();
+
   /**
    * @author: 박연재
    * @date: 2023.06.01
@@ -68,6 +75,8 @@ public class MemberDTO {
     this.birth = memberEntity.getBirth();
     this.gender = memberEntity.getGender();
     this.authProvider = memberEntity.getAuthProvider();
+    this.challengeEntities = memberEntity.getMyChallengesDetail();
+    this.challengeMemberEntities = memberEntity.getMyChallenges();
   }
 
   /**

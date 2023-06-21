@@ -26,8 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TokenProvider {
 
-  @Value("${app.jwtSecretKey}")
-  private String jwtSecretKey;
+  private String jwtSecretKey = "plogging";
 
   @Value("${app.jwtExpiration}")
   private int jwtExpiration;
@@ -35,12 +34,12 @@ public class TokenProvider {
   public String userCreateToken(final MemberEntity memberEntity) {
 
     Date expiryDate = Date.from(Instant.now()
-            .plus(jwtExpiration, ChronoUnit.DAYS));
+        .plus(jwtExpiration, ChronoUnit.DAYS));
     // String s = String.valueOf(member);
     return Jwts.builder()
         .signWith(SignatureAlgorithm.HS512, jwtSecretKey)
         .setSubject(memberEntity.getUserId())
-            .setIssuer("myApp")
+        .setIssuer("myApp")
         .setIssuedAt(new Date())
         .setExpiration(expiryDate)
         .compact();
@@ -60,10 +59,10 @@ public class TokenProvider {
     Date expiryDate = Date.from(Instant.now().plus(jwtExpiration, ChronoUnit.DAYS));
 
     return Jwts.builder()
-      .setSubject(userPrincipal.getName())
-      .setIssuedAt(new Date())
-      .setExpiration(expiryDate)
+        .setSubject(userPrincipal.getName())
+        .setIssuedAt(new Date())
+        .setExpiration(expiryDate)
         .signWith(SignatureAlgorithm.HS512, jwtSecretKey)
-      .compact();
+        .compact();
   }
 }
