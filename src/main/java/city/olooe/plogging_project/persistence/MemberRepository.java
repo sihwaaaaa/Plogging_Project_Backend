@@ -13,6 +13,8 @@ import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 
 import java.util.List;
+import city.olooe.plogging_project.model.ChallengeMemberEntity;
+
 
 /**
  * @author: 박연재
@@ -67,21 +69,30 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
    */
   Page<MemberEntity> findByUserIdContainingIgnoreCase(String keyword, Pageable pageable);
 
-  // /**
-  // * @author 박연재
-  // * @date 2023-06-19
-  // * @brief 해당 멤버의 챌린지들을 최신 등록순으로 조회
-  // * @param member
-  // * @param pageable
-  // * @return
-  // */
-  // @Query("select tm\r\n" + //
-  // "from MemberEntity tm\r\n" + //
-  // "join tm.myChallenges tc\r\n" +
-  // "join tc.chNo tc2\r\n" +
-  // "where tc.memberNo = tc2.memberNo")
-  // MemberEntity findByMemberNo(@Param("memberNo") Long memberNo);
+  /**
+   * @author 박연재
+   * @date 23.06.22
+   * @brief member
+   * @param member
+   * @return
+   */
+  @Query("select tm from MemberEntity tm\r\n" + //
+      "left join tm.challengeMemberEntity tc\r\n" + //
+      "join tc.chNo tc2\r\n" +
+      "where tc.challenger = :member")
+  MemberEntity containChallengeByMemberEntity(@Param("member") MemberEntity member);
 
+
+  @Query("select tm from MemberEntity tm\r\n" + //
+      "join tm.ploggingEntities tp\r\n" + //
+      "where tp.member = :member")
+  MemberEntity containPloggingByMemberEntity(@Param("member") MemberEntity member);
+
+  @Query("select tm from MemberEntity tm\r\n" + //
+      "join tm.pointHistoryEntities tp\r\n" + //
+      "join tp.rewardNo tr\r\n" +
+      "where tp.memberNo = :member")
+  MemberEntity containPointHistoryByMemberEntity(@Param("member") MemberEntity member);
   // /**
   // * @author: 박연재
   // * @date: 2023.06.02

@@ -1,9 +1,12 @@
 package city.olooe.plogging_project.dto;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import city.olooe.plogging_project.dto.map.PloggingDTO;
 import city.olooe.plogging_project.model.AuthEntity;
 import city.olooe.plogging_project.model.AuthType;
 import city.olooe.plogging_project.model.ChallengeEntity;
@@ -19,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import static java.util.stream.Collectors.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import static java.util.stream.Collectors.*;
 
@@ -52,9 +56,10 @@ public class MemberDTO {
   private String authProvider; // 권한 공급자
   private String intro;
   private List<String> authList; // 권한
-
-  private List<ChallengeEntity> challengeEntities = new ArrayList<>();
-  private List<ChallengeMemberEntity> challengeMemberEntities = new ArrayList<>();
+  private List<ChallengeDTO> challenges = new ArrayList<>();
+  private List<PloggingDTO> ploggings = new ArrayList<>();
+  private List<PointHistoryDTO> pointHistories = new ArrayList<>();
+  private List<BoardDTO> boards = new ArrayList<>();
 
   /**
    * @author: 박연재
@@ -75,9 +80,17 @@ public class MemberDTO {
     this.birth = memberEntity.getBirth();
     this.gender = memberEntity.getGender();
     this.authProvider = memberEntity.getAuthProvider();
-    this.challengeEntities = memberEntity.getMyChallengesDetail();
-    this.challengeMemberEntities = memberEntity.getMyChallenges();
+    // 프로필 챌린지
+    this.challenges = memberEntity.getMyChallengesDetail().stream().map(ChallengeDTO::new).collect(Collectors.toList());
+    this.ploggings = memberEntity.getPloggingEntities().stream().map(PloggingDTO::new).collect(Collectors.toList());
+    this.pointHistories = memberEntity.getPointHistoryEntities().stream().map(PointHistoryDTO::new).collect(Collectors.toList());
+    this.boards = memberEntity.getBoardEntities().stream().map(BoardDTO::new).collect(Collectors.toList());
+    log.info("{}",ploggings);
+    // log.info("{}", ploggings);
+
   }
+
+
 
   /**
    * @author: 박연재
