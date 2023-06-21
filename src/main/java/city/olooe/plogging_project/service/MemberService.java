@@ -2,6 +2,7 @@ package city.olooe.plogging_project.service;
 
 import city.olooe.plogging_project.dto.member.MemberSearchDTO;
 import city.olooe.plogging_project.model.*;
+import city.olooe.plogging_project.model.friend.FriendStatusType;
 import city.olooe.plogging_project.persistence.ChallengeRepository;
 import city.olooe.plogging_project.persistence.FriendRepository;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
@@ -22,7 +23,6 @@ import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.persistence.AuthRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
-import java.util.stream.Collectors;
 
 /**
  * @author: 박연재

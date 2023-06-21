@@ -1,6 +1,6 @@
-package city.olooe.plogging_project.model;
+package city.olooe.plogging_project.model.friend;
 
-import city.olooe.plogging_project.persistence.FriendRepository;
+import city.olooe.plogging_project.model.MemberEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -20,7 +20,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-@ToString
 @Table(name = "tbl_friend")
 public class FriendEntity {
 

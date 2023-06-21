@@ -1,4 +1,4 @@
-package city.olooe.plogging_project.model;
+package city.olooe.plogging_project.model.friend;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

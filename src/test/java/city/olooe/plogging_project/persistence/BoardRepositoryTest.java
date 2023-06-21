@@ -1,7 +1,9 @@
 package city.olooe.plogging_project.persistence;
 
-import city.olooe.plogging_project.model.BoardEntity;
+import city.olooe.plogging_project.model.community.BoardCategory;
+import city.olooe.plogging_project.model.community.BoardEntity;
 import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.persistence.community.BoardRepository;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +14,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author : 김성진
@@ -47,10 +48,10 @@ public class BoardRepositoryTest {
   @DisplayName("게시글 입력 테스트")
   public void insertBoard() {
     BoardEntity boardEntity = BoardEntity.builder()
-        .memberEntity(MemberEntity.builder().memberNo(6L).build())
+        .memberNo(MemberEntity.builder().memberNo(6L).build())
         .title("test")
         .content("test입니다.")
-        .category(0)
+        .category(BoardCategory.COMMUNITY)
         .build();
     boardRepository.save(boardEntity);
 

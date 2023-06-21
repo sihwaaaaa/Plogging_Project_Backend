@@ -1,9 +1,11 @@
 package city.olooe.plogging_project.controller;
 
 import city.olooe.plogging_project.dto.*;
+import city.olooe.plogging_project.dto.community.BoardDTO;
 import city.olooe.plogging_project.dto.map.MapDTO;
 import city.olooe.plogging_project.dto.map.PloggingDTO;
 import city.olooe.plogging_project.model.*;
+import city.olooe.plogging_project.model.community.BoardEntity;
 import city.olooe.plogging_project.model.map.MapEntity;
 import city.olooe.plogging_project.model.map.PloggingEntity;
 import city.olooe.plogging_project.dto.MemberDTO;
