@@ -1,20 +1,17 @@
 package city.olooe.plogging_project.service;
 
-import city.olooe.plogging_project.model.FriendEntity;
-import city.olooe.plogging_project.model.FriendStatusType;
+import city.olooe.plogging_project.model.friend.FriendEntity;
+import city.olooe.plogging_project.model.friend.FriendStatusType;
 import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.persistence.FriendRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author : 천은경

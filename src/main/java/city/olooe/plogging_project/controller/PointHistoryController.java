@@ -30,70 +30,27 @@ public class PointHistoryController {
 
     private final PointHistoryService historyService;
 
-    /*
+
+    /**
      * @Author 이재원
-     *
      * @Date 23.06.13
-     *
-     * @param pointNo
-     *
-     * @param type
-     *
-     * @return List<PointHistoryDTO>
-     *
-     * @Brief 포인트 번호의 유형별 조회
-     */
-    @GetMapping("/{pointNo}/{type}")
-    public List<PointHistoryDTO> myPointNoList(@PathVariable Long pointNo, @PathVariable String type) {
-
-        List<PointHistoryEntity> historyEntities = historyService.GetPointList(pointNo, type);
-
-        return historyEntities.stream()
-                .map(PointHistoryDTO::new)
-                .collect(Collectors.toList());
-    }
-
-    /*
-     * @Author 이재원
-     *
-     * @Date 23.06.13
-     *
-     * @param pointNo
-     *
-     * @param type
-     *
-     * @return List<PointHistoryDTO>
-     *
-     * @Brief 멤버 번호의 유형별 조회
-     */
-
-    @GetMapping("/{memberNo}/{type}")
-    public List<PointHistoryDTO> myMemberNoList(@PathVariable MemberEntity memberNo, @PathVariable String type) {
-
-        List<PointHistoryEntity> historyEntities = historyService.GetMemberList(memberNo, type);
-
-        return historyEntities.stream()
-                .map(PointHistoryDTO::new)
-                .collect(Collectors.toList());
-    }
-
-    /*
-     * @Author 이재원
-     *
-     * @Date 23.06.13
-     *
-     * @param MemberNo
-     *
+     * @param memberNo
      * @return Long(CurrentPoint, TotalPoint)
-     *
-     * @Brief 멤버 번호를 통해 현재 포인트와 누적 포인트를 출력
+     * @Brief 멤버 번호를 통해 누적 포인트를 출력
      */
-    @GetMapping("{memberNo}")
+    @GetMapping("/total/{memberNo}")
     public Long myMemberNoTotalPoint(@PathVariable MemberEntity memberNo) {
         return historyService.findBySumPoint(MemberEntity.builder().memberNo(memberNo.getMemberNo()).build());
     }
-
+    /**
+     * @Author 이재원
+     * @Date 23.06.13
+     * @param memberNo
+     * @return List<ResponseDTO>
+     * @Brief 조회한 멤버 번호의 포인트 적립 내역
+     */
     @GetMapping("/list/{memberNo}")
+
     public ResponseEntity<?> myMemberNoCurrentPoint(@PathVariable MemberEntity memberNo) {
         List<PointHistoryEntity> historyEntities = historyService.test_memberNoList(MemberEntity.builder().memberNo(memberNo.getMemberNo()).build());
         List<PointHistoryDTO> historyDTOS = historyEntities.stream()
@@ -102,23 +59,7 @@ public class PointHistoryController {
         return ResponseEntity.ok().body(ResponseDTO.builder().data(historyDTOS).build());
     }
 
-    //    @GetMapping("/status/{status}")
-//    public ResponseEntity<?> myStatusList(@PathVariable boolean status) {
-//        List<PointHistoryEntity> historyEntities = historyService.GetfindByStatus(status);
-//        List<PointHistoryDTO> historyDTOS = historyEntities.stream()
-//                .map(PointHistoryDTO::new)
-//                .collect(toList());
-//        return ResponseEntity.ok().body(ResponseDTO.builder().data(historyDTOS).build());
-//    }
-    @GetMapping("/status/{status}")
-    public List<PointHistoryEntity> getstatus(@PathVariable boolean status) {
-        if (!status) {// status의 값이 기본값(false:0)이 아니면
-            return historyService.GetfindByStatus(true); // true 리턴
-        }
-        return historyService.GetfindByStatus(false); // 아니라면 false 리턴
-    }
-
-    @PostMapping("/donation")
+    @PostMapping("/Donation")
     public ResponseEntity<?> registerDonation(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody PointHistoryDTO dto) {
         log.info(String.valueOf(dto));
 
@@ -136,20 +77,15 @@ public class PointHistoryController {
         return ResponseEntity.ok().body(historyDTO);
     }
 
-    /*
+    /**
      * @Author 이재원
-     *
      * @Date 23.06.19
-     *
-     * @param product
-     *
-     * @param Principal
-     *
-     * @return responseDTO
-     *
+     * @param user
+     * @param dto
+     * @return historyDTO
      * @Brief 랜덤박스 신청 기능 메서드
      */
-    @PostMapping("/product")
+    @PostMapping("/Product")
     public ResponseEntity<?> registerProduct(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody PointHistoryDTO dto) {
 
         PointHistoryEntity historyEntity = PointHistoryEntity.builder()
@@ -166,4 +102,27 @@ public class PointHistoryController {
         return ResponseEntity.ok().body(historyDTO);
     }
 
+    /**
+     * @Author 이재원
+     * @Date 23.06.19
+     * @param
+     * @return historyDTO
+     * @Brief 각 회원의 rank list
+     */
+    @GetMapping("/list/rank")
+    public ResponseEntity<?> getRank() {
+        return ResponseEntity.ok().body(historyService.getRankList());
+    }
+
+    /**
+     * @Author 이재원
+     * @Date 23.06.19
+     * @param memberNo
+     * @return historyDTO
+     * @Brief 회원의 누적 포인트와 등급
+     */
+    @GetMapping("/rank/badge/{memberNo}")
+    public ResponseEntity<?> getBadge(@PathVariable Long memberNo) {
+        return ResponseEntity.ok().body(historyService.getBadge(memberNo));
+    }
 }

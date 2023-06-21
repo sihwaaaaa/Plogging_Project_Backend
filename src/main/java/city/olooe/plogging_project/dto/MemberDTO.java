@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import city.olooe.plogging_project.dto.community.BoardDTO;
 import city.olooe.plogging_project.dto.map.PloggingDTO;
 import city.olooe.plogging_project.model.AuthEntity;
 import city.olooe.plogging_project.model.AuthType;
@@ -56,6 +57,7 @@ public class MemberDTO {
   private String authProvider; // 권한 공급자
   private String intro;
   private List<String> authList; // 권한
+  
   private List<ChallengeDTO> challenges = new ArrayList<>();
   private List<PloggingDTO> ploggings = new ArrayList<>();
   private List<PointHistoryDTO> pointHistories = new ArrayList<>();

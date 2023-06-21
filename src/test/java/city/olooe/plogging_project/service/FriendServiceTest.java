@@ -1,8 +1,7 @@
 package city.olooe.plogging_project.service;
 
-import city.olooe.plogging_project.model.FriendEntity;
-import city.olooe.plogging_project.model.FriendStatusType;
-import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.model.friend.FriendEntity;
+import city.olooe.plogging_project.model.friend.FriendStatusType;
 import city.olooe.plogging_project.persistence.FriendRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -39,14 +38,14 @@ class FriendServiceTest {
     @Test
     @DisplayName("팔로워 리스트")
     public void followerList() {
-        List<FriendEntity> friendEntities = friendService.getFriendListToMe("olooe", FriendStatusType.FRIEND.getKey());
+        List<FriendEntity> friendEntities = friendService.getFriendListToMe(62L, FriendStatusType.FRIEND.getKey());
         log.warn("팔로워 리스트 : {}", friendEntities.stream().map(FriendEntity::getFriendNo).collect(Collectors.toList()));
     }
 
     @Test
     @DisplayName("팔로잉 리스트")
     public void followingList() {
-        List<FriendEntity> friendEntities = friendService.GetMyFriendList("olooe", FriendStatusType.FRIEND.getKey());
+        List<FriendEntity> friendEntities = friendService.GetMyFriendList(62L, FriendStatusType.FRIEND.getKey());
         log.warn("팔로잉 리스트 : {}", friendEntities.stream().map(FriendEntity::getFriendNo).collect(Collectors.toList()));
     }
 
@@ -55,7 +54,7 @@ class FriendServiceTest {
     @DisplayName("플친요청")
     void requestFriend() {
 
-        List<FriendEntity> friendEntities = friendService.requestFriend("root1357", 64L);
+        List<FriendEntity> friendEntities = friendService.requestFriend(62L, 64L);
 
         logger.warn("플친요청 테스트 플친대기리스트 : {}", friendEntities.size());
     }
@@ -63,18 +62,18 @@ class FriendServiceTest {
     @Test
     @DisplayName("플친 거절 및 플친 삭제")
     void removeFriend() {
-        List<FriendEntity> beforeFriends = friendService.GetMyFriendList("root1357", FriendStatusType.FRIEND.getKey());
+        List<FriendEntity> beforeFriends = friendService.GetMyFriendList(62L, FriendStatusType.FRIEND.getKey());
         logger.warn("삭제 전 플친 리스트 : {}", beforeFriends);
-        List<FriendEntity> afterFriends = friendService.removeFriend("root1357", 6L);
+        List<FriendEntity> afterFriends = friendService.removeFriend(62L, 6L);
         logger.warn("삭제 후 플친 리스트 : {}", afterFriends);
     }
 
     @Test
     @DisplayName("플친 요청 승인")
     void acceptFriend() {
-        List<FriendEntity> beforeFriends = friendService.GetMyFriendList("root1357", FriendStatusType.FRIEND.getKey());
+        List<FriendEntity> beforeFriends = friendService.GetMyFriendList(62L, FriendStatusType.FRIEND.getKey());
         logger.warn("승인 전 플친 리스트 : {}", beforeFriends.stream().toString());
-        List<FriendEntity> afterFriends = friendService.acceptRequest("root1357", 8L);
+        List<FriendEntity> afterFriends = friendService.acceptRequest(62L, 8L);
         logger.warn("승인 후 플친 리스트 : {}", afterFriends.stream().toString());
 
     }
@@ -82,18 +81,18 @@ class FriendServiceTest {
     @Test
     @DisplayName("플친 차단")
     void blockFriend() {
-        List<FriendEntity> beforeBlocked = friendService.GetMyFriendList("root1357", FriendStatusType.BLOCK.getKey());
+        List<FriendEntity> beforeBlocked = friendService.GetMyFriendList(62L, FriendStatusType.BLOCK.getKey());
         logger.warn("전 차단 리스트 : {}", beforeBlocked.stream().toString());
-        List<FriendEntity> afterBlocked = friendService.blockFriend("root1357", 8L);
+        List<FriendEntity> afterBlocked = friendService.blockFriend(62L, 8L);
         logger.warn("후 차단 리스트 : {}", afterBlocked.stream().toString());
     }
 
     @Test
     @DisplayName("차단 취소 및 요청 취소")
     void cancelFriend() {
-        List<FriendEntity> beforeCanceled = friendService.GetMyFriendList("root1357", FriendStatusType.PENDING.getKey());
+        List<FriendEntity> beforeCanceled = friendService.GetMyFriendList(62L, FriendStatusType.PENDING.getKey());
         logger.warn("전 취소 리스트 : {}", beforeCanceled.stream().toString());
-        List<FriendEntity> afterCanceled = friendService.cancelRequest("root1357", 15L);
+        List<FriendEntity> afterCanceled = friendService.cancelRequest(62L, 15L);
         logger.warn("후 취소 리스트 : {}", afterCanceled);
     }
 //

@@ -1,11 +1,13 @@
 package city.olooe.plogging_project.service;
 
 import city.olooe.plogging_project.model.*;
+import city.olooe.plogging_project.model.community.BoardEntity;
 import city.olooe.plogging_project.model.map.MapEntity;
 import city.olooe.plogging_project.model.map.PloggingEntity;
 import city.olooe.plogging_project.persistence.*;
 import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.persistence.MemberRepository;
+import city.olooe.plogging_project.persistence.community.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

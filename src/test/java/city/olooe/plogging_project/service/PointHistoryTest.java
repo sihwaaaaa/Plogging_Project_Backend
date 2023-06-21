@@ -1,5 +1,6 @@
 package city.olooe.plogging_project.service;
 
+import city.olooe.plogging_project.dto.MemberDTO;
 import city.olooe.plogging_project.dto.PointHistoryDTO;
 import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.model.PointHistoryEntity;
@@ -97,26 +98,16 @@ public class PointHistoryTest {
         log.info("Point Type : {}", historyEntities);
     }
 
-//    @Test
-//    @DisplayName("누적 포인트 조회")
-//    public void totalPointTest() {
-//        Long totalPoint = pointHistoryService.findByTotalPoint();
-//        PointHistoryDTO historyDTO = PointHistoryDTO.builder()
-//                .memberNo(MemberEntity.builder().memberNo(1L).build())
-//                .point(totalPoint)
-//                .type(RewardTypeStatus.Product.getKey())
-//                .build();
-//        log.info("total point Test : {}", historyDTO);
-//    }
-
     @Test
-    @DisplayName("멤버 번호를 통해 현재 포인트 조회")
-    public void sumPointTest() {
-//        PointHistoryDTO historyDTO = PointHistoryDTO.builder()
-//                .memberNo(MemberEntity.builder().memberNo(1L).build())
-//                .point(pointHistoryRepository.sumPoint(memberNo))
-//                .build();
-//        pointHistoryRepository.findById(memberNo.getMemberNo());
-//        log.info("현재 포인트 조회 : {}", pointHistoryRepository.sumPoint(historyDTO.getMemberNo()));
+    @DisplayName("멤버 전체 출력")
+    public void GetMemberListTest() {
+        MemberEntity historyDTO = MemberEntity.builder()
+                .memberNo(MemberEntity.builder().build().getMemberNo())
+                .build();
+
+        List<MemberEntity> memberEntities = pointHistoryService.GetMemberList(historyDTO);
+        log.info("member List : {}", memberEntities);
+
     }
+
 }

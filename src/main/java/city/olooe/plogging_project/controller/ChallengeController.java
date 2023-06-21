@@ -1,12 +1,10 @@
 package city.olooe.plogging_project.controller;
 
-import city.olooe.plogging_project.dto.BoardDTO;
 import city.olooe.plogging_project.dto.ChallengeDTO;
 import city.olooe.plogging_project.dto.ChallengeMemberDTO;
 import city.olooe.plogging_project.dto.ResponseDTO;
 import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.ChallengeMemberEntity;
-import city.olooe.plogging_project.model.ChallengeStatus;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import city.olooe.plogging_project.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -118,5 +115,7 @@ public class ChallengeController {
     public void delete(@PathVariable Long bno) {
         challengeService.delete(bno);
     }
+
+
 
 }

@@ -1,5 +1,6 @@
 package city.olooe.plogging_project.service;
 
+import city.olooe.plogging_project.service.community.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 

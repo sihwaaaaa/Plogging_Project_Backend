@@ -2,6 +2,7 @@ package city.olooe.plogging_project.model;
 
 import javax.persistence.*;
 
+import city.olooe.plogging_project.model.community.BoardEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

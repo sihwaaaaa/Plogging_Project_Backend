@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.persistence.*;
 
+import city.olooe.plogging_project.model.community.BoardEntity;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
@@ -80,7 +82,7 @@ public class MemberEntity implements Serializable {
   @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
   private List<PloggingEntity> ploggingEntities = new ArrayList<>();
 
-  @OneToMany(mappedBy = "memberEntity", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "memberNo", fetch = FetchType.LAZY)
   private List<BoardEntity> boardEntities = new ArrayList<>();
 
   @OneToMany(mappedBy = "memberNo", fetch = FetchType.LAZY)

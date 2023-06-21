@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import city.olooe.plogging_project.model.BoardEntity;
+import city.olooe.plogging_project.model.community.BoardEntity;
 import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.ChallengeMemberEntity;
 import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.model.map.PloggingEntity;
-import city.olooe.plogging_project.persistence.BoardRepository;
+import city.olooe.plogging_project.persistence.community.BoardRepository;
 import city.olooe.plogging_project.persistence.ChallengeMemberRepository;
 import city.olooe.plogging_project.persistence.ChallengeRepository;
 import city.olooe.plogging_project.persistence.ChallengeScheduleRepository;
