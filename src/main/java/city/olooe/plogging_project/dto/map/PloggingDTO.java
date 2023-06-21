@@ -26,7 +26,7 @@ public class PloggingDTO {
   private Date ploggingTime; // 이동시간
   @JsonFormat
   private Date regDate; // 플로깅 날짜(insert날짜)
-  private Integer distance; // 이동 거리
+  private Double distance; // 이동 거리
   private Boolean status; // 성공여부
 
   /**
