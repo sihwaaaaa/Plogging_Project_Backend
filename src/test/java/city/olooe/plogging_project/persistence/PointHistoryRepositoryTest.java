@@ -40,6 +40,7 @@ public class PointHistoryRepositoryTest {
 
     @Test
     @DisplayName("포인트 사용 내역 전체 조회 테스트")
+    @Transactional
     public void findAllPointTest() {
         List<PointHistoryEntity> historyEntityList = pointHistoryRepository.findAll(Sort.by(Sort.Direction.DESC, "pointNo"));
         log.info("{}", historyEntityList);
@@ -58,6 +59,7 @@ public class PointHistoryRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void test_pointHistoryList() {
         List<PointHistoryEntity> historyEntityList = pointHistoryRepository.findByMemberNo(MemberEntity.builder().memberNo(1L).build());
         log.info("{}", historyEntityList);
@@ -65,7 +67,8 @@ public class PointHistoryRepositoryTest {
 
     @Test
     public void test_sumPoint() {
-        log.info("{}", pointHistoryRepository.sumPoint(MemberEntity.builder().memberNo(1L).build()));
+        log.info("{}", pointHistoryRepository.sumPoint(MemberEntity.builder().memberNo(75L).build()));
+
     }
 
     @Test
@@ -73,5 +76,18 @@ public class PointHistoryRepositoryTest {
     public void test_pointStatus() {
         List<PointHistoryEntity> historyEntities = pointHistoryRepository.findByStatus(false);
         log.info("Status Test : {}", historyEntities);
+    }
+
+    @Test
+    @Transactional
+    public void test_getPointList() {
+//        List<PointHistoryEntity> historyEntities = pointHistoryRepository.findByPointList(MemberEntity.builder().memberNo(11L).build());
+//        log.info("포인트 내역 테스트 : {}", historyEntities);
+    }
+    @Test
+    @Transactional
+    public void test_getPointList2() {
+//        List<PointHistoryEntity> historyEntities = pointHistoryRepository.test(11L);
+//        log.info("{}", historyEntities);
     }
 }
