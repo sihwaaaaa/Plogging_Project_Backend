@@ -111,13 +111,13 @@ public class MemberService {
     return memberDTOS;
   }
 
-  public void validateWithUserId(String userId) throws Exception {
+  public String validateWithUserId(String userId) throws Exception {
     List<MemberEntity> memberList = memberRepository.findAll();
-    Boolean isExistUserId = memberList.stream().map(member -> member.getUserId())
-        .anyMatch(existUserId -> userId == existUserId);
-    if (isExistUserId) {
-      throw new Exception("중복되는 회원 아이디가 존재합니다.");
+    System.out.println(memberList.stream().map(member -> member.getUserId()).anyMatch(id -> id.equals(userId)));
+    if (memberList.stream().map(member -> member.getUserId()).anyMatch(id -> id.equals(userId))) {
+      return null;
     }
+    return userId;
   }
 
   /**
