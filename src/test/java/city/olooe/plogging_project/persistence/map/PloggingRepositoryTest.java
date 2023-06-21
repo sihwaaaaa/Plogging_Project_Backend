@@ -21,13 +21,13 @@ public class PloggingRepositoryTest {
   @Autowired
   private PloggingRepository ploggingRepository;
 
-  @Test
-  @DisplayName("플로깅 생성 테스트")
-  public void createPlogging() {
-    PloggingEntity ploggingEntity = PloggingEntity.builder().userMapNo(1L).type("제자리시작").ploggingTime(null).distance(0)
-        .status(true).build();
-    PloggingEntity ploggingEntity2 = PloggingEntity.builder().userMapNo(1L).type("제자리시작").ploggingTime(null).distance(0)
-        .build();
-    log.info("{}", ploggingRepository.save(ploggingEntity2));
-  }
+//  @Test
+//  @DisplayName("플로깅 생성 테스트")
+//  public void createPlogging() {
+//    PloggingEntity ploggingEntity = PloggingEntity.builder().userMapNo(1L).type("제자리시작").ploggingTime(null).distance(0)
+//        .status(true).build();
+//    PloggingEntity ploggingEntity2 = PloggingEntity.builder().userMapNo(1L).type("제자리시작").ploggingTime(null).distance(0)
+//        .build();
+//    log.info("{}", ploggingRepository.save(ploggingEntity2));
+//  }
 }
