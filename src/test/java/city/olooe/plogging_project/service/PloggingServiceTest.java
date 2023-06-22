@@ -5,10 +5,14 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.ibatis.javassist.compiler.ast.Keyword;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import city.olooe.plogging_project.dto.map.MapDTO;
 import city.olooe.plogging_project.dto.map.StopoverDTO;
@@ -28,6 +32,14 @@ public class PloggingServiceTest {
   @Transactional
   public void readMapEntity() {
     MapDTO dto = service.serchByMapNo(1L);
+   System.out.println(dto.toString());
+  }
+  @Test
+  @DisplayName("경로 조회 테스트")
+  @Transactional
+  public void searchMap() {
+    Pageable pageable = PageRequest.of(0, 5);
+    Page<MapDTO> dto = service.searchRoute("동작", pageable);
    System.out.println(dto.toString());
   }
   // @Test

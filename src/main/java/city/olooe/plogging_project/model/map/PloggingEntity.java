@@ -37,7 +37,7 @@ public class PloggingEntity {
   private Long mapNo;// fk
   private Long memberNo;// fk
   private String type; // 유형 (제자리시작 / 목표지설정 / 추천경로 / 챌린지경로)
-  private Date ploggingTime; // 이동시간
+  private Integer ploggingTime; // 이동시간
   private Date regDate; // 플로깅 날짜(insert날짜)
   private Double distance; // 이동 거리
   private Boolean status; // 성공여부

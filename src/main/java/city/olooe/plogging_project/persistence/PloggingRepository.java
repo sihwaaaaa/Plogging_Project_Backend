@@ -14,5 +14,4 @@ import city.olooe.plogging_project.model.map.PloggingEntity;
  * @brief: PloggingEntity jpa 구현체
  */
 public interface PloggingRepository extends JpaRepository<PloggingEntity, Long> {
-
 }

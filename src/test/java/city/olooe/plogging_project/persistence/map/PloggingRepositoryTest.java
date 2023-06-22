@@ -24,9 +24,9 @@ public class PloggingRepositoryTest {
   @Test
   @DisplayName("플로깅 생성 테스트")
   public void createPlogging() {
-    PloggingEntity ploggingEntity = PloggingEntity.builder().userMapNo(1L).type("제자리시작").ploggingTime(null).distance(0)
+    PloggingEntity ploggingEntity = PloggingEntity.builder().type("제자리시작").ploggingTime(null).distance(0d)
         .status(true).build();
-    PloggingEntity ploggingEntity2 = PloggingEntity.builder().userMapNo(1L).type("제자리시작").ploggingTime(null).distance(0)
+    PloggingEntity ploggingEntity2 = PloggingEntity.builder().type("제자리시작").ploggingTime(null).distance(0d)
         .build();
     log.info("{}", ploggingRepository.save(ploggingEntity2));
   }

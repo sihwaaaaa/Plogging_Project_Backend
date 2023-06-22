@@ -6,6 +6,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +29,7 @@ import city.olooe.plogging_project.dto.friend.FriendDTO;
 import city.olooe.plogging_project.dto.map.MapDTO;
 import city.olooe.plogging_project.dto.map.PloggingDTO;
 import city.olooe.plogging_project.dto.map.StopoverDTO;
+import city.olooe.plogging_project.dto.member.MemberSearchDTO;
 import city.olooe.plogging_project.model.map.PloggingEntity;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import city.olooe.plogging_project.service.PloggingService;
@@ -65,13 +70,39 @@ public class PloggingController {
         // }
         return ResponseEntity.ok().body(dto);
     }
+    //맵 객체 변환용
     ObjectMapper objectMapper = new ObjectMapper();
+
+    /**
+    * @author : 이시화
+    * @date: 23.06.22
+    * 
+    * @param: user, dtos(PloggingDTO,MapDTO)
+    * @return: void
+    * 
+    * @brief: 플로깅 생성
+    */
     @PutMapping("/startPage")
     public void createPlogging(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody Map<String,Object> dtos){
       PloggingDTO ploggingDTO = objectMapper.convertValue(dtos.get("plogging"), PloggingDTO.class);
       MapDTO mapDTO = objectMapper.convertValue(dtos.get("map"), MapDTO.class);
       ploggingService.insertPlogging(ploggingDTO, user.getMember().getMemberNo(),mapDTO);
     }
+
+      /**
+   * @Author 이시화
+   * @Date 23.06.22
+   * @param : keyword
+   * @return 추천경로 리스트
+   * @Breif 추천경로 검색기능
+   */
+  @GetMapping("/search")
+  public ResponseEntity<?> searchMember( @RequestParam String keyword ,@PageableDefault(sort = "mapNo", size = 5
+                                        , direction = Sort.Direction.DESC) Pageable pageable ) {
+
+    Page<MapDTO> mapDTO = ploggingService.searchRoute(keyword, pageable);
+    return ResponseEntity.ok().body(ResponseDTO.builder().data(mapDTO).build());  }
+
 
     //받을때 맵 스트링 오브젝트로 받아와서 변경 해야함 json의 시작은 항상 {}
     // @PutMapping("/updateLon")

@@ -9,6 +9,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Page;
 
 import city.olooe.plogging_project.model.map.MapEntity;
 import city.olooe.plogging_project.model.map.StopoverEntity;
@@ -61,6 +67,13 @@ public class MapRepositoryTest {
       List<StopoverEntity> stopoverEntities =  mapEntity.getStops();
       stopoverEntities.forEach(stop -> System.out.println(stop));
     
+  }
+  @Test
+  @DisplayName("경로 검색 테스트")
+  public void searchRoute(){
+    Pageable pageable = PageRequest.of(0, 5);
+    Page<MapEntity> mapEntity = mapRepository.findByAddrContainingOrCourseNameContainingOrCourseDetailContaining("동작","동작","동작",pageable);
+    mapEntity.forEach(map -> System.out.println(map));
   }
 
 }

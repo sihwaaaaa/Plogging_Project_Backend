@@ -22,8 +22,7 @@ public class PloggingDTO {
   private Long mapNo;// fk
   private Long memberNo;// fk
   private String type; // 유형 (제자리시작 / 목표지설정 / 추천경로 / 챌린지경로)
-  @JsonFormat
-  private Date ploggingTime; // 이동시간
+  private Integer ploggingTime; // 이동시간
   @JsonFormat
   private Date regDate; // 플로깅 날짜(insert날짜)
   private Double distance; // 이동 거리
