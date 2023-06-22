@@ -28,24 +28,23 @@ import lombok.extern.slf4j.Slf4j;
 public class ProfileService {
 
   private final MemberRepository memberRepository;
+  private final ChallengeMemberRepository challengeMemberRepository;
 
-  public MemberEntity searchChallengeDetailByMember(final MemberEntity member) {
-    return memberRepository.containChallengeByMemberEntity(member);
-  }
+  // public MemberEntity searchChallengeDetailByMember(final MemberEntity member)
+  // {
+  // return memberRepository.containChallengeByMemberEntity(member);
+  // }
 
-  public MemberEntity searchPloggingByMember(final MemberEntity member) {
-    return memberRepository.containPloggingByMemberEntity(member);
-  }
+  // public MemberEntity searchPloggingByMember(final MemberEntity member) {
+  // return memberRepository.containPloggingByMemberEntity(member);
+  // }
 
-  public MemberEntity searchPointHistoryByMember(final MemberEntity member) {
-    return memberRepository.containPointHistoryByMemberEntity(member);
-  }
+  // public MemberEntity searchPointHistoryByMember(final MemberEntity member) {
+  // return memberRepository.containPointHistoryByMemberEntity(member);
+  // }
 
   public List<BoardEntity> searchBoardByMember(final MemberEntity member) {
     return memberRepository.findByUserId(member.getUserId()).getBoardEntities();
   }
-
-
-
 
 }
