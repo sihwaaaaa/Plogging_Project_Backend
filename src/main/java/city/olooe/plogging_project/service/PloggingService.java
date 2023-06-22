@@ -8,6 +8,9 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import city.olooe.plogging_project.dto.community.BoardDTO;
@@ -15,11 +18,16 @@ import city.olooe.plogging_project.dto.map.MapDTO;
 import city.olooe.plogging_project.dto.map.PloggingDTO;
 import city.olooe.plogging_project.dto.map.StopoverDTO;
 import city.olooe.plogging_project.model.community.BoardEntity;
+import city.olooe.plogging_project.dto.member.MemberSearchDTO;
+import city.olooe.plogging_project.model.ChallengeEntity;
+import city.olooe.plogging_project.model.friend.FriendStatusType;
+import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.model.map.MapEntity;
 import city.olooe.plogging_project.model.map.StopoverEntity;
 import city.olooe.plogging_project.persistence.MapRepository;
 import city.olooe.plogging_project.persistence.PloggingRepository;
 import city.olooe.plogging_project.persistence.StopoverRepository;
+import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -84,6 +92,22 @@ public class PloggingService {
     
     
     
+  }
+ /**
+   * @Author 이시화
+   * @Date 23.06.22
+   * @param keyword
+   * @return 추천경로 리스트
+   * @Brief 경로명 or 경로설명 or 자치구로 경로 검색
+   */
+  public Page<MapDTO> searchRoute(String keyword, Pageable pageable) {
+
+    Page<MapEntity> searchMapEntity = repository.findByAddrContainingOrCourseNameContainingOrCourseDetailContaining(keyword, keyword, keyword, pageable);
+
+
+    Page<MapDTO> mapDTO = searchMapEntity.map((mapEntity) -> { return new MapDTO(mapEntity);});
+
+    return mapDTO;
   }
 
 
