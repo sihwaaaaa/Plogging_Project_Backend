@@ -8,12 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import city.olooe.plogging_project.model.ChallengeEntity;
+//import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 
 import java.util.List;
-import city.olooe.plogging_project.model.ChallengeMemberEntity;
+//import city.olooe.plogging_project.model.ChallengeMemberEntity;
 
 
 /**
@@ -69,30 +69,6 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
    */
   Page<MemberEntity> findByUserIdContainingIgnoreCase(String keyword, Pageable pageable);
 
-  /**
-   * @author 박연재
-   * @date 23.06.22
-   * @brief member
-   * @param member
-   * @return
-   */
-  @Query("select tm from MemberEntity tm\r\n" + //
-      "left join tm.challengeMemberEntity tc\r\n" + //
-      "join tc.chNo tc2\r\n" +
-      "where tc.challenger = :member")
-  MemberEntity containChallengeByMemberEntity(@Param("member") MemberEntity member);
-
-
-  @Query("select tm from MemberEntity tm\r\n" + //
-      "join tm.ploggingEntities tp\r\n" + //
-      "where tp.member = :member")
-  MemberEntity containPloggingByMemberEntity(@Param("member") MemberEntity member);
-
-  @Query("select tm from MemberEntity tm\r\n" + //
-      "join tm.pointHistoryEntities tp\r\n" + //
-      "join tp.rewardNo tr\r\n" +
-      "where tp.memberNo = :member")
-  MemberEntity containPointHistoryByMemberEntity(@Param("member") MemberEntity member);
   // /**
   // * @author: 박연재
   // * @date: 2023.06.02

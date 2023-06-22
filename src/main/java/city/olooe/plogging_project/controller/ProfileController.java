@@ -63,7 +63,7 @@ public class ProfileController {
    * @param member
    * @return
    */
-  @GetMapping({ "challenge", "plogging", "point", "board" })
+  @GetMapping
   public ResponseEntity<?> myProfile(@AuthenticationPrincipal ApplicationUserPrincipal member) {
     // return
     // responseContent(profileService.searchChallengeDetailByMember(member.getMember()),
