@@ -6,6 +6,7 @@ import city.olooe.plogging_project.persistence.ChallengeRepository;
 import city.olooe.plogging_project.persistence.FriendRepository;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,8 +65,12 @@ public class MemberService {
     return memberRepository.save(memberEntity);
   }
 
-  public MemberEntity getMember(final MemberEntity memberEntity){
+  public MemberEntity getMember(final MemberEntity memberEntity) {
     return memberRepository.findByUserId(memberEntity.getUserId());
+  }
+
+  public Optional<MemberEntity> getMember(Long memberNo) {
+    return memberRepository.findById(memberNo);
   }
 
   public void createAuth(final MemberEntity member) {

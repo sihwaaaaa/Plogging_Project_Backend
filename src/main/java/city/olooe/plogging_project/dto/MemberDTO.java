@@ -58,8 +58,9 @@ public class MemberDTO {
   private String intro;
   private List<String> authList; // 권한
 
-  private List<ChallengeMemberDTO> challengeMembers = new ArrayList<>();
-  private List<ChallengeDTO> challenges = new ArrayList<>();
+  // private Map<String, Object> = new HashMap<>();
+
+  private List<ChallengeMemberDTO> challenges = new ArrayList<>();
   private List<PloggingDTO> ploggings = new ArrayList<>();
   private List<PointHistoryDTO> pointHistories = new ArrayList<>();
   private List<BoardDTO> boards = new ArrayList<>();
@@ -84,17 +85,16 @@ public class MemberDTO {
     this.gender = memberEntity.getGender();
     this.authProvider = memberEntity.getAuthProvider();
     // 프로필 챌린지
-    this.challengeMembers = memberEntity.getChallengeMemberEntity().stream().map(ChallengeMemberDTO::new).collect(Collectors.toList());
-    this.challenges = memberEntity.getMyChallengesDetail().stream().map(ChallengeDTO::new).collect(Collectors.toList());
+    this.challenges = memberEntity.getMChallengeEntities().stream().map(ChallengeMemberDTO::new)
+        .collect(Collectors.toList());
     this.ploggings = memberEntity.getPloggingEntities().stream().map(PloggingDTO::new).collect(Collectors.toList());
-    this.pointHistories = memberEntity.getPointHistoryEntities().stream().map(PointHistoryDTO::new).collect(Collectors.toList());
+    this.pointHistories = memberEntity.getPointHistoryEntities().stream().map(PointHistoryDTO::new)
+        .collect(Collectors.toList());
     this.boards = memberEntity.getBoardEntities().stream().map(BoardDTO::new).collect(Collectors.toList());
-    log.info("{}",ploggings);
+    log.info("{}", ploggings);
     // log.info("{}", ploggings);
 
   }
-
-
 
   /**
    * @author: 박연재

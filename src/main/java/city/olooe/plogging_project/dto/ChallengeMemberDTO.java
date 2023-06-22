@@ -1,7 +1,10 @@
 package city.olooe.plogging_project.dto;
 
 import java.lang.reflect.Member;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.ChallengeMemberEntity;
@@ -20,6 +23,16 @@ public class ChallengeMemberDTO {
     private Long chNo;
     private Long challenger;
     private Date regDate;
+
+    private ChallengeDTO challenge;
+
+    public ChallengeMemberDTO(final ChallengeMemberEntity challengeMemberEntity) {
+        this.cmemberNo = challengeMemberEntity.getCmemberNo();
+        this.chNo = challengeMemberEntity.getChNo().getChNo();
+        this.challenger = challengeMemberEntity.getChallenger().getMemberNo();
+        this.regDate = challengeMemberEntity.getRegDate();
+        this.challenge = new ChallengeDTO(challengeMemberEntity.getChNo());
+    }
 
     /*
      * @author : 김민수
@@ -56,7 +69,6 @@ public class ChallengeMemberDTO {
                 .build();
     }
 
-
     /**
      * @author : 김민수
      * @date: 23.06.16
@@ -68,7 +80,8 @@ public class ChallengeMemberDTO {
      */
     public ChallengeMemberEntity toChMemberDelete() {
         return ChallengeMemberEntity.builder().cmemberNo(cmemberNo)
-                .chNo(ChallengeEntity.builder().chNo(chNo).build()).challenger(MemberEntity.builder().memberNo(challenger).build())
+                .chNo(ChallengeEntity.builder().chNo(chNo).build())
+                .challenger(MemberEntity.builder().memberNo(challenger).build())
                 .build();
     }
 
