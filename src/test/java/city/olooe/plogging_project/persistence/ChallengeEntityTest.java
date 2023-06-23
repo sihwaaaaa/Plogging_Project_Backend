@@ -145,11 +145,9 @@ public class ChallengeEntityTest {
      * @brief: 챌린지별 인원 카운트
      */
     @Test
-    @DisplayName("챌린지별 인원수")
+    @DisplayName("해당 회원이 가입한 챌린지 목록")
     public void challengeMemberCount(){
-        // 필요한 파라미터, ChMemberEntity  chNo, Challenge chNo
-        ChallengeMemberEntity challengeMemberEntity = challengeMemberRepository.findByChNo(10L);
-        ChallengeEntity entity = challengeRepository.findByChNo(10L);
-        log.info("{}", challengeRepository.findChallengeMemberCount(challengeMemberEntity,entity));
+//        MemberEntity member = memberRepository.findByUserId("pkkj");
+//        log.info("{}", member);
     }
 }

@@ -14,13 +14,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import city.olooe.plogging_project.model.map.MapEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Builder
 @Getter
@@ -34,15 +31,17 @@ public class ChallengeScheduleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long scheduleNo; // 플로깅 스케쥴 번호
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = ChallengeEntity.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = ChallengeEntity.class )
     @JoinColumn(name = "chNo")
+    @Setter
     private ChallengeEntity chNo; // 챌린지의 번호
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = MapEntity.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = MapEntity.class )
     @JoinColumn(name = "mapNo")
     private MapEntity mapNo; // 추천경로 맵의 번호
 
-    private LocalDate startDate; // 플로깅 시작날짜 시간
-    private LocalDate endDate; // 플로깅 끝나는 날짜 시간
-    private LocalDate regDate; // 생성날짜
+    private Date startDate; // 플로깅 시작날짜 시간
+    private Date endDate; // 플로깅 끝나는 날짜 시간
+    private Date regDate; // 생성날짜
+
 }

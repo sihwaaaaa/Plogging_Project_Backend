@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.DynamicInsert;
 
 import lombok.AllArgsConstructor;
@@ -55,4 +56,8 @@ public class ChallengeEntity {
 
     @OneToMany(mappedBy = "chNo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ChallengeMemberEntity> ChallengeMembers = new ArrayList<>();
+
+    public ChallengeEntity(Long chNo) {
+        this.chNo = chNo;
+    }
 }
