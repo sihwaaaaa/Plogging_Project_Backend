@@ -9,20 +9,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import city.olooe.plogging_project.dto.MemberDTO;
-import city.olooe.plogging_project.model.AuthEntity;
-import city.olooe.plogging_project.model.AuthType;
-import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.model.friend.FriendStatusType;
 import city.olooe.plogging_project.persistence.AuthRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
@@ -44,6 +41,8 @@ public class MemberService {
   private final AuthRepository authRepository;
   private final ChallengeRepository challengeRepository;
   private final FriendRepository friendRepository;
+
+  private final PasswordEncoder encoder;
 
   /**
    * @author: 박연재
@@ -75,8 +74,8 @@ public class MemberService {
    * @param memberEntity
    * @return MemberEntity
    */
-  public MemberEntity getMember(final MemberEntity memberEntity) {
-    return memberRepository.findByUserId(memberEntity.getUserId());
+  public MemberEntity getMember(String userId) {
+    return memberRepository.findByUserId(userId);
   }
 
   /**
@@ -105,9 +104,10 @@ public class MemberService {
    * @return
    */
   @Transactional
-  public void modify(MemberDTO member) {
+  public void modify(MemberDTO member, @AuthenticationPrincipal ApplicationUserPrincipal principal) {
     MemberEntity registeredMember = memberRepository.findById(member.getMemberNo())
-        .orElseThrow(() -> new RuntimeException("회원을 발견하지 못함"));
+        .orElseThrow(() -> new IllegalArgumentException("회원을 발견하지 못함"));
+
     registeredMember.setNickName(member.getNickName());
     registeredMember.setUserName(member.getUserName());
     registeredMember.setBirth(member.getBirth());

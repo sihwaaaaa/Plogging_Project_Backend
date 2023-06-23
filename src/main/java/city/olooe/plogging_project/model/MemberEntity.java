@@ -14,6 +14,7 @@ import javax.persistence.*;
 import city.olooe.plogging_project.model.community.BoardEntity;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -32,7 +33,9 @@ import lombok.ToString;
  * @brief: 멤버 엔티티
  */
 @DynamicInsert
+@DynamicUpdate
 @Entity
+@Setter
 @Getter
 @Builder
 @NoArgsConstructor
@@ -46,22 +49,16 @@ public class MemberEntity implements Serializable {
   private String userId; // 회원 아이디
   private String password; // 비밀번호
 
-  @Setter
   private String userName; // 이름
   private String email; // 이메일
   private Date regDate; // 등록일자
   private String address; // 주소
 
-  @Setter
   private String addressDetail; // 세부 주소
-  @Setter
   private String nickName; // 닉네임
-  @Setter
   private Date birth; // 생년월일
-  @Setter
   private String gender; // 성별
   private String authProvider; // oauth 2.0 연동 공급자
-  @Setter
   private String intro;
 
   public MemberEntity(String userId, String password, String userName, String email) {

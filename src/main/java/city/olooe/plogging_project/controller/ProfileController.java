@@ -8,12 +8,19 @@ import java.util.stream.Collectors;
 import org.apache.catalina.connector.Response;
 import org.apache.el.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,6 +65,8 @@ public class ProfileController {
   private final MemberService memberService;
   private final ProfileService profileService;
 
+  private final AuthenticationManager authenticationManager;
+
   /**
    * @author 박연재
    * @date 23.06.22
@@ -69,7 +78,7 @@ public class ProfileController {
     // return
     // responseContent(profileService.searchChallengeDetailByMember(member.getMember()),
     // "챌린저 내역 불러오기 실패!");
-    return resProfile(memberService.getMember(member.getMember()), null, "내역 불러오기 실패!");
+    return resProfile(memberService.getMember(member.getMember().getUserId()), null, "내역 불러오기 실패!");
   }
 
   @GetMapping("{memberNo}")
@@ -89,7 +98,8 @@ public class ProfileController {
   public ResponseEntity<?> editProfilePage(@AuthenticationPrincipal ApplicationUserPrincipal member) {
     ResponseDTO<?> response = null;
     try {
-      MemberDTO memberDTO = new MemberDTO(memberService.getMember(member.getMember()));
+      MemberDTO memberDTO = new MemberDTO(memberService.getMember(member.getMember().getMemberNo()).orElseThrow());
+      System.out.println(memberDTO);
       response = ResponseDTO.builder().data(memberDTO).build();
       return ResponseEntity.ok().body(response);
     } catch (Exception e) {
@@ -98,6 +108,8 @@ public class ProfileController {
     }
   }
 
+  private final PasswordEncoder encoder;
+
   /**
    * @author 박연재
    * @date 23.06.23
@@ -105,22 +117,25 @@ public class ProfileController {
    * @param dto
    * @return ResponseEntity
    */
-  @PostMapping("edit")
+  @PutMapping("edit")
   public ResponseEntity<?> editProfile(@RequestBody MemberDTO dto) {
-    return resEditProfile(dto);
-  }
-
-  private ResponseEntity<?> resEditProfile(MemberDTO dto) {
     ResponseDTO<?> response = null;
     try {
       memberService.modify(dto);
-      response = ResponseDTO.builder().data(dto).build();
-      return ResponseEntity.ok().body(response);
+
+      Authentication authentication = authenticationManager
+          .authenticate(new UsernamePasswordAuthenticationToken(dto.getUserId(), dto.getPassword()));
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+      return ResponseEntity.ok().body("성공");
     } catch (Exception e) {
       response = ResponseDTO.builder().error(e.getMessage()).build();
       return ResponseEntity.badRequest().body(response);
     }
   }
+
+  // private ResponseEntity<?> resEditProfile(MemberDTO dto) {
+
+  // }
 
   private ResponseEntity<?> resProfile(MemberEntity member, Optional<MemberEntity> optionalMember,
       String errorMsg) {

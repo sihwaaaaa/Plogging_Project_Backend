@@ -3,6 +3,7 @@ package city.olooe.plogging_project.config;
 import city.olooe.plogging_project.security.RedirectUrlCookieFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -87,5 +88,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Bean
   public PasswordEncoder getPasswordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  // 연재
+  @Bean
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    // TODO Auto-generated method stub
+    return super.authenticationManagerBean();
   }
 }
