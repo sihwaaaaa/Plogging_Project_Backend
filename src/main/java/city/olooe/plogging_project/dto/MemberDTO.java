@@ -51,7 +51,7 @@ public class MemberDTO {
   private String address; // 주소
   private String addressDetail; // 세부 주소
   private String nickName; // 닉네임
-  @JsonFormat
+  // @JsonFormat
   private Date birth; // 생년월일
   private String gender; // 성별
   private String authProvider; // 권한 공급자
@@ -84,6 +84,7 @@ public class MemberDTO {
     this.birth = memberEntity.getBirth();
     this.gender = memberEntity.getGender();
     this.authProvider = memberEntity.getAuthProvider();
+    this.intro = memberEntity.getIntro();
     // 프로필 챌린지
     this.challenges = memberEntity.getMChallengeEntities().stream().map(ChallengeMemberDTO::new)
         .collect(Collectors.toList());
@@ -95,6 +96,21 @@ public class MemberDTO {
     // log.info("{}", ploggings);
 
   }
+
+  // /**
+  // * @author: 박연재
+  // * @date: 2023.06.01
+  // * @brief: 회원가입용 dto 생성
+  // * @param entity
+  // */
+  // public MemberDTO(String userName, String nickName, String addressDetail, Date
+  // birth, String gender) {
+  // this.userName = userName;
+  // this.addressDetail = addressDetail;
+  // this.nickName = nickName;
+  // this.birth = birth;
+  // this.gender = gender;
+  // }
 
   /**
    * @author: 박연재
@@ -129,6 +145,7 @@ public class MemberDTO {
         .birth(entity.getBirth())
         .gender(entity.getGender())
         .authProvider(entity.getAuthProvider())
+        .intro(entity.getIntro())
         .build();
   }
 
@@ -145,6 +162,7 @@ public class MemberDTO {
         .birth(dto.getBirth())
         .gender(dto.getGender())
         .authProvider(dto.getAuthProvider())
+        .intro(dto.getIntro())
         .build();
   }
 }

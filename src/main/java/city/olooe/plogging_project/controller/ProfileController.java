@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -61,24 +62,69 @@ public class ProfileController {
    * @author 박연재
    * @date 23.06.22
    * @param member
-   * @return
+   * @return ResponseEntity
    */
   @GetMapping
   public ResponseEntity<?> myProfile(@AuthenticationPrincipal ApplicationUserPrincipal member) {
     // return
     // responseContent(profileService.searchChallengeDetailByMember(member.getMember()),
     // "챌린저 내역 불러오기 실패!");
-    return responseContent(memberService.getMember(member.getMember()), null, "내역 불러오기 실패!");
+    return resProfile(memberService.getMember(member.getMember()), null, "내역 불러오기 실패!");
   }
 
   @GetMapping("{memberNo}")
   public ResponseEntity<?> oppositeProfile(@PathVariable Long memberNo) {
-    return responseContent(null, memberService.getMember(memberNo), "상대 회원분 내역 불러오기 실패!!");
+    return resProfile(null, memberService.getMember(memberNo), "상대 회원분 내역 불러오기 실패!!");
   }
 
-  private ResponseEntity<?> responseContent(MemberEntity member, Optional<MemberEntity> optionalMember,
+  /**
+   * 
+   * @author 박연재
+   * @date 23.06.23
+   * @brief 회원 정보 수정 페이지
+   * @param member
+   * @return ResponseEntity
+   */
+  @GetMapping("edit")
+  public ResponseEntity<?> editProfilePage(@AuthenticationPrincipal ApplicationUserPrincipal member) {
+    ResponseDTO<?> response = null;
+    try {
+      MemberDTO memberDTO = new MemberDTO(memberService.getMember(member.getMember()));
+      response = ResponseDTO.builder().data(memberDTO).build();
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      response = ResponseDTO.builder().error("회원을 불러오지 못함").build();
+      return ResponseEntity.badRequest().body(response);
+    }
+  }
+
+  /**
+   * @author 박연재
+   * @date 23.06.23
+   * @brief 회원 정보 수정 로직 메서드
+   * @param dto
+   * @return ResponseEntity
+   */
+  @PostMapping("edit")
+  public ResponseEntity<?> editProfile(@RequestBody MemberDTO dto) {
+    return resEditProfile(dto);
+  }
+
+  private ResponseEntity<?> resEditProfile(MemberDTO dto) {
+    ResponseDTO<?> response = null;
+    try {
+      memberService.modify(dto);
+      response = ResponseDTO.builder().data(dto).build();
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      response = ResponseDTO.builder().error(e.getMessage()).build();
+      return ResponseEntity.badRequest().body(response);
+    }
+  }
+
+  private ResponseEntity<?> resProfile(MemberEntity member, Optional<MemberEntity> optionalMember,
       String errorMsg) {
-    ResponseDTO response = null;
+    ResponseDTO<?> response = null;
     try {
       MemberDTO memberDTO = new MemberDTO(member);
       response = ResponseDTO.builder().data(memberDTO).build();

@@ -1,11 +1,14 @@
 package city.olooe.plogging_project.service;
 
+import java.util.Date;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import city.olooe.plogging_project.config.WebSecurityConfig;
+import city.olooe.plogging_project.dto.MemberDTO;
 import city.olooe.plogging_project.model.MemberEntity;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,6 +38,22 @@ public class MemberServiceTest {
   @Test
   public void testCheckValidateUserId() throws Exception {
     memberService.validateWithUserId("pkkj");
+  }
+
+  @DisplayName("회원 정보 수정 테스트")
+  @Test
+  public void testUpdateMemberInfo() throws Exception {
+
+    MemberDTO memberDTO = MemberDTO.builder()
+        .memberNo(95L)
+        .userName("변경된 이름ze")
+        .nickName("변경된 닉네임ze")
+        .gender("여자")
+        .addressDetail("변경된 상세 주소ze")
+        .birth(new Date(22, 6, 23))
+        .intro("안녕하세요~zze")
+        .build();
+    memberService.modify(memberDTO);
   }
 
 }

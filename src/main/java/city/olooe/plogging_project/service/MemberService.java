@@ -9,10 +9,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -65,10 +68,24 @@ public class MemberService {
     return memberRepository.save(memberEntity);
   }
 
+  /**
+   * @author 박연재
+   * @date 23.06.23
+   * @brief 프로필 조회를 위한 회원 조회
+   * @param memberEntity
+   * @return MemberEntity
+   */
   public MemberEntity getMember(final MemberEntity memberEntity) {
     return memberRepository.findByUserId(memberEntity.getUserId());
   }
 
+  /**
+   * @author 박연재
+   * @date 23.06.23
+   * @brief 상대 프로필 조회용 메서드
+   * @param memberNo
+   * @return
+   */
   public Optional<MemberEntity> getMember(Long memberNo) {
     return memberRepository.findById(memberNo);
   }
@@ -76,6 +93,27 @@ public class MemberService {
   public void createAuth(final MemberEntity member) {
     AuthEntity auth = new AuthEntity(member, AuthType.ROLE_MEMBER);
     authRepository.save(auth);
+  }
+
+  /**
+   * @author 박연재
+   * @date 23.06.23
+   * @brief 회원 정보 수정
+   * @param userId
+   * @param password
+   * @param encoder
+   * @return
+   */
+  @Transactional
+  public void modify(MemberDTO member) {
+    MemberEntity registeredMember = memberRepository.findById(member.getMemberNo())
+        .orElseThrow(() -> new RuntimeException("회원을 발견하지 못함"));
+    registeredMember.setNickName(member.getNickName());
+    registeredMember.setUserName(member.getUserName());
+    registeredMember.setBirth(member.getBirth());
+    registeredMember.setAddressDetail(member.getAddressDetail());
+    registeredMember.setGender(member.getGender());
+    registeredMember.setIntro(member.getIntro());
   }
 
   /**

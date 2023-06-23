@@ -45,15 +45,23 @@ public class MemberEntity implements Serializable {
   private Long memberNo; // 회원 번호
   private String userId; // 회원 아이디
   private String password; // 비밀번호
+
+  @Setter
   private String userName; // 이름
   private String email; // 이메일
   private Date regDate; // 등록일자
   private String address; // 주소
+
+  @Setter
   private String addressDetail; // 세부 주소
+  @Setter
   private String nickName; // 닉네임
+  @Setter
   private Date birth; // 생년월일
+  @Setter
   private String gender; // 성별
   private String authProvider; // oauth 2.0 연동 공급자
+  @Setter
   private String intro;
 
   public MemberEntity(String userId, String password, String userName, String email) {
