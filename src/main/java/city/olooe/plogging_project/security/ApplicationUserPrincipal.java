@@ -4,6 +4,8 @@ import city.olooe.plogging_project.model.MemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -46,7 +48,7 @@ public class ApplicationUserPrincipal implements UserDetails {
      */
     @Override
     public String getUsername() {
-        return String.valueOf(member.getUserId());
+        return member.getUserId();
     }
 
     @Override
