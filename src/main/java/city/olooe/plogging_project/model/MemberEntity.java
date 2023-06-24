@@ -14,6 +14,7 @@ import javax.persistence.*;
 import city.olooe.plogging_project.model.community.BoardEntity;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -32,7 +33,9 @@ import lombok.ToString;
  * @brief: 멤버 엔티티
  */
 @DynamicInsert
+@DynamicUpdate
 @Entity
+@Setter
 @Getter
 @Builder
 @NoArgsConstructor
@@ -45,10 +48,12 @@ public class MemberEntity implements Serializable {
   private Long memberNo; // 회원 번호
   private String userId; // 회원 아이디
   private String password; // 비밀번호
+
   private String userName; // 이름
   private String email; // 이메일
   private Date regDate; // 등록일자
   private String address; // 주소
+
   private String addressDetail; // 세부 주소
   private String nickName; // 닉네임
   private Date birth; // 생년월일
@@ -74,10 +79,10 @@ public class MemberEntity implements Serializable {
   }
 
   @OneToMany(mappedBy = "challenger", fetch = FetchType.LAZY)
-  private List<ChallengeMemberEntity> challengeMemberEntity;
+  private List<ChallengeMemberEntity> mChallengeEntities = new ArrayList<>();
 
   @OneToMany(mappedBy = "host", fetch = FetchType.LAZY)
-  private List<ChallengeEntity> myChallengesDetail = new ArrayList<>();
+  private List<ChallengeEntity> myChallengesByHost = new ArrayList<>();
 
   @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
   private List<PloggingEntity> ploggingEntities = new ArrayList<>();

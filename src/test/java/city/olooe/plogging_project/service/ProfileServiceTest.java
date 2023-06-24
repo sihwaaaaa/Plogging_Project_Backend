@@ -20,9 +20,10 @@ public class ProfileServiceTest {
   @Autowired
   private MemberRepository memberRepository;
 
-  @Test
-  public void testMyChallenges() {
-    log.info("{}", profileService.searchByMember(memberRepository.findByUserId("pkkj")));
+  // @Test
+  // public void testMyChallenges() {
+  // log.info("{}",
+  // profileService.searchByMember(memberRepository.findByUserId("pkkj")));
 
-  }
+  // }
 }

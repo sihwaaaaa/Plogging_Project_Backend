@@ -6,19 +6,20 @@ import city.olooe.plogging_project.persistence.ChallengeRepository;
 import city.olooe.plogging_project.persistence.FriendRepository;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import city.olooe.plogging_project.dto.MemberDTO;
-import city.olooe.plogging_project.model.AuthEntity;
-import city.olooe.plogging_project.model.AuthType;
-import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.model.friend.FriendStatusType;
 import city.olooe.plogging_project.persistence.AuthRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
@@ -40,6 +41,8 @@ public class MemberService {
   private final AuthRepository authRepository;
   private final ChallengeRepository challengeRepository;
   private final FriendRepository friendRepository;
+
+  private final PasswordEncoder encoder;
 
   /**
    * @author: 박연재
@@ -64,13 +67,53 @@ public class MemberService {
     return memberRepository.save(memberEntity);
   }
 
-  public MemberEntity getMember(final MemberEntity memberEntity){
-    return memberRepository.findByUserId(memberEntity.getUserId());
+  /**
+   * @author 박연재
+   * @date 23.06.23
+   * @brief 프로필 조회를 위한 회원 조회
+   * @param memberEntity
+   * @return MemberEntity
+   */
+  public MemberEntity getMember(String userId) {
+    return memberRepository.findByUserId(userId);
+  }
+
+  /**
+   * @author 박연재
+   * @date 23.06.23
+   * @brief 상대 프로필 조회용 메서드
+   * @param memberNo
+   * @return
+   */
+  public Optional<MemberEntity> getMember(Long memberNo) {
+    return memberRepository.findById(memberNo);
   }
 
   public void createAuth(final MemberEntity member) {
     AuthEntity auth = new AuthEntity(member, AuthType.ROLE_MEMBER);
     authRepository.save(auth);
+  }
+
+  /**
+   * @author 박연재
+   * @date 23.06.23
+   * @brief 회원 정보 수정
+   * @param userId
+   * @param password
+   * @param encoder
+   * @return
+   */
+  @Transactional
+  public void modify(MemberDTO member, @AuthenticationPrincipal ApplicationUserPrincipal principal) {
+    MemberEntity registeredMember = memberRepository.findById(member.getMemberNo())
+        .orElseThrow(() -> new IllegalArgumentException("회원을 발견하지 못함"));
+
+    registeredMember.setNickName(member.getNickName());
+    registeredMember.setUserName(member.getUserName());
+    registeredMember.setBirth(member.getBirth());
+    registeredMember.setAddressDetail(member.getAddressDetail());
+    registeredMember.setGender(member.getGender());
+    registeredMember.setIntro(member.getIntro());
   }
 
   /**
