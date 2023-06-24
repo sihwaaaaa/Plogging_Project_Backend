@@ -52,13 +52,15 @@ public class BoardService {
             .content(boardCreateDTO.getContent())
             .category(BoardCategory.COMMUNITY)
             .build();
+
     if (boardCreateDTO.getPloggingNo() != null){
       boardEntity.setCategory(BoardCategory.PLOGGING);
       boardEntity.setPloggingNo(PloggingEntity.builder().ploggingNo(boardCreateDTO.getPloggingNo()).build());
       BoardDTO boardDTO = new BoardDTO(boardRepository.save(boardEntity));
       boardDTO.setPloggingNo(boardCreateDTO.getPloggingNo());
       return boardDTO;
-    }
+    }     
+
     return new BoardDTO(boardRepository.save(boardEntity));
   }
 
