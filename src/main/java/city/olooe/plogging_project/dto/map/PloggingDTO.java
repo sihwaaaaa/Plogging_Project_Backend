@@ -2,6 +2,7 @@ package city.olooe.plogging_project.dto.map;
 
 import java.util.Date;
 
+import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.model.map.PloggingEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -40,7 +41,7 @@ public class PloggingDTO {
   public PloggingDTO(final PloggingEntity entity) {
     this.ploggingNo = entity.getPloggingNo();
     this.mapNo = entity.getMapNo();
-    this.memberNo = entity.getMemberNo();
+    this.memberNo = entity.getMember().getMemberNo();
     this.type = entity.getType();
     this.ploggingTime = entity.getPloggingTime();
     this.regDate = entity.getRegDate();
@@ -61,7 +62,7 @@ public class PloggingDTO {
     return PloggingEntity.builder()
         .ploggingNo(ploggingNo)
         .mapNo(mapNo)
-        .memberNo(memberNo)
+        .member(MemberEntity.builder().memberNo(memberNo).build())
         .type(type)
         .ploggingTime(ploggingTime)
         .regDate(regDate)
