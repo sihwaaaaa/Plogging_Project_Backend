@@ -2,24 +2,21 @@ package city.olooe.plogging_project.service;
 
 import city.olooe.plogging_project.dto.*;
 import city.olooe.plogging_project.model.*;
-import city.olooe.plogging_project.persistence.SchedulMemberRepository;
+import city.olooe.plogging_project.persistence.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Member;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import city.olooe.plogging_project.persistence.ChallengeMemberRepository;
-import city.olooe.plogging_project.persistence.ChallengeRepository;
-import city.olooe.plogging_project.persistence.ChallengeScheduleRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class  ChallengeService {
     @Autowired
     ChallengeRepository challengeRepository;
@@ -33,19 +30,10 @@ public class  ChallengeService {
     @Autowired
     SchedulMemberRepository schedulMemberRepository;
 
-    /**
-     * @author : 김민수
-     * @date: '23.06.08
-     *
-     * @param: ChallengeDTO
-     * @return: challengeDTO
-     * 
-     * @brief: 챌린지 생성
-     */
-    @Transactional
-    public List<ChallengeEntity> createChallenge(ChallengeDTO challengeDTO, Long memberNo) {
+    @Autowired
+    MemberRepository memberRepository;
 
-        // 유효성 검사
+    // 유효성 검사
 //        validate(challengeDTO.toChallengeEntity())
 
 //        LocalDate regDate =  challengeDTO.getRegDate();
@@ -58,9 +46,29 @@ public class  ChallengeService {
 //            ChallengeStatus.CHALLENGEGOING.getValue();
 //        else
 //            ChallengeStatus.CHALLENGECLOSE.getValue();
+    /**
+     * @author : 김민수
+     * @date: '23.06.08
+     *
+     * @param: ChallengeDTO
+     * @return: challengeDTO
+     * 
+     * @brief: 챌린지 생성
+     */
+    @Transactional
+    public List<ChallengeEntity> createChallenge(ChallengeDTO challengeDTO, Long memberNo) {
+
+        MemberEntity host = MemberEntity.builder().memberNo(memberNo).build();
         ChallengeEntity challengeEntity = challengeDTO.toChallengeEntity();
-        challengeEntity.setHost(MemberEntity.builder().memberNo(memberNo).build());
+        challengeEntity.setHost(host);
         challengeRepository.save(challengeEntity);
+
+        // 챌린지리더가 챌린지 생성과 동시에 챌린지에 가입
+        ChallengeMemberEntity challengeMemberEntity = new ChallengeMemberEntity();
+        challengeMemberEntity.setChNo(challengeEntity);
+        challengeMemberEntity.setChallenger(host);
+        challengeMemberRepository.save(challengeMemberEntity);
+
         // return Long
         return challengeRepository.findAll();
     }
@@ -76,9 +84,11 @@ public class  ChallengeService {
      */
      @Transactional(readOnly = true)
      public ChallengeDTO searchByChNo(Long chNo) {
-     ChallengeEntity challengeEntity = challengeRepository.findByChNo(chNo);
-     validate(challengeEntity);
-     return new ChallengeDTO(challengeEntity);
+         ChallengeEntity challengeEntity = challengeRepository.findByChNo(chNo);
+         validate(challengeEntity);
+         ChallengeDTO challengeDTO = new ChallengeDTO(challengeEntity);
+         challengeDTO.setChallengers(challengeEntity.getChallengeMembers().stream().map(s -> s.getChallenger().getMemberNo()).collect(Collectors.toList()));
+         return challengeDTO;
      }
 
     /**
@@ -93,6 +103,21 @@ public class  ChallengeService {
     public List<ChallengeDTO> serchAllCh() {
         return challengeRepository.findChallengeEntityByOrderByChNoDesc().stream()
                 .map(ChallengeDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * @author : 김민수
+     * @date: '23.06.19
+     *
+     * @return: List
+     *
+     * @brief: 챌린지 맴버 전체 조회
+     */
+    @Transactional(readOnly = true)
+    public List<ChallengeMemberDTO> chMemberList() {
+        return challengeMemberRepository.findChallengeMemberEntityByOrderByChNoDesc().stream()
+                .map(ChallengeMemberDTO::new)
                 .collect(Collectors.toList());
     }
 
@@ -147,8 +172,14 @@ public class  ChallengeService {
      * @return: ChallengeScheduleEntity
      */
     public ChallengeScheduleEntity scheduleCreate(ChallengeScheduleDTO challengeScheduleDTO){
+        log.info("service {}", challengeScheduleDTO);
         ChallengeScheduleEntity challengeScheduleEntity = challengeScheduleDTO.toChallengeScheduleEntity();
         return challengeScheduleRepository.save(challengeScheduleEntity);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ChallengeScheduleEntity> readChSchedule(ChallengeEntity chNo) {
+        return challengeScheduleRepository.findByChNo(chNo);
     }
 
     /**
@@ -205,8 +236,36 @@ public class  ChallengeService {
 //        challengeScheduleRepository.delete(chSchDelete);
 //    }
 
+    /**
+     * @author : 김민수
+     * @date: '23.06.16
+     *
+     * @param:
+     *
+     * @brief: 회원이 가입한 챌린지 목록
+     * @return:
+     */
+    public List<ChallengeEntity> memberChList(Long memberNo){
+        MemberEntity member = memberRepository.findByMemberNo(memberNo);
+        List<ChallengeEntity> challengeEntities = challengeRepository.findMyChallenges(member);
+        System.out.println("challengeEntities: " + challengeEntities);
+        return challengeEntities;
+    }
 
-
+    /**
+     * @author : 김민수
+     * @date: '23.06.08
+     *
+     * @param:
+     * @return: List
+     *
+     * @brief: 해당챌린지에 가입한 맴버들 조회
+     */
+//    @Transactional(readOnly = true)
+//    public List<ChallengeMemberEntity> chMembers(ChallengeMemberDTO challengeMemberDTO) {
+//        ChallengeMemberEntity challengeMemberEntities = challengeMemberDTO.toChNo();
+//        return challengeMemberRepository.findByChNo(challengeMemberEntities);
+//    }
 
 
     /**
@@ -264,5 +323,7 @@ public class  ChallengeService {
         }
 
     }
+
+
 
 }

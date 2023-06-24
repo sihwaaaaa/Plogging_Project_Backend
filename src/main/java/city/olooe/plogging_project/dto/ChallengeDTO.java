@@ -2,6 +2,7 @@ package city.olooe.plogging_project.dto;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.ChallengeStatus;
@@ -18,6 +19,7 @@ import org.springframework.beans.PropertyAccessor;
 @Builder
 @Getter
 //@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@ToString
 public class ChallengeDTO {
     /*
      * @author : 김민수
@@ -39,7 +41,8 @@ public class ChallengeDTO {
     @JsonFormat
     private Date endDate;
     private String status;
-
+    private List<Long> challengers;
+    private Integer challengeMemberCnt;
     /*
      * @author : 김민수
      * 
@@ -55,12 +58,13 @@ public class ChallengeDTO {
         this.chNo = chEntity.getChNo();
         this.blind = chEntity.getBlind();
         this.memberNo = chEntity.getHost().getMemberNo();
-        this.title = chEntity.getContent();
+        this.title = chEntity.getTitle();
         this.content = chEntity.getContent();
         this.personnel = chEntity.getPersonnel();
         this.regDate = chEntity.getRegDate();
         this.startDate = chEntity.getStartDate();
         this.endDate = chEntity.getEndDate();
+        this.challengeMemberCnt = chEntity.getChallengeMembers().size();
     }
 
     /*

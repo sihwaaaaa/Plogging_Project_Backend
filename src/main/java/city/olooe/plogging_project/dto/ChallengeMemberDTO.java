@@ -2,6 +2,7 @@ package city.olooe.plogging_project.dto;
 
 import java.lang.reflect.Member;
 import java.util.Date;
+import java.util.List;
 
 import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.ChallengeMemberEntity;
@@ -20,6 +21,14 @@ public class ChallengeMemberDTO {
     private Long chNo;
     private Long challenger;
     private Date regDate;
+
+    public ChallengeMemberDTO(final ChallengeMemberEntity challengeMemberEntity) {
+        this.cmemberNo = challengeMemberEntity.getCmemberNo();
+        this.chNo = challengeMemberEntity.getChNo().getChNo();
+        this.challenger = challengeMemberEntity.getChallenger().getMemberNo();
+        this.regDate = challengeMemberEntity.getRegDate();
+    }
+
 
     /*
      * @author : 김민수
@@ -53,6 +62,11 @@ public class ChallengeMemberDTO {
     public ChallengeMemberEntity toChallengeMemberEntity() {
         return ChallengeMemberEntity.builder().cmemberNo(cmemberNo).chNo(ChallengeEntity.builder().chNo(chNo).build())
                 .challenger(MemberEntity.builder().memberNo(challenger).build()).regDate(regDate)
+                .build();
+    }
+
+    public ChallengeMemberEntity toChNo() {
+        return ChallengeMemberEntity.builder().chNo(ChallengeEntity.builder().chNo(chNo).build())
                 .build();
     }
 
