@@ -98,7 +98,7 @@ public class ProfileController {
   public ResponseEntity<?> editProfilePage(@AuthenticationPrincipal ApplicationUserPrincipal member) {
     ResponseDTO<?> response = null;
     try {
-      MemberDTO memberDTO = new MemberDTO(memberService.getMember(member.getMember().getMemberNo()).orElseThrow());
+      MemberDTO memberDTO = new MemberDTO(memberService.getMember(member.getMember().getMemberNo()).orElseThrow(Exception::new));
       System.out.println(memberDTO);
       response = ResponseDTO.builder().data(memberDTO).build();
       return ResponseEntity.ok().body(response);
@@ -118,11 +118,10 @@ public class ProfileController {
    * @return ResponseEntity
    */
   @PutMapping("edit")
-  public ResponseEntity<?> editProfile(@RequestBody MemberDTO dto) {
+  public ResponseEntity<?> editProfile(@RequestBody MemberDTO dto, @AuthenticationPrincipal ApplicationUserPrincipal user) {
     ResponseDTO<?> response = null;
     try {
-      memberService.modify(dto);
-
+      memberService.modify(dto, user);
       Authentication authentication = authenticationManager
           .authenticate(new UsernamePasswordAuthenticationToken(dto.getUserId(), dto.getPassword()));
       SecurityContextHolder.getContext().setAuthentication(authentication);
