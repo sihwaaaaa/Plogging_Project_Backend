@@ -74,20 +74,6 @@ public class BoardDTO {
     this.category = category.getKey();
   }
 
-  /**
-   * @author : 김성진
-   * @date: 23.06.05
-   * 
-   * @param: title, content
-   * @return: void
-   * 
-   * @brief: entity -> DTO
-   */
-  @Builder
-  public BoardDTO(String title, String content) {
-    this.title = title;
-    this.content = content;
-  }
 
   /**
    * @author : 김성진
@@ -107,6 +93,6 @@ public class BoardDTO {
       this.regDate = boardEntity.getRegDate();
       this.updateDate = boardEntity.getUpdateDate();
       this.category = boardEntity.getCategory().getKey();
-      this.replyCount = boardEntity.getReplys().size();
+//      this.replyCount = boardEntity.getReplys().size();
   }
 }
