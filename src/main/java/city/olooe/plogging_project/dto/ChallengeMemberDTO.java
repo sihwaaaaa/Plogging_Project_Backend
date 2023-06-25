@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.ChallengeMemberEntity;
 import city.olooe.plogging_project.model.MemberEntity;
@@ -23,7 +22,6 @@ public class ChallengeMemberDTO {
     private Long chNo;
     private Long challenger;
     private Date regDate;
-
     private ChallengeDTO challenge;
 
     public ChallengeMemberDTO(final ChallengeMemberEntity challengeMemberEntity) {
@@ -66,6 +64,11 @@ public class ChallengeMemberDTO {
     public ChallengeMemberEntity toChallengeMemberEntity() {
         return ChallengeMemberEntity.builder().cmemberNo(cmemberNo).chNo(ChallengeEntity.builder().chNo(chNo).build())
                 .challenger(MemberEntity.builder().memberNo(challenger).build()).regDate(regDate)
+                .build();
+    }
+
+    public ChallengeMemberEntity toChNo() {
+        return ChallengeMemberEntity.builder().chNo(ChallengeEntity.builder().chNo(chNo).build())
                 .build();
     }
 

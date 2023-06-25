@@ -78,10 +78,10 @@ public class ChallengeRepositoryTest {
     @Test
     @DisplayName("챌린지 단일 조회")
     public void readChallenge() {
-        log.info("{}", challengeRepository.findByChNo(5L));
+        log.info("{}", challengeRepository.findByChNo(59L).getTitle());
     }
 
-    /**
+    /*
      * @author : 김민수
      * @date: '23.06.05
      * @brief: 챌린지 삭제 테스트
@@ -132,8 +132,8 @@ public class ChallengeRepositoryTest {
         ChallengeScheduleEntity challengeScheduleEntity = ChallengeScheduleEntity.builder()
                 .chNo(ChallengeEntity.builder().chNo(10L).build())
                 .mapNo(MapEntity.builder().mapNo(2L).build())
-                .startDate(LocalDate.of(2023,6,15))
-                .endDate(LocalDate.of(2023,7,15))
+                .startDate(new Date())
+                .endDate(new Date())
                 .build();
         log.info("{}", challengeScheduleRepository.save(challengeScheduleEntity));
     }
@@ -186,25 +186,25 @@ public class ChallengeRepositoryTest {
      * @date: '23.06.05
      * @brief: 챌린지 일정삭제
      */
-    @Test
-    @DisplayName("챌린지 일정삭제")
-//    @Transactional
-    public void deleteSchedule() {
-        // 일정을 삭제하기전 일정에 참여한 챌린지원들의 일정취소처리
-        SchedulMemberEntity schedulMemberEntity = schedulMemberRepository.findBySmno(4L);
-        if (schedulMemberEntity != null) {
-            SchedulMemberEntity cancle = schedulMemberRepository.findByChNoAndScheduleNoAndChallenger(
-                    ChallengeEntity.builder().chNo(10L).build(),
-                    ChallengeScheduleEntity.builder().scheduleNo(4L).build(),
-                    MemberEntity.builder().memberNo(12L).build()
-            );
-            // 삭제
-            schedulMemberRepository.delete(cancle);
-        }
-        ChallengeScheduleEntity challengeScheduleEntity = challengeScheduleRepository.findByScheduleNo(4L);
-        challengeScheduleRepository.delete(challengeScheduleEntity);
-        log.info("{}", "챌린지 일정이 삭제되었습니다");
-    }
+//    @Test
+//    @DisplayName("챌린지 일정삭제")
+////    @Transactional
+//    public void deleteSchedule() {
+//        // 일정을 삭제하기전 일정에 참여한 챌린지원들의 일정취소처리
+//        SchedulMemberEntity schedulMemberEntity = schedulMemberRepository.findBySmno(4L);
+//        if (schedulMemberEntity != null) {
+//            SchedulMemberEntity cancle = schedulMemberRepository.findByChNoAndScheduleNoAndChallenger(
+//                    ChallengeEntity.builder().chNo(10L).build(),
+//                    ChallengeScheduleEntity.builder().scheduleNo(4L).build(),
+//                    MemberEntity.builder().memberNo(12L).build()
+//            );
+//            // 삭제
+//            schedulMemberRepository.delete(cancle);
+//        }
+//        ChallengeScheduleEntity challengeScheduleEntity = challengeScheduleRepository.findByScheduleNo(4L);
+//        challengeScheduleRepository.delete(challengeScheduleEntity);
+//        log.info("{}", "챌린지 일정이 삭제되었습니다");
+//    }
 
     /**
      * @author : 김민수

@@ -22,5 +22,7 @@ public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Long
     @Query("select ch from ChallengeEntity ch left join ch.ChallengeMembers cm where cm.challenger = :member order by cm.cmemberNo")
     List<ChallengeEntity> findMyChallenges(MemberEntity member, Pageable pageable);
 
+    @Query("select ch from ChallengeEntity ch left join ch.ChallengeMembers cm where cm.challenger = :member order by cm.cmemberNo")
+    List<ChallengeEntity> findMyChallenges(MemberEntity member);
 }
 

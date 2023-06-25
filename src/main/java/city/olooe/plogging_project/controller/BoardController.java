@@ -33,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
+@RequestMapping("community")
 public class BoardController {
 
   private final BoardService boardService;
@@ -76,7 +77,7 @@ public class BoardController {
    * 
    * @brief: 게시물 작성
    */
-  @PostMapping("/board")
+  @PostMapping("/register")
   public ResponseEntity<?> create(@AuthenticationPrincipal ApplicationUserPrincipal user,
                                   @RequestBody BoardDTO boardCreateDTO) {
 
@@ -97,7 +98,7 @@ public class BoardController {
    * 
    * @brief: 게시물 수정
    */
-  @PutMapping("/board")
+  @PutMapping("/update")
   public ResponseEntity<?> update(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody BoardDTO boardUpateDTO) {
     
     if(Objects.equals(boardUpateDTO.getMemberNo(), user.getMember().getMemberNo())) {
@@ -133,7 +134,7 @@ public class BoardController {
    * 
    * @brief: 게시물 삭제
    */
-  @DeleteMapping("/board/{bno}")
+  @DeleteMapping("/delete/{bno}")
   public ResponseEntity<?> delete(@PathVariable Long bno) {
     boardService.delete(bno);
     return ResponseEntity.ok().body(ResponseDTO.builder().data(null).build());

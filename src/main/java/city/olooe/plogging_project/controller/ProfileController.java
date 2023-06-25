@@ -118,7 +118,7 @@ public class ProfileController {
    * @return ResponseEntity
    */
   @PutMapping("edit")
-  public ResponseEntity<?> editProfile(@RequestBody MemberDTO dto) {
+  public ResponseEntity<?> editProfile(@RequestBody MemberDTO dto, @AuthenticationPrincipal ApplicationUserPrincipal user) {
     ResponseDTO<?> response = null;
     try {
       memberService.modify(dto);  // 회원 정보 수정 서비스 계층

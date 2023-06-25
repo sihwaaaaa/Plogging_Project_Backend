@@ -88,6 +88,22 @@ public class ChallengeServiceTest {
 
     /**
      * @author : 김민수
+     * @date: '23.06.19
+     *
+     * @param: -
+     * @return: -
+     *
+     * @brief: 챌린지 맴버전체 조회  테스트
+     */
+    @Test
+    @Transactional
+    public void chMemberList(){
+        List<ChallengeMemberDTO> challengeDTOS = challengeService.chMemberList();
+        log.info("{}", challengeDTOS);
+    }
+
+    /**
+     * @author : 김민수
      * @date: '23.06.11
      *
      * @param: -
@@ -133,18 +149,17 @@ public class ChallengeServiceTest {
      *
      * @brief: 챌린지 일정생성 테스트
      */
-    @Test
+//    @Test
 //    @Transactional
-    public void chScheduleCreate(){
-        ChallengeScheduleDTO challengeScheduleDTO = ChallengeScheduleDTO.builder()
-                .chNo(12L)
-                .regDate(LocalDate.now())
-                .startDate(LocalDate.now())
-                .endDate(LocalDate.now())
-                .mapNo(1L)
-                .build();
-        challengeService.scheduleCreate(challengeScheduleDTO);
-    }
+//    public void chScheduleCreate(){
+//        ChallengeScheduleDTO challengeScheduleDTO = ChallengeScheduleDTO.builder()
+//                .chNo(70L)
+//                .regDate(LocalDate.now())
+//                .startDate(LocalDate.now())
+//                .mapNo(1L)
+//                .build();
+//        challengeService.scheduleCreate(challengeScheduleDTO);
+//    }
 
     /**
      * @author : 김민수
@@ -230,6 +245,40 @@ public class ChallengeServiceTest {
 //
 //    }
 
+
+    /**
+     * @author : 김민수
+     * @date: '23.06.16
+     *
+     * @param:
+     *
+     * @brief: 회원이 가입한 챌린지 목록
+     * @return:
+     */
+    @Test
+    public void memberChList(){
+        Long memberNo = 62L;
+        challengeService.memberChList(memberNo);
+        log.info("list : {}", challengeService.memberChList(memberNo));
+    }
+
+    /**
+     * @author : 김민수
+     * @date: '23.06.09
+     *
+     * @param: -
+     * @return: -
+     *
+     * @brief: 해당챌린지에 가입한 맴버들 조회
+     */
+//    @Test
+//    @Transactional
+//    public void chMembers(){
+//        ChallengeMemberDTO challengeMemberDTO = ChallengeMemberDTO.builder()
+//                .chNo(10L)
+//                        .build();
+//        log.info("{}", challengeService.chMembers(challengeMemberDTO));
+//    }
 
 
 
