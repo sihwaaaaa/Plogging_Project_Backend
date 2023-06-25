@@ -58,7 +58,7 @@ public class PloggingController {
         // if (dto == null) {
         //     return ResponseEntity.notFound().build();
         // }
-        return ResponseEntity.ok().body(dtos);
+        return ResponseEntity.ok().body(ResponseDTO.builder().data(dtos).build()); 
     }
     @GetMapping("/{mapNo}")
     public ResponseEntity<?> searchByMapNo(@PathVariable("mapNo") Long mapNo) {
@@ -83,10 +83,19 @@ public class PloggingController {
     * @brief: 플로깅 생성
     */
     @PutMapping("/startPage")
-    public void createPlogging(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody Map<String,Object> dtos){
+    public ResponseEntity<?> createPlogging(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody Map<String,Object> dtos){
       PloggingDTO ploggingDTO = objectMapper.convertValue(dtos.get("plogging"), PloggingDTO.class);
-      MapDTO mapDTO = objectMapper.convertValue(dtos.get("map"), MapDTO.class);
-      ploggingService.insertPlogging(ploggingDTO, user.getMember().getMemberNo(),mapDTO);
+      if (dtos.get("map") != null) {
+        
+        MapDTO mapDTO = objectMapper.convertValue(dtos.get("map"), MapDTO.class);
+        ploggingDTO = ploggingService.insertPlogging(ploggingDTO, user.getMember().getMemberNo(),mapDTO);
+      }
+      if (dtos.get("route") != null) {
+        
+        MapDTO mapDTO = objectMapper.convertValue(dtos.get("route"), MapDTO.class);
+        ploggingDTO = ploggingService.insertPlogging(ploggingDTO, user.getMember().getMemberNo(),mapDTO);
+      }
+      return ResponseEntity.ok().body(ResponseDTO.builder().data(ploggingDTO).build()); 
     }
 
       /**

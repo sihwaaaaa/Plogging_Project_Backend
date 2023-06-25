@@ -78,7 +78,7 @@ public class PloggingService {
     return dtos;
   }
   @Transactional
-  public void insertPlogging(PloggingDTO dto, Long memberNo,MapDTO mapDTO) {
+  public PloggingDTO insertPlogging(PloggingDTO dto, Long memberNo,MapDTO mapDTO) {
     
     if (mapDTO.getMapNo() == null) {
     Long mapNo = repository.save(mapDTO.toEntityNotStops()).getMapNo();
@@ -88,9 +88,8 @@ public class PloggingService {
       dto.setMapNo(mapDTO.getMapNo());
     }
     dto.setMemberNo(memberNo);
-    ploggingRepository.save(dto.toEntity());
     
-    
+    return new PloggingDTO(ploggingRepository.save(dto.toEntity()));
     
   }
  /**
