@@ -67,10 +67,10 @@ public class ReplyController {
      * @return 삭제한 댓글
      * @Brief 댓글 삭제하기
      */
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteReply(@RequestBody ReplyDTO replyDTO) {
-        ReplyDTO reply = replyService.deleteReply(replyDTO);
-        return ResponseEntity.ok().body(ResponseDTO.builder().data(reply).build());
+    @DeleteMapping("/delete/{rno}")
+    public ResponseEntity<?> deleteReply(@PathVariable Long rno) {
+        replyService.deleteReply(rno);
+        return ResponseEntity.ok().body(ResponseDTO.builder().data(rno).build());
     }
 
     /**

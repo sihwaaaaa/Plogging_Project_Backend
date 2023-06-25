@@ -66,9 +66,8 @@ public class ReplyService {
      * @return 삭제한 값
      * @Brief 댓글 삭제하기
      */
-    public ReplyDTO deleteReply(ReplyDTO replyDTO){
-        replyRepository.delete(ReplyEntity.builder().rno(replyDTO.getRno()).build());
-        return replyDTO;
+    public void deleteReply(Long rno){
+        replyRepository.delete(ReplyEntity.builder().rno(rno).build());
     }
 
     /**
