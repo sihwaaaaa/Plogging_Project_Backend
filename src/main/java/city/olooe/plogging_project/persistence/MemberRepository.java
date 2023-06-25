@@ -63,6 +63,17 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
   Boolean existsByUserId(String userId);
 
   /**
+   * 
+   * 
+   * @author: 박연재
+   * @date: 2023.06.02
+   * @brief: 회원 존재 여부 (회원 가입시에 중복 여부)
+   * @param userId
+   * @return Boolean
+   */
+  Boolean existsByUserName(String userName);
+
+  /**
    * @Author 천은경
    * @Date 23.06.15
    * @param keyword

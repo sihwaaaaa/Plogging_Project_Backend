@@ -186,7 +186,7 @@ public class MemberService {
    * @brief 회원 유효성 검증
    */
   public void validateWithMember(final MemberEntity member, MemberDTO dto) throws Exception {
-    // if (member.getUserId() == dto.getUserId() || member.getEmail() == dto.getEmail()) {
+    // if (member.getEmail() == dto.getEmail()) {
     //   throw new Exception("중복되는 값이 존재합니다.");
     // }
   }
