@@ -101,7 +101,7 @@ public class BoardController {
   @PutMapping("/update")
   public ResponseEntity<?> update(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody BoardDTO boardUpateDTO) {
     
-    if(Objects.equals(boardUpateDTO.getMemberNo(), user.getMember().getMemberNo())) {
+    if(boardUpateDTO.getMemberNo() == user.getMember().getMemberNo()) {
       log.warn("본인글 수정 확인");
     }
     
@@ -128,16 +128,16 @@ public class BoardController {
   /**
    * @author : 김성진
    * @date: '23.06.05
-   * 
+   *
    * @param: bno
    * @return: -
-   * 
+   *
    * @brief: 게시물 삭제
    */
   @DeleteMapping("/delete/{bno}")
   public ResponseEntity<?> delete(@PathVariable Long bno) {
     boardService.delete(bno);
-    return ResponseEntity.ok().body(ResponseDTO.builder().data(null).build());
+    return ResponseEntity.ok().body(ResponseDTO.builder().data(bno).build());
   }
 
 }

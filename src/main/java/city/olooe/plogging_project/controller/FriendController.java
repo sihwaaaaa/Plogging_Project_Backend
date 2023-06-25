@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -80,6 +81,26 @@ public class FriendController {
                 .collect(toList());
         return ResponseEntity.ok().body(ResponseDTO.builder().data(friendDTOS).build());
     }
+
+    /**
+     * @Author 천은경
+     * @Date 23.06.25
+     * @param user
+     * @param toMemberNo
+     * @return 플친 object
+     * @Brief 플친 단일 조회
+     */
+    @GetMapping("get/{toMemberNo}")
+    public ResponseEntity<?> getFriend(@AuthenticationPrincipal ApplicationUserPrincipal user, @PathVariable Long toMemberNo){
+        Optional<FriendEntity> friendEntity = friendService.getFriend(user.getMember().getMemberNo(), toMemberNo);
+
+        if(friendEntity.isPresent()) {
+            FriendDTO friendDTO = new FriendDTO(friendEntity.get());
+            return ResponseEntity.ok().body(ResponseDTO.builder().data(friendDTO).build());
+        }
+        return ResponseEntity.ok().body(ResponseDTO.builder().data(null).build());
+    }
+
 
     /**
      * @Author 천은경

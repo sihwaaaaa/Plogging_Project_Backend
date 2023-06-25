@@ -1,5 +1,6 @@
 package city.olooe.plogging_project.service;
 
+import city.olooe.plogging_project.dto.friend.FriendDTO;
 import city.olooe.plogging_project.model.friend.FriendEntity;
 import city.olooe.plogging_project.model.friend.FriendStatusType;
 import city.olooe.plogging_project.model.MemberEntity;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author : 천은경
@@ -59,6 +61,19 @@ public class FriendService {
      */
     public List<FriendEntity> allFriend() {
         return friendRepository.findAll();
+    }
+
+    /**
+     * @Author 천은경
+     * @Date 23.06.25
+     * @param fromMember
+     * @param toMember
+     * @return 플친 Object
+     * @Brief 플친 단일 조회
+     */
+    public Optional<FriendEntity> getFriend(Long fromMember, Long toMember) {
+        return Optional.ofNullable(friendRepository.findByFromMemberAndToMember
+                (MemberEntity.builder().memberNo(fromMember).build(), MemberEntity.builder().memberNo(toMember).build()));
     }
 
 

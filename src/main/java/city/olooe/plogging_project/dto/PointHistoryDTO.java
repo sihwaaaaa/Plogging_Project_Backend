@@ -22,7 +22,7 @@ public class PointHistoryDTO {
     public PointHistoryDTO(final PointHistoryEntity historyEntity) {
         this.pointNo = historyEntity.getPointNo();
         this.memberNo = historyEntity.getMemberNo().getMemberNo();
-        this.rewardNo = historyEntity.getRewardNo().getRewardNo();
+        this.rewardNo = historyEntity.getRewardNo() != null ? historyEntity.getRewardNo().getRewardNo() : null;
         this.point = historyEntity.getPoint();
         this.type = historyEntity.getType().getKey();
         this.regDate = historyEntity.getRegDate();
@@ -32,7 +32,7 @@ public class PointHistoryDTO {
         return PointHistoryEntity.builder()
                 .pointNo(historyDTO.getPointNo())
                 .memberNo(MemberEntity.builder().memberNo(historyDTO.memberNo).build())
-                .rewardNo(RewardEntity.builder().rewardNo(historyDTO.rewardNo).build())
+                .rewardNo(historyDTO.getRewardNo() != null ? RewardEntity.builder().rewardNo(historyDTO.rewardNo).build() : null)
                 .regDate(historyDTO.getRegDate())
                 .type(RewardTypeStatus.valueOf(historyDTO.type))
                 .point(historyDTO.getPoint())

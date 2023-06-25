@@ -76,17 +76,27 @@ public class ProfileController {
    * @param member
    * @return ResponseEntity
    */
-  @GetMapping
-  public ResponseEntity<?> myProfile(@AuthenticationPrincipal ApplicationUserPrincipal member) {
-    // return
-    // responseContent(profileService.searchChallengeDetailByMember(member.getMember()),
-    // "챌린저 내역 불러오기 실패!");
-    return resProfile(memberService.getMember(member.getMember().getUserId()), null, "내역 불러오기 실패!");
-  }
+//  @GetMapping
+//  public ResponseEntity<?> myProfile(@AuthenticationPrincipal ApplicationUserPrincipal member) {
+//    // return
+//    // responseContent(profileService.searchChallengeDetailByMember(member.getMember()),
+//    // "챌린저 내역 불러오기 실패!");
+//    return resProfile(memberService.getMember(member.getMember().getUserId()), null, "내역 불러오기 실패!");
+//  }
+//
+//  @GetMapping("/{memberNo}")
+//  public ResponseEntity<?> oppositeProfile(@PathVariable Long memberNo) {
+//    return resProfile(null, memberService.getMember(memberNo), "상대 회원분 내역 불러오기 실패!!");
+//  }
+  @GetMapping("/{memberNo}")
+  public ResponseEntity<?> profile(@PathVariable Long memberNo) {
+    Optional<MemberEntity> member = memberService.getMember(memberNo);
+    // optional 반환을 위해 빈 객체 생성 -> 예외처리 필요
+    MemberEntity memberEntity = new MemberEntity();
+    // enity를 dto로 변환
+    MemberDTO memberDTO = new MemberDTO(member.orElse(memberEntity));
 
-  @GetMapping("{memberNo}")
-  public ResponseEntity<?> oppositeProfile(@PathVariable Long memberNo) {
-    return resProfile(null, memberService.getMember(memberNo), "상대 회원분 내역 불러오기 실패!!");
+    return ResponseEntity.ok().body(ResponseDTO.builder().data(memberDTO).build());
   }
 
   /**
@@ -136,17 +146,16 @@ public class ProfileController {
     }
   }
 
-  private ResponseEntity<?> resProfile(MemberEntity member, Optional<MemberEntity> optionalMember,
-      String errorMsg) {
-    ResponseDTO<?> response = null;
-    try {
-      MemberDTO memberDTO = new MemberDTO(member);
-      response = ResponseDTO.builder().data(memberDTO).build();
-      return ResponseEntity.ok().body(response);
-    } catch (Exception e) {
-      response = ResponseDTO.builder().error(errorMsg).build();
-      return ResponseEntity.badRequest().body(response);
-    }
-
-  }
+//  private ResponseEntity<?> resProfile(MemberEntity member, Optional<MemberEntity> optionalMember,
+//      String errorMsg) {
+//    ResponseDTO<?> response = null;
+//    try {
+//      MemberDTO memberDTO = new MemberDTO(member);
+//      response = ResponseDTO.builder().data(memberDTO).build();
+//      return ResponseEntity.ok().body(response);
+//    } catch (Exception e) {
+//      response = ResponseDTO.builder().error(errorMsg).build();
+//      return ResponseEntity.badRequest().body(response);
+//    }
+//  }
 }

@@ -16,7 +16,7 @@ import java.util.stream.Stream;
  */
 @RequiredArgsConstructor
 public enum RewardTypeStatus {
-    Challenge("Challeange", 100L), // 챌린지
+    Challenge("Challenge", 100L), // 챌린지
     Plogging("Plogging", 10L), // 플로깅
     Donation("Donation", -1000L), // 기부
     Product("Product", -8000L); // 랜덤박스
