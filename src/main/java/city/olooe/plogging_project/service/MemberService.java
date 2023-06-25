@@ -13,8 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +46,7 @@ public class MemberService {
   private final ChallengeRepository challengeRepository;
   private final FriendRepository friendRepository;
 
-  private final PasswordEncoder encoder;
+  private final PasswordEncoder passwordEncoder;
 
   /**
    * @author: 박연재
@@ -51,6 +55,7 @@ public class MemberService {
    * @param: memberEntity
    * @return: memberRepository.save(memberEntity)
    */
+  @Transactional
   public MemberEntity create(final MemberEntity memberEntity) {
     if (memberEntity == null || memberEntity.getUserId() == null) {
       throw new RuntimeException("유효하지 않은 인자값");
@@ -104,16 +109,21 @@ public class MemberService {
    * @return
    */
   @Transactional
-  public void modify(MemberDTO member, @AuthenticationPrincipal ApplicationUserPrincipal principal) {
+  public void modify(MemberDTO member) {
     MemberEntity registeredMember = memberRepository.findById(member.getMemberNo())
         .orElseThrow(() -> new IllegalArgumentException("회원을 발견하지 못함"));
-
-    registeredMember.setNickName(member.getNickName());
+    if(!passwordEncoder.matches(member.getPassword(), registeredMember.getPassword())){
+      registeredMember.setPassword(passwordEncoder.encode(member.getPassword()));
+    }
+    if(registeredMember.getNickName() != member.getNickName()){
+      registeredMember.setNickName(member.getNickName());
+    }
     registeredMember.setUserName(member.getUserName());
     registeredMember.setBirth(member.getBirth());
     registeredMember.setAddressDetail(member.getAddressDetail());
     registeredMember.setGender(member.getGender());
     registeredMember.setIntro(member.getIntro());
+
   }
 
   /**
@@ -162,9 +172,10 @@ public class MemberService {
   public void validateWithUserId(String userId) throws Exception {
     List<MemberEntity> memberList = memberRepository.findAll();
     Boolean isExistUserId = memberList.stream().map(member -> member.getUserId())
-        .anyMatch(existUserId -> userId == existUserId);
+        .anyMatch(existUserId -> userId.equals(existUserId));
+    System.out.println(isExistUserId);        
     if (isExistUserId) {
-      throw new Exception("중복되는 회원 아이디가 존재합니다.");
+      throw new IllegalArgumentException("중복되는 회원 아이디가 존재합니다.");
     }
   }
 
@@ -175,9 +186,9 @@ public class MemberService {
    * @brief 회원 유효성 검증
    */
   public void validateWithMember(final MemberEntity member, MemberDTO dto) throws Exception {
-    if (member.getUserId() == dto.getUserId() || member.getEmail() == dto.getEmail()) {
-      throw new Exception("중복되는 값이 존재합니다.");
-    }
+    // if (member.getUserId() == dto.getUserId() || member.getEmail() == dto.getEmail()) {
+    //   throw new Exception("중복되는 값이 존재합니다.");
+    // }
   }
 
 }

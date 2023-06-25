@@ -10,11 +10,13 @@ import org.apache.el.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,6 +67,7 @@ public class ProfileController {
   private final MemberService memberService;
   private final ProfileService profileService;
 
+  private final CustomUserDetails customUserDetails;
   private final AuthenticationManager authenticationManager;
 
   /**
@@ -90,7 +93,7 @@ public class ProfileController {
    * 
    * @author 박연재
    * @date 23.06.23
-   * @brief 회원 정보 수정 페이지
+   * @brief 프로필 회원 정보 수정 페이지
    * @param member
    * @return ResponseEntity
    */
@@ -98,7 +101,7 @@ public class ProfileController {
   public ResponseEntity<?> editProfilePage(@AuthenticationPrincipal ApplicationUserPrincipal member) {
     ResponseDTO<?> response = null;
     try {
-      MemberDTO memberDTO = new MemberDTO(memberService.getMember(member.getMember().getMemberNo()).orElseThrow(Exception::new));
+      MemberDTO memberDTO = new MemberDTO(memberService.getMember(member.getMember().getMemberNo()).get());
       System.out.println(memberDTO);
       response = ResponseDTO.builder().data(memberDTO).build();
       return ResponseEntity.ok().body(response);
@@ -107,13 +110,10 @@ public class ProfileController {
       return ResponseEntity.badRequest().body(response);
     }
   }
-
-  private final PasswordEncoder encoder;
-
   /**
    * @author 박연재
    * @date 23.06.23
-   * @brief 회원 정보 수정 로직 메서드
+   * @brief 프로필 회원 정보 수정 로직 메서드
    * @param dto
    * @return ResponseEntity
    */
@@ -121,20 +121,20 @@ public class ProfileController {
   public ResponseEntity<?> editProfile(@RequestBody MemberDTO dto, @AuthenticationPrincipal ApplicationUserPrincipal user) {
     ResponseDTO<?> response = null;
     try {
-      memberService.modify(dto, user);
-      Authentication authentication = authenticationManager
-          .authenticate(new UsernamePasswordAuthenticationToken(dto.getUserId(), dto.getPassword()));
+      memberService.modify(dto);  // 회원 정보 수정 서비스 계층
+
+      
+      ApplicationUserPrincipal principal = (ApplicationUserPrincipal)customUserDetails.loadUserByUserId(dto.getUserId());
+      AbstractAuthenticationToken authentication = 
+        new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities()); // 새로운 인증 객체 구현
       SecurityContextHolder.getContext().setAuthentication(authentication);
-      return ResponseEntity.ok().body("성공");
+      response = ResponseDTO.builder().data("프로필 회원 수정 성공!").build();
+      return ResponseEntity.ok().body(response);
     } catch (Exception e) {
       response = ResponseDTO.builder().error(e.getMessage()).build();
       return ResponseEntity.badRequest().body(response);
     }
   }
-
-  // private ResponseEntity<?> resEditProfile(MemberDTO dto) {
-
-  // }
 
   private ResponseEntity<?> resProfile(MemberEntity member, Optional<MemberEntity> optionalMember,
       String errorMsg) {

@@ -11,6 +11,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,10 +56,8 @@ public class MemberController {
   private TokenProvider tokenProvider;
 
   @Autowired
-  private WebSecurityConfig securityConfig;
+  private PasswordEncoder passwordEncoder;
 
-  @Autowired
-  private CustomUserDetails customUserDetails;
 
   // /**
   // * @author: 박연재
@@ -86,29 +85,30 @@ public class MemberController {
     // MemberEntity entity = MemberDTO.toEntity(dto);
     // return ResponseEntity.ok().body(entity);
     //
+    try {
     MemberEntity member = memberService.getByCredentials(memberDTO.getUserId(), memberDTO.getPassword(),
-        securityConfig.getPasswordEncoder());
-    if (member != null) {
-      final String token = tokenProvider.userCreateToken(member);
-      log.info("{}", token);
-      final MemberDTO responseMemberDTO = MemberDTO.builder()
-          .memberNo(member.getMemberNo())
-          .userId(member.getUserId())
-          .email(member.getEmail())
-          .gender(member.getGender())
-          .address(member.getAddress())
-          .birth(member.getBirth())
-          .regDate(member.getRegDate())
-          .nickName(member.getNickName())
-          .userName(member.getUserName())
-          .regDate(member.getRegDate())
-          .token(token)
-          .authList(member.getAuthEntities().stream().map(s -> s.getAuthority().getKey()).collect(Collectors.toList()))
-          .build();
-      return ResponseEntity.ok().body(responseMemberDTO);
-    } else {
-      ResponseDTO responseDTO = ResponseDTO.builder().error("로그인 실패!").build();
-      return ResponseEntity.badRequest().body(responseDTO);
+        passwordEncoder);
+    final String token = tokenProvider.userCreateToken(member);
+    log.info("{}", token);
+    final MemberDTO responseMemberDTO = MemberDTO.builder()
+        .memberNo(member.getMemberNo())
+        .userId(member.getUserId())
+        .email(member.getEmail())
+        .gender(member.getGender())
+        .address(member.getAddress())
+        .birth(member.getBirth())
+        .regDate(member.getRegDate())
+        .nickName(member.getNickName())
+        .userName(member.getUserName())
+        .regDate(member.getRegDate())
+        .token(token)
+        .authList(member.getAuthEntities().stream().map(s -> s.getAuthority().getKey()).collect(Collectors.toList()))
+        .build();
+     ResponseDTO resposneDTO = ResponseDTO.builder().data(responseMemberDTO).build();  
+    return ResponseEntity.ok().body(resposneDTO);
+    } catch(Exception e){
+      ResponseDTO resposneDTO = ResponseDTO.builder().error("로그인 실패!").build();
+      return ResponseEntity.badRequest().body(resposneDTO);
     }
   }
 
@@ -117,7 +117,7 @@ public class MemberController {
     try {
       MemberEntity member = MemberEntity.builder()
           .userId(memberDTO.getUserId())
-          .password(securityConfig.getPasswordEncoder().encode(memberDTO.getPassword()))
+          .password(passwordEncoder.encode(memberDTO.getPassword()))
           .birth(memberDTO.getBirth())
           .userName(memberDTO.getUserName())
           .email(memberDTO.getEmail())
@@ -141,7 +141,9 @@ public class MemberController {
           .nickName(registeredMember.getNickName())
           .gender(registeredMember.getGender())
           .build();
-      return ResponseEntity.ok().body(responseMemberDTO);
+       
+      ResponseDTO responseDTO = ResponseDTO.builder().data(responseMemberDTO).build();    
+      return ResponseEntity.ok().body(responseDTO);
     } catch (Exception e) {
       // 유저 정보는 유일해야하므로 MemberDTO 리턴
       ResponseDTO resposneDTO = ResponseDTO.builder().error(e.getMessage()).build();
@@ -150,10 +152,11 @@ public class MemberController {
   }
 
   @PostMapping("signup/checkId")
-  public ResponseEntity<?> checkUserId(@RequestParam String userId) throws Exception {
+  public ResponseEntity<?> checkUserId(@RequestBody MemberDTO memberDTO) throws Exception {
     try {
-      memberService.validateWithUserId(userId);
-      return ResponseEntity.ok().body(userId);
+      memberService.validateWithUserId(memberDTO.getUserId());
+      // ResponseDTO resposneDTO = ResponseDTO.builder().data().build();
+      return ResponseEntity.ok().build();
     } catch (Exception e) {
       ResponseDTO resposneDTO = ResponseDTO.builder().error(e.getMessage()).build();
       return ResponseEntity.badRequest().body(resposneDTO);
