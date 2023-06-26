@@ -67,6 +67,8 @@ public class BoardEntity {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "bno", orphanRemoval = true, cascade = CascadeType.ALL)
   private List<ReplyEntity> replys = new ArrayList<>();
 
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "bno", orphanRemoval = true, cascade = CascadeType.ALL)
+  private List<AttachEntity> attaches;
 
 
   public void update(String title, String content, Date upDatedate) {
