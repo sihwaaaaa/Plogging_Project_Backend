@@ -84,6 +84,9 @@ public class BoardController {
     if(boardCreateDTO.getPloggingNo() == null) {
       log.warn("플로깅 null 값 체크");
     }
+    log.warn("board DTO {}", boardCreateDTO.getAttach().getPath());
+    log.warn("board DTO {}", boardCreateDTO.getAttach().getUuid());
+    log.warn("board DTO {}", boardCreateDTO.getAttach().getFile());
 
     BoardDTO boardDTO = boardService.create(user, boardCreateDTO);
     return ResponseEntity.ok().body(ResponseDTO.builder().data(boardDTO).build());

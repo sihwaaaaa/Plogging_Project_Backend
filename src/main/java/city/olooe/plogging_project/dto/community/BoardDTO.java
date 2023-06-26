@@ -2,6 +2,7 @@ package city.olooe.plogging_project.dto.community;
 
 import java.util.Date;
 
+import city.olooe.plogging_project.dto.AttachDTO;
 import city.olooe.plogging_project.model.community.BoardCategory;
 import city.olooe.plogging_project.model.community.BoardEntity;
 import city.olooe.plogging_project.model.MemberEntity;
@@ -33,6 +34,8 @@ public class BoardDTO {
   private Date regDate; // 게시글 작성일
   private Date updateDate; // 게시글 수정일
   private String category; // 게시글 카테고리(0 : 커뮤니티, 1 : 플로깅)
+  @Setter
+  private AttachDTO attach; // 첨부 파일
   @Setter
   private Long ploggingNo;
   @Setter

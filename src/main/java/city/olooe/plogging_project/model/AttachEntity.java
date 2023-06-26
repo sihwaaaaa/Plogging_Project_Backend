@@ -16,17 +16,14 @@ import javax.persistence.*;
 @DynamicInsert
 @DynamicUpdate
 @Builder
-@Table(name = "tbl_attach")
+@Table(name = "tbl_attaches")
 public class AttachEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long attachNo;
-
     private String uuid;
     private String path;
     private String filename;
-    @ManyToOne(fetch = FetchType.LAZY,targetEntity = BoardEntity.class)
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = BoardEntity.class)
     @JoinColumn(name = "bno", referencedColumnName = "bno")
     private BoardEntity bno;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = ChallengeEntity.class)
@@ -35,5 +32,4 @@ public class AttachEntity {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = BadgeEntity.class)
     @JoinColumn(name = "badgeNo", referencedColumnName = "badgeNo")
     private BadgeEntity badgeNo;
-    private Long fileSize;
 }
