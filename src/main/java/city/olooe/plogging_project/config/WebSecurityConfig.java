@@ -78,8 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .logoutSuccessUrl("/")
         .and()
         .exceptionHandling()
-        .authenticationEntryPoint(new Http403ForbiddenEntryPoint());
-
+        .authenticationEntryPoint(new Http403ForbiddenEntryPoint());    
     // jwtAuthenticationFilter, CorsFilter.class
     http.addFilterAfter(jwtAuthenticationFilter, CorsFilter.class);
     http.addFilterBefore(redirectUrlFilter, OAuth2AuthorizationRequestRedirectFilter.class);

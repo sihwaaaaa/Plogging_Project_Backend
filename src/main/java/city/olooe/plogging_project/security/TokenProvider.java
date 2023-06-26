@@ -55,14 +55,15 @@ public class TokenProvider {
   }
 
   public String oauthCreateToken(Authentication authentication) {
-    ApplicationOAuth2User userPrincipal = (ApplicationOAuth2User) authentication.getPrincipal();
+    ApplicationUserPrincipal userPrincipal = (ApplicationUserPrincipal) authentication.getPrincipal();
     Date expiryDate = Date.from(Instant.now().plus(jwtExpiration, ChronoUnit.DAYS));
 
     return Jwts.builder()
+        .signWith(SignatureAlgorithm.HS512, jwtSecretKey)
         .setSubject(userPrincipal.getName())
+        .setIssuer("myApp")
         .setIssuedAt(new Date())
         .setExpiration(expiryDate)
-        .signWith(SignatureAlgorithm.HS512, jwtSecretKey)
         .compact();
   }
 }

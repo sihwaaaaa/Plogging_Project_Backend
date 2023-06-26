@@ -12,31 +12,48 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 
 @Getter
-public class ApplicationUserPrincipal implements UserDetails {
+public class ApplicationUserPrincipal implements OAuth2User, UserDetails {
 
+    private String id;
     private final MemberEntity member;
-
+    private Map<String, Object> attributes;
     public ApplicationUserPrincipal(MemberEntity member) {
        this.member = member;
     }
 
+    public ApplicationUserPrincipal(String id, final MemberEntity member,  Map<String, Object> attributes) {
+       this.id = id;
+       this.member = member;
+       this.attributes = attributes;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return this.attributes;
+    }
+
+    @Override
+    public String getName() {
+        return this.id;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return member.getAuthEntities().stream()
                 .map(member -> new SimpleGrantedAuthority(member.getAuthority().getKey())).collect(Collectors.toList());
     }
-
 
     @Override
     public String getPassword() {
