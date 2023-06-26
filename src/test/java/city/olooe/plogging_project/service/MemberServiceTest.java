@@ -34,26 +34,32 @@ public class MemberServiceTest {
     memberService.getByCredentials("root", "1234567", securityConfig.getPasswordEncoder());
   }
 
-  @DisplayName("회원가입 회원 아이디 중복 확인")
+  @DisplayName("이메일을 포함하고 있는 회원 확인")
   @Test
-  public void testCheckValidateUserId() throws Exception {
-    memberService.validateWithUserId("pkkj");
+  public void testCheckMemberWithUserName() throws Exception {
+    memberService.validateWithEmail("ploggingManager@gmail.com");
   }
 
-  @DisplayName("회원 정보 수정 테스트")
-  @Test
-  public void testUpdateMemberInfo() throws Exception {
+  // @DisplayName("회원가입 회원 아이디 중복 확인")
+  // @Test
+  // public void testCheckValidateUserId() throws Exception {
+  // memberService.validateWithUserId("pkkj");
+  // }
 
-    MemberDTO memberDTO = MemberDTO.builder()
-        .memberNo(95L)
-        .userName("변경된 이름ze")
-        .nickName("변경된 닉네임ze")
-        .gender("여자")
-        .addressDetail("변경된 상세 주소ze")
-        .birth(new Date(22, 6, 23))
-        .intro("안녕하세요~zze")
-        .build();
-    memberService.modify(memberDTO);
-  }
+  // @DisplayName("회원 정보 수정 테스트")
+  // @Test
+  // public void testUpdateMemberInfo() throws Exception {
+
+  // MemberDTO memberDTO = MemberDTO.builder()
+  // .memberNo(95L)
+  // .userName("변경된 이름ze")
+  // .nickName("변경된 닉네임ze")
+  // .gender("여자")
+  // .addressDetail("변경된 상세 주소ze")
+  // .birth(new Date(22, 6, 23))
+  // .intro("안녕하세요~zze")
+  // .build();
+  // memberService.modify(memberDTO);
+  // }
 
 }

@@ -76,18 +76,22 @@ public class ProfileController {
    * @param member
    * @return ResponseEntity
    */
-//  @GetMapping
-//  public ResponseEntity<?> myProfile(@AuthenticationPrincipal ApplicationUserPrincipal member) {
-//    // return
-//    // responseContent(profileService.searchChallengeDetailByMember(member.getMember()),
-//    // "챌린저 내역 불러오기 실패!");
-//    return resProfile(memberService.getMember(member.getMember().getUserId()), null, "내역 불러오기 실패!");
-//  }
-//
-//  @GetMapping("/{memberNo}")
-//  public ResponseEntity<?> oppositeProfile(@PathVariable Long memberNo) {
-//    return resProfile(null, memberService.getMember(memberNo), "상대 회원분 내역 불러오기 실패!!");
-//  }
+  // @GetMapping
+  // public ResponseEntity<?> myProfile(@AuthenticationPrincipal
+  // ApplicationUserPrincipal member) {
+  // // return
+  // //
+  // responseContent(profileService.searchChallengeDetailByMember(member.getMember()),
+  // // "챌린저 내역 불러오기 실패!");
+  // return resProfile(memberService.getMember(member.getMember().getUserId()),
+  // null, "내역 불러오기 실패!");
+  // }
+  //
+  // @GetMapping("/{memberNo}")
+  // public ResponseEntity<?> oppositeProfile(@PathVariable Long memberNo) {
+  // return resProfile(null, memberService.getMember(memberNo), "상대 회원분 내역 불러오기
+  // 실패!!");
+  // }
   @GetMapping("/{memberNo}")
   public ResponseEntity<?> profile(@PathVariable Long memberNo) {
     Optional<MemberEntity> member = memberService.getMember(memberNo);
@@ -107,7 +111,7 @@ public class ProfileController {
    * @param member
    * @return ResponseEntity
    */
-  @GetMapping("edit")
+  @GetMapping("{memberNo}/edit")
   public ResponseEntity<?> editProfilePage(@AuthenticationPrincipal ApplicationUserPrincipal member) {
     ResponseDTO<?> response = null;
     try {
@@ -120,6 +124,7 @@ public class ProfileController {
       return ResponseEntity.badRequest().body(response);
     }
   }
+
   /**
    * @author 박연재
    * @date 23.06.23
@@ -128,15 +133,16 @@ public class ProfileController {
    * @return ResponseEntity
    */
   @PutMapping("edit")
-  public ResponseEntity<?> editProfile(@RequestBody MemberDTO dto, @AuthenticationPrincipal ApplicationUserPrincipal user) {
+  public ResponseEntity<?> editProfile(@RequestBody MemberDTO dto,
+      @AuthenticationPrincipal ApplicationUserPrincipal user) {
     ResponseDTO<?> response = null;
     try {
-      memberService.modify(dto);  // 회원 정보 수정 서비스 계층
+      memberService.modify(dto); // 회원 정보 수정 서비스 계층
 
-      
-      ApplicationUserPrincipal principal = (ApplicationUserPrincipal)customUserDetails.loadUserByUserId(dto.getUserId());
-      AbstractAuthenticationToken authentication = 
-        new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities()); // 새로운 인증 객체 구현
+      ApplicationUserPrincipal principal = (ApplicationUserPrincipal) customUserDetails
+          .loadUserByUserId(dto.getUserId());
+      AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal, null,
+          principal.getAuthorities()); // 새로운 인증 객체 구현
       SecurityContextHolder.getContext().setAuthentication(authentication);
       response = ResponseDTO.builder().data("프로필 회원 수정 성공!").build();
       return ResponseEntity.ok().body(response);
@@ -146,16 +152,37 @@ public class ProfileController {
     }
   }
 
-//  private ResponseEntity<?> resProfile(MemberEntity member, Optional<MemberEntity> optionalMember,
-//      String errorMsg) {
-//    ResponseDTO<?> response = null;
-//    try {
-//      MemberDTO memberDTO = new MemberDTO(member);
-//      response = ResponseDTO.builder().data(memberDTO).build();
-//      return ResponseEntity.ok().body(response);
-//    } catch (Exception e) {
-//      response = ResponseDTO.builder().error(errorMsg).build();
-//      return ResponseEntity.badRequest().body(response);
-//    }
-//  }
+  @PutMapping("{memberNo}/passwordEdit")
+  public ResponseEntity<?> passwordEdit(@AuthenticationPrincipal ApplicationUserPrincipal user,
+      @RequestBody MemberDTO dto) {
+    ResponseDTO<?> response = null;
+    try {
+      memberService.modifyPassword(dto); // 회원 정보 수정 서비스 계층
+
+      ApplicationUserPrincipal principal = (ApplicationUserPrincipal) customUserDetails
+          .loadUserByUserId(dto.getUserId());
+      AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal, null,
+          principal.getAuthorities()); // 새로운 인증 객체 구현
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+      response = ResponseDTO.builder().data("비밀번호 재설정 성공!").build();
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      response = ResponseDTO.builder().error(e.getMessage()).build();
+      return ResponseEntity.badRequest().body(response);
+    }
+  }
+
+  // private ResponseEntity<?> resProfile(MemberEntity member,
+  // Optional<MemberEntity> optionalMember,
+  // String errorMsg) {
+  // ResponseDTO<?> response = null;
+  // try {
+  // MemberDTO memberDTO = new MemberDTO(member);
+  // response = ResponseDTO.builder().data(memberDTO).build();
+  // return ResponseEntity.ok().body(response);
+  // } catch (Exception e) {
+  // response = ResponseDTO.builder().error(errorMsg).build();
+  // return ResponseEntity.badRequest().body(response);
+  // }
+  // }
 }

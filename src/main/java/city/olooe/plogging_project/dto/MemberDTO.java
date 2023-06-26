@@ -51,7 +51,7 @@ public class MemberDTO {
   private String address; // 주소
   private String addressDetail; // 세부 주소
   private String nickName; // 닉네임
-  // @JsonFormat
+  @JsonFormat
   private Date birth; // 생년월일
   private String gender; // 성별
   private String authProvider; // 권한 공급자

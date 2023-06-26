@@ -15,7 +15,6 @@ import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import java.util.List;
 //import city.olooe.plogging_project.model.ChallengeMemberEntity;
 
-
 /**
  * @author: 박연재
  * @date: 2023.06.01
@@ -48,6 +47,13 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
    */
   MemberEntity findByUserName(String userName);
 
+  /**
+   * @author: 박연재
+   * @brief: 아이디 찾기를 위한 회원 조회
+   * @param: userId
+   * @return: MemberEntity
+   */
+  MemberEntity findByUserNameAndEmail(String userName, String email);
 
   MemberEntity findByMemberNo(Long memberNo);
 
@@ -72,6 +78,17 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
    * @return Boolean
    */
   Boolean existsByUserName(String userName);
+
+  /**
+   * 
+   * 
+   * @author: 박연재
+   * @date: 2023.06.02
+   * @brief: 회원 존재 여부 (회원 가입시에 중복 여부)
+   * @param userId
+   * @return Boolean
+   */
+  Boolean existsByEmail(String email);
 
   /**
    * @Author 천은경
