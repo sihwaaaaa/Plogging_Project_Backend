@@ -3,6 +3,8 @@ package city.olooe.plogging_project.controller;
 import city.olooe.plogging_project.dto.member.MemberSearchDTO;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import city.olooe.plogging_project.security.CustomUserDetails;
+
+import org.apache.ibatis.javassist.compiler.ast.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,8 +29,12 @@ import city.olooe.plogging_project.service.EmailService;
 import city.olooe.plogging_project.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,7 +64,6 @@ public class MemberController {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
-
   // /**
   // * @author: 박연재
   // * @date: 2023.06.02
@@ -86,27 +91,27 @@ public class MemberController {
     // return ResponseEntity.ok().body(entity);
     //
     try {
-    MemberEntity member = memberService.getByCredentials(memberDTO.getUserId(), memberDTO.getPassword(),
-        passwordEncoder);
-    final String token = tokenProvider.userCreateToken(member);
-    log.info("{}", token);
-    final MemberDTO responseMemberDTO = MemberDTO.builder()
-        .memberNo(member.getMemberNo())
-        .userId(member.getUserId())
-        .email(member.getEmail())
-        .gender(member.getGender())
-        .address(member.getAddress())
-        .birth(member.getBirth())
-        .regDate(member.getRegDate())
-        .nickName(member.getNickName())
-        .userName(member.getUserName())
-        .regDate(member.getRegDate())
-        .token(token)
-        .authList(member.getAuthEntities().stream().map(s -> s.getAuthority().getKey()).collect(Collectors.toList()))
-        .build();
-     ResponseDTO resposneDTO = ResponseDTO.builder().data(responseMemberDTO).build();  
-    return ResponseEntity.ok().body(resposneDTO);
-    } catch(Exception e){
+      MemberEntity member = memberService.getByCredentials(memberDTO.getUserId(), memberDTO.getPassword(),
+          passwordEncoder);
+      final String token = tokenProvider.userCreateToken(member);
+      log.info("{}", token);
+      final MemberDTO responseMemberDTO = MemberDTO.builder()
+          .memberNo(member.getMemberNo())
+          .userId(member.getUserId())
+          .email(member.getEmail())
+          .gender(member.getGender())
+          .address(member.getAddress())
+          .birth(member.getBirth())
+          .regDate(member.getRegDate())
+          .nickName(member.getNickName())
+          .userName(member.getUserName())
+          .regDate(member.getRegDate())
+          .token(token)
+          .authList(member.getAuthEntities().stream().map(s -> s.getAuthority().getKey()).collect(Collectors.toList()))
+          .build();
+      ResponseDTO resposneDTO = ResponseDTO.builder().data(responseMemberDTO).build();
+      return ResponseEntity.ok().body(resposneDTO);
+    } catch (Exception e) {
       ResponseDTO resposneDTO = ResponseDTO.builder().error("로그인 실패!").build();
       return ResponseEntity.badRequest().body(resposneDTO);
     }
@@ -141,8 +146,8 @@ public class MemberController {
           .nickName(registeredMember.getNickName())
           .gender(registeredMember.getGender())
           .build();
-       
-      ResponseDTO responseDTO = ResponseDTO.builder().data(responseMemberDTO).build();    
+
+      ResponseDTO responseDTO = ResponseDTO.builder().data(responseMemberDTO).build();
       return ResponseEntity.ok().body(responseDTO);
     } catch (Exception e) {
       // 유저 정보는 유일해야하므로 MemberDTO 리턴
@@ -163,21 +168,63 @@ public class MemberController {
     }
   }
 
-  @GetMapping("logout")
-  public void logoutPage(HttpServletRequest request, HttpServletResponse response) {
-    new SecurityContextLogoutHandler().logout(request, response,
-        SecurityContextHolder.getContext().getAuthentication());
-    // response.
-    // return "redirect:/";
+  @GetMapping("findId/{memberNo}")
+  public ResponseEntity<?> findUserIdPage(@PathVariable Long memberNo) {
+    ResponseDTO<?> response = null;
+    try {
+      MemberEntity member = memberService.getMember(memberNo)
+          .orElseThrow(() -> new IllegalArgumentException("해당 번호를 포함하는 회원이 존재하지 않습니다."));
+      MemberDTO memberDTO = MemberDTO.builder()
+          .userId(member.getUserId())
+          .build();
+      response = ResponseDTO.builder().data(memberDTO).build();
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      response = ResponseDTO.builder().data(e.getMessage()).build();
+      return ResponseEntity.badRequest().body(response);
+    }
+  }
+
+  @PostMapping("findId")
+  public ResponseEntity<?> findUserId(@RequestBody MailCheckDTO mailCheckDTO)
+      throws UnsupportedEncodingException, MessagingException {
+    ResponseDTO<?> response = null;
+    try {
+      memberService.validateWithEmail(mailCheckDTO.getEmail()); // 회원이 존재하는지 확인
+      MemberEntity memberEntity = memberService.getMember(mailCheckDTO.getUserName(), mailCheckDTO.getEmail());
+      log.info("{}", memberEntity);
+      MemberDTO dto = MemberDTO.builder()
+          .memberNo(memberEntity.getMemberNo())
+          .userId(memberEntity.getUserId())
+          .build();
+      String confirm = emailService.sendMessage(mailCheckDTO.getEmail(), mailCheckDTO.getUserName(), dto.getMemberNo(),
+          dto.getUserId());
+      response = ResponseDTO.builder().data(confirm).build();
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      response = ResponseDTO.builder().data(e.getMessage()).build();
+      return ResponseEntity.badRequest().body(response);
+    }
   }
 
   @PostMapping("/signup/emailConfirm")
   public ResponseEntity<?> postMethodName(@RequestBody MailCheckDTO dto) throws Exception {
-    String confirm = emailService.sendMessage(dto.getEmail());
-    if (confirm == null) {
-      return ResponseEntity.badRequest().body("null");
+
+    ResponseDTO<?> response = null;
+    try {
+      String confirm = emailService.sendMessage(dto.getEmail(), null, null, null);
+      response = ResponseDTO.builder().data(confirm).build();
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      response = ResponseDTO.builder().data(e.getMessage()).build();
+      return ResponseEntity.badRequest().body(response);
     }
-    return ResponseEntity.ok().body(confirm);
+  }
+
+  @GetMapping("logout")
+  public void logoutPage(HttpServletRequest request, HttpServletResponse response) {
+    new SecurityContextLogoutHandler().logout(request, response,
+        SecurityContextHolder.getContext().getAuthentication());
   }
 
   /**
@@ -188,9 +235,9 @@ public class MemberController {
    * @Breif userId로 회원 검색
    */
   @GetMapping("/search")
-  public ResponseEntity<?> searchMember(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestParam String keyword,
-                                        @PageableDefault(sort = "memberNo", size = 5
-                                        , direction = Sort.Direction.DESC) Pageable pageable) {
+  public ResponseEntity<?> searchMember(@AuthenticationPrincipal ApplicationUserPrincipal user,
+      @RequestParam String keyword,
+      @PageableDefault(sort = "memberNo", size = 5, direction = Sort.Direction.DESC) Pageable pageable) {
 
     Page<MemberSearchDTO> memberDTOS = memberService.searchMember(user, keyword, pageable);
 

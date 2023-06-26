@@ -86,6 +86,17 @@ public class MemberService {
   /**
    * @author 박연재
    * @date 23.06.23
+   * @brief 프로필 조회를 위한 회원 조회
+   * @param memberEntity
+   * @return MemberEntity
+   */
+  public MemberEntity getMember(String userName, String email) {
+    return memberRepository.findByUserNameAndEmail(userName, email);
+  }
+
+  /**
+   * @author 박연재
+   * @date 23.06.23
    * @brief 상대 프로필 조회용 메서드
    * @param memberNo
    * @return
@@ -112,20 +123,31 @@ public class MemberService {
   public void modify(MemberDTO member) {
     MemberEntity registeredMember = memberRepository.findById(member.getMemberNo())
         .orElseThrow(() -> new IllegalArgumentException("회원을 발견하지 못함"));
-    if(!passwordEncoder.matches(member.getPassword(), registeredMember.getPassword())){
-      registeredMember.setPassword(passwordEncoder.encode(member.getPassword()));
-    }
-    if(registeredMember.getNickName() != member.getNickName()){
+    if (registeredMember.getNickName() != member.getNickName()) {
       registeredMember.setNickName(member.getNickName());
     }
     registeredMember.setUserName(member.getUserName());
     registeredMember.setBirth(member.getBirth());
+    registeredMember.setAddress(member.getAddress());
     registeredMember.setAddressDetail(member.getAddressDetail());
     registeredMember.setGender(member.getGender());
     registeredMember.setIntro(member.getIntro());
 
   }
 
+  @Transactional
+  public void modifyPassword(MemberDTO member) {
+    MemberEntity registeredMember = memberRepository.findById(member.getMemberNo())
+        .orElseThrow(() -> new IllegalArgumentException("회원을 발견하지 못함"));
+    if (passwordEncoder.matches(registeredMember.getPassword(), member.getPassword())) {
+      registeredMember.setPassword(passwordEncoder.encode(member.getPassword()));
+    }
+  }
+
+  // if (!passwordEncoder.matches(member.getPassword(),
+  // registeredMember.getPassword())) {
+  // registeredMember.setPassword(passwordEncoder.encode(member.getPassword()));
+  // }
   /**
    * @author: 박연재
    * @date: 2023.06.02
@@ -173,9 +195,15 @@ public class MemberService {
     List<MemberEntity> memberList = memberRepository.findAll();
     Boolean isExistUserId = memberList.stream().map(member -> member.getUserId())
         .anyMatch(existUserId -> userId.equals(existUserId));
-    System.out.println(isExistUserId);        
+    System.out.println(isExistUserId);
     if (isExistUserId) {
       throw new IllegalArgumentException("중복되는 회원 아이디가 존재합니다.");
+    }
+  }
+
+  public void validateWithEmail(String email) throws Exception {
+    if (!memberRepository.existsByEmail(email)) {
+      throw new Exception("이메일에 맞는 회원이 존재하지 않습니다");
     }
   }
 
@@ -187,7 +215,7 @@ public class MemberService {
    */
   public void validateWithMember(final MemberEntity member, MemberDTO dto) throws Exception {
     // if (member.getEmail() == dto.getEmail()) {
-    //   throw new Exception("중복되는 값이 존재합니다.");
+    // throw new Exception("중복되는 값이 존재합니다.");
     // }
   }
 
