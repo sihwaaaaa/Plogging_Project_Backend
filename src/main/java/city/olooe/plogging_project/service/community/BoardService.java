@@ -4,9 +4,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import city.olooe.plogging_project.dto.AttachDTO;
+import city.olooe.plogging_project.model.AttachEntity;
 import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.model.community.BoardCategory;
 import city.olooe.plogging_project.model.map.PloggingEntity;
+import city.olooe.plogging_project.persistence.AttachRepository;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,6 +38,8 @@ import lombok.RequiredArgsConstructor;
 public class BoardService {
   private final BoardRepository boardRepository;
 
+  private final AttachRepository attachRepository;
+
 
   /**
    * @Author 천은경
@@ -53,15 +58,23 @@ public class BoardService {
             .category(BoardCategory.COMMUNITY)
             .build();
 
+    BoardDTO boardDTO;
+
     if (boardCreateDTO.getPloggingNo() != null){
       boardEntity.setCategory(BoardCategory.PLOGGING);
       boardEntity.setPloggingNo(PloggingEntity.builder().ploggingNo(boardCreateDTO.getPloggingNo()).build());
-      BoardDTO boardDTO = new BoardDTO(boardRepository.save(boardEntity));
+      boardDTO = new BoardDTO(boardRepository.save(boardEntity));
       boardDTO.setPloggingNo(boardCreateDTO.getPloggingNo());
       return boardDTO;
-    }     
+    }
 
-    return new BoardDTO(boardRepository.save(boardEntity));
+    boardDTO = new BoardDTO(boardRepository.save(boardEntity));
+
+    AttachDTO attach = boardCreateDTO.getAttach();
+    attach.setBoardDTO(BoardDTO.builder().bno(boardCreateDTO.getBno()).build());
+    attachRepository.save(attach.toEntityWithBoard());
+
+    return boardDTO;
   }
 
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import city.olooe.plogging_project.model.AttachEntity;
 import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.model.map.PloggingEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -65,6 +66,7 @@ public class BoardEntity {
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "bno", orphanRemoval = true, cascade = CascadeType.ALL)
   private List<ReplyEntity> replys = new ArrayList<>();
+
 
 
   public void update(String title, String content, Date upDatedate) {
