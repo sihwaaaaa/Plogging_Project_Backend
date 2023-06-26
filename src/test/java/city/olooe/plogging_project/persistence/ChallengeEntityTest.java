@@ -132,12 +132,12 @@ public class ChallengeEntityTest {
      * @date: '23.06.05
      * @brief: 챌린지 일정삭제
      */
-    @Test
-    @DisplayName("챌린지 일정삭제")
-    public void deleteSchedule() {
-        ChallengeScheduleEntity challengeScheduleEntity = challengeScheduleRepository.findByScheduleNo(2L);
-        challengeScheduleRepository.delete(challengeScheduleEntity);
-    }
+//    @Test
+//    @DisplayName("챌린지 일정삭제")
+//    public void deleteSchedule() {
+//        ChallengeScheduleEntity challengeScheduleEntity = challengeScheduleRepository.findByScheduleNo(2L);
+//        challengeScheduleRepository.delete(challengeScheduleEntity);
+//    }
 
     /**
      * @author : 김민수

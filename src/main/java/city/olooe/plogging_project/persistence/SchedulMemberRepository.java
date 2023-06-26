@@ -10,9 +10,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Member;
+import java.util.List;
 
 @Repository
 public interface SchedulMemberRepository extends JpaRepository<SchedulMemberEntity,Long> {
+
+    List<SchedulMemberEntity> findByChNoAndScheduleNo (ChallengeEntity chNo, ChallengeScheduleEntity scheduleNo);
 
     SchedulMemberEntity findBySmno(Long smno);
 //    SchedulMemberEntity findBySmno(ScheduleMemberDTO smno);

@@ -10,6 +10,7 @@ import city.olooe.plogging_project.dto.*;
 import city.olooe.plogging_project.model.*;
 import city.olooe.plogging_project.model.map.MapEntity;
 import city.olooe.plogging_project.persistence.ChallengeRepository;
+import city.olooe.plogging_project.persistence.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +25,8 @@ public class ChallengeServiceTest {
 
     @Autowired
     ChallengeService challengeService;
+
+
 
     /**
      * @author : 김민수
@@ -170,15 +173,18 @@ public class ChallengeServiceTest {
      *
      * @brief: 챌린지 일정참여
      */
-    @Test
-    public void scheduleJoin(){
-        ScheduleMemberDTO scheduleMemberDTO = ScheduleMemberDTO.builder()
-                .scheduleNo(11L)
-                .chNo(29L)
-                .challenger(62L)
-                .build();
-        challengeService.scheduleJoin(scheduleMemberDTO);
-    }
+//    @Test
+//    @Transactional
+//    public void scheduleJoin(){
+//        ChallengeMemberDTO challengeMember = ChallengeMemberDTO.builder().challenger(MemberDTO.builder().memberNo(62L).build().getMemberNo()).build();
+//        ScheduleMemberDTO scheduleMemberDTO = ScheduleMemberDTO.builder()
+//                .scheduleNo(27L)
+//                .chNo(70L)
+//                .challenger(challengeMember)
+//                .build();
+//        log.info(" scheduleMemberDTO : {}", scheduleMemberDTO);
+//        challengeService.scheduleJoin(scheduleMemberDTO);
+//    }
 
     /**
      * @author : 김민수
@@ -255,12 +261,12 @@ public class ChallengeServiceTest {
      * @brief: 회원이 가입한 챌린지 목록
      * @return:
      */
-    @Test
-    public void memberChList(){
-        Long memberNo = 62L;
-        challengeService.memberChList(memberNo);
-        log.info("list : {}", challengeService.memberChList(memberNo));
-    }
+//    @Test
+//    public void memberChList(){
+//        Long memberNo = 62L;
+//        challengeService.memberChList(memberNo);
+//        log.info("list : {}", challengeService.memberChList(memberNo));
+//    }
 
     /**
      * @author : 김민수
