@@ -7,10 +7,7 @@ import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.ChallengeMemberEntity;
 import city.olooe.plogging_project.dto.*;
 import city.olooe.plogging_project.dto.friend.FriendDTO;
-import city.olooe.plogging_project.model.ChallengeEntity;
-import city.olooe.plogging_project.model.ChallengeMemberEntity;
-import city.olooe.plogging_project.model.ChallengeScheduleEntity;
-import city.olooe.plogging_project.model.ChallengeStatus;
+import city.olooe.plogging_project.model.*;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import city.olooe.plogging_project.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
@@ -141,6 +138,27 @@ public class ChallengeController {
         log.info("{}", challengeMemberEntity);
         return challengeMemberEntity;
     }
+    /**
+     * @author : 김민수
+     * @date: '23.06.23
+     *
+     * @param: chNo ,  scheduleMemberDTO , user
+     * @return: ResponseEntity
+     *
+     * @brief: 챌린지 일정참여
+     */
+    @PostMapping("/scheduleJoin")
+    public ResponseEntity<?> chScheduleJoin(@RequestBody ScheduleMemberDTO scheduleMemberDTO,@AuthenticationPrincipal ApplicationUserPrincipal user){
+//        log.info("scheduleNo : {}" , scheduleNo);
+        log.info("scheduleMemberDTO : {}", scheduleMemberDTO);
+        log.info("user{}", user);
+        SchedulMemberEntity schedulMemberEntity = challengeService.scheduleJoin(scheduleMemberDTO,user.getMember().getMemberNo());
+        return ResponseEntity.ok(ResponseDTO.builder().data(schedulMemberEntity).build());
+    }
+//    public ResponseEntity<?> chScheduleJoin(ScheduleMemberDTO scheduleMemberDTO){
+//        SchedulMemberEntity schedulMemberEntity = challengeService.scheduleJoin(scheduleMemberDTO);
+//        return ResponseEntity.ok(ResponseDTO.builder().data(schedulMemberEntity).build());
+//    }
 
     /**
      * @author : 김민수
@@ -160,6 +178,38 @@ public class ChallengeController {
         return challengeScheduleEntity;
     }
 
+    /**
+     * @author : 김민수
+     * @date: '23.06.16
+     *
+     * @param: chNo
+     * @return: ResponseEntity
+     *
+     * @brief: : 해당 챌린지에 일정에 참여한 맴버리스트
+     */
+    @GetMapping("/scheduleMemberList/{chNo}/{scheduleNo}")
+    public ResponseEntity<?> getScheduleMemberList(@PathVariable Long chNo , @PathVariable Long scheduleNo) {
+        log.info("scheduleNo: {}", scheduleNo);
+        log.info("chNo: {}" , chNo);
+        ChallengeEntity challengeScheduleEntity = new ChallengeEntity(chNo);
+        ChallengeScheduleEntity challengeMember = new ChallengeScheduleEntity(scheduleNo);
+        List<SchedulMemberEntity> schedules = challengeService.readSchMemberList(challengeScheduleEntity,challengeMember);
+
+        List<ScheduleMemberDTO> scheduleMemberDTOS = schedules.stream()
+                .map(ScheduleMemberDTO::new)
+                .collect(toList());
+        log.info("Challenge schedules: {}", schedules);
+        return ResponseEntity.ok().body(ResponseDTO.builder().data(scheduleMemberDTOS).build());
+    }
+/**
+     * @author : 김민수
+     * @date: '23.06.16
+     *
+     * @param: chNo
+     * @return: ResponseEntity
+     *
+     * @brief: : 해당 챌린지의 일정 리스트
+     */
     @GetMapping("/ploggingList/{chNo}")
     public ResponseEntity<?> getChallengeSchedules(@PathVariable Long chNo) {
         log.info("chNo: {}", chNo);

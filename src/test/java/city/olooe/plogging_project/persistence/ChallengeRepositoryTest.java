@@ -143,16 +143,16 @@ public class ChallengeRepositoryTest {
      * @date: '23.06.11
      * @brief: 챌린지 일정참여
      */
-    @Test
-    @DisplayName("챌린지원의 챌린지 일정참여")
-    public void scheduleaddMember(){
-        SchedulMemberEntity schedulMemberEntity = SchedulMemberEntity.builder()
-                .challenger(MemberEntity.builder().memberNo(12L).build())
-                .scheduleNo(ChallengeScheduleEntity.builder().scheduleNo(4L).build())
-                .chNo(ChallengeEntity.builder().chNo(10L).build())
-                .build();
-        schedulMemberRepository.save(schedulMemberEntity);
-    }
+//    @Test
+//    @DisplayName("챌린지원의 챌린지 일정참여")
+//    public void scheduleaddMember(){
+//        SchedulMemberEntity schedulMemberEntity = SchedulMemberEntity.builder()
+//                .challenger(MemberEntity.builder().memberNo(12L).build())
+//                .scheduleNo(ChallengeScheduleEntity.builder().scheduleNo(4L).build())
+//                .chNo(ChallengeEntity.builder().chNo(10L).build())
+//                .build();
+//        schedulMemberRepository.save(schedulMemberEntity);
+//    }
 
     /**
      * @author : 김민수

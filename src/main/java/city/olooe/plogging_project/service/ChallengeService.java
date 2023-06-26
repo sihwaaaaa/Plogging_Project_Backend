@@ -153,6 +153,32 @@ public class  ChallengeService {
      * @author : 김민수
      * @date: '23.06.11
      *
+     * @param: challengeScheduleDTO
+     *
+     * @brief: 챌린지 일정참여
+     * @return: ChallengeScheduleEntity
+     */
+//    @Transactional
+//    public SchedulMemberEntity scheduleJoin(ScheduleMemberDTO scheduleMemberDTO, Long chNo, Long memberNo) {
+//        SchedulMemberEntity schedulMemberEntity = scheduleMemberDTO.toschedulMemberEntity();
+//        schedulMemberEntity.setChNo(ChallengeEntity.builder().chNo(chNo).build());
+//        schedulMemberEntity.setChallenger(ChallengeMemberEntity.builder().challenger(
+//                MemberEntity.builder().memberNo(memberNo).build()
+//        ).build());
+//        return schedulMemberRepository.save(schedulMemberEntity);
+//    }
+    @Transactional
+    public SchedulMemberEntity scheduleJoin(ScheduleMemberDTO scheduleMemberDTO, Long memberNo){
+        SchedulMemberEntity schedulMemberEntity = scheduleMemberDTO.toschedulMemberEntity();
+        schedulMemberEntity.setChallenger(MemberEntity.builder().memberNo(memberNo).build());
+//        schedulMemberEntity.setScheduleNo(ChallengeScheduleEntity.builder().scheduleNo(scheduleNo).build());
+        return schedulMemberRepository.save(schedulMemberEntity);
+    }
+
+    /**
+     * @author : 김민수
+     * @date: '23.06.11
+     *
      * @param: chNo
      *
      * @brief: 챌린지 맴버 삭제서비스
@@ -180,22 +206,12 @@ public class  ChallengeService {
     @Transactional(readOnly = true)
     public List<ChallengeScheduleEntity> readChSchedule(ChallengeEntity chNo) {
         return challengeScheduleRepository.findByChNo(chNo);
+
+    } @Transactional(readOnly = true)
+    public List<SchedulMemberEntity> readSchMemberList(ChallengeEntity chNo, ChallengeScheduleEntity schedule) {
+        return schedulMemberRepository.findByChNoAndScheduleNo(chNo,schedule);
     }
 
-    /**
-     * @author : 김민수
-     * @date: '23.06.11
-     *
-     * @param: challengeScheduleDTO
-     *
-     * @brief: 챌린지 일정참여
-     * @return: ChallengeScheduleEntity
-     */
-    // 챌린지번호, 챌린저(챌린지맴버)번호, 일정번호
-    public SchedulMemberEntity scheduleJoin(ScheduleMemberDTO scheduleMemberDTO){
-        SchedulMemberEntity schedulMemberEntity = scheduleMemberDTO.toschedulMemberEntity();
-        return schedulMemberRepository.save(schedulMemberEntity);
-    }
 
     /**
      * @author : 김민수
@@ -208,7 +224,7 @@ public class  ChallengeService {
      */
     public void scheduleCancle(ScheduleMemberDTO scheduleMemberDTO){
         // 챌린지 일정참여 취소 - 챌린지No, 챌린지 일정No, 맴버No 필요
-        SchedulMemberEntity schedulMemberEntity = scheduleMemberDTO.toScheduleCancle();
+        SchedulMemberEntity schedulMemberEntity = scheduleMemberDTO.toschedulMemberEntity();
         schedulMemberRepository.delete(schedulMemberEntity);
     }
 
@@ -245,12 +261,12 @@ public class  ChallengeService {
      * @brief: 회원이 가입한 챌린지 목록
      * @return:
      */
-    public List<ChallengeEntity> memberChList(Long memberNo){
-        MemberEntity member = memberRepository.findByMemberNo(memberNo);
-        List<ChallengeEntity> challengeEntities = challengeRepository.findMyChallenges(member);
-        System.out.println("challengeEntities: " + challengeEntities);
-        return challengeEntities;
-    }
+//    public List<ChallengeEntity> memberChList(Long memberNo){
+//        MemberEntity member = memberRepository.findByMemberNo(memberNo);
+//        List<ChallengeEntity> challengeEntities = challengeRepository.findMyChallenges(member);
+//        System.out.println("challengeEntities: " + challengeEntities);
+//        return challengeEntities;
+//    }
 
     /**
      * @author : 김민수

@@ -39,4 +39,12 @@ public class ChallengeMemberEntity {
     private MemberEntity challenger; // 챌린지원의 번호 FK
 
     private Date regDate; // 챌린지 가입날짜
+
+    public ChallengeMemberEntity(MemberEntity challenger) {
+        this.challenger = challenger;
+    }
+
+    public ChallengeMemberEntity(Long memberNo) {
+        this.challenger = MemberEntity.builder().memberNo(memberNo).build();
+    }
 }
