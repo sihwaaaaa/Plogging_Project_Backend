@@ -28,7 +28,6 @@ import java.util.Optional;
 public class FriendService {
 
     private final FriendRepository friendRepository;
-    private final MemberRepository memberRepository;
 
 
     /**
@@ -45,9 +44,9 @@ public class FriendService {
         MemberEntity toMember = toEntityWithNo(toMemberNo);
         FriendEntity friendEntity = new FriendEntity(fromMember, toMember);
         // 유효성 검사
-        //validate(friendEntity);
-        // 저장
-        friendRepository.save(friendEntity);
+        validate(friendEntity);
+        // 차단 확인 및 상대의 플친 신청 여부 후 저장
+        checkBlocked(friendEntity);
         // 신청 리스트 반환
         return friendRepository.findByFromMemberAndStatus(fromMember,
                 FriendStatusType.PENDING);
@@ -72,8 +71,8 @@ public class FriendService {
      * @Brief 플친 단일 조회
      */
     public Optional<FriendEntity> getFriend(Long fromMember, Long toMember) {
-        return Optional.ofNullable(friendRepository.findByFromMemberAndToMember
-                (MemberEntity.builder().memberNo(fromMember).build(), MemberEntity.builder().memberNo(toMember).build()));
+        return friendRepository.findByFromMemberAndToMember
+                (MemberEntity.builder().memberNo(fromMember).build(), MemberEntity.builder().memberNo(toMember).build());
     }
 
 
@@ -118,9 +117,11 @@ public class FriendService {
         // 현재 로그인 유저 엔티티 변환
         MemberEntity toMember = toEntityWithNo(toMemberNo);
         // 상대와의 플친 확인
-        FriendEntity friendEntity = friendRepository.findByFromMemberAndToMember(toEntityWithNo(fromMemberNo), toMember);
+        Optional<FriendEntity> friendEntity = friendRepository.findByFromMemberAndToMember(toEntityWithNo(fromMemberNo), toMember);
+        // 차단 확인 후 수락
+        checkBlocked(friendEntity.orElseThrow(NullPointerException::new).setFriend());
         // 플친 요청 수락
-        friendRepository.save(friendEntity.setFriend());
+//        friendRepository.save(friendEntity.get().setFriend());
         // 수락 후 나에게 온 요청 리스트 반환
         return friendRepository.findByToMemberAndStatus(toMember, FriendStatusType.PENDING);
     }
@@ -137,18 +138,16 @@ public class FriendService {
         // 현재 로그인 유저 엔티티 변환
         MemberEntity fromMember = toEntityWithNo(fromMemberNo);
         // 상대와의 플친 확인
-        FriendEntity friendEntity = friendRepository.findByFromMemberAndToMember(fromMember, toEntityWithNo(toMemberNo));
-//        FriendEntity friendEntity = FriendEntity.builder().fromMember(fromMember).toMember(MemberEntity.builder().memberNo(toMemberNo).build()).build();
+        Optional<FriendEntity> friendEntity = friendRepository.findByFromMemberAndToMember(fromMember, toEntityWithNo(toMemberNo));
 
         // 플친 요청 취소 or 차단 취소 (데이터 삭제)
-        friendRepository.delete(friendEntity);
+        friendRepository.delete(friendEntity.orElseThrow(NullPointerException::new));
 
-        // 반환 객체
         // 요청 취소일 경우 요청리스트 반환, 차단 취소일 경우 차단리스트 반환
         List<FriendEntity> returnList = new ArrayList<>();
-        if(friendEntity.getStatus().equals(FriendStatusType.BLOCK)){
+        if(friendEntity.get().getStatus().equals(FriendStatusType.BLOCK)){
             returnList = friendRepository.findByFromMemberAndStatus(fromMember, FriendStatusType.BLOCK);
-        } else if(friendEntity.getStatus().equals(FriendStatusType.PENDING)) {
+        } else if(friendEntity.get().getStatus().equals(FriendStatusType.PENDING)) {
             returnList = friendRepository.findByFromMemberAndStatus(fromMember, FriendStatusType.PENDING);
         }
 
@@ -167,16 +166,18 @@ public class FriendService {
 
         // 현재 로그인 유저 엔티티 변환
         MemberEntity toMember = toEntityWithNo(toMemberNo);
-        // 팔로워 상태 확인
-        FriendEntity onFriend = friendRepository.findByFromMemberAndToMember(toEntityWithNo(fromMemberNo), toMember);
+        // 플친 상태 확인
+        Optional<FriendEntity> onFriend =
+                friendRepository.findByFromMemberAndToMember(toEntityWithNo(fromMemberNo), toMember);
 
         // 팔로워와 이미 플친인 경우는 요청 거절이 아닌 플친 삭제이기 때문에, fromMember와 toMember가 교차된 데이터도 삭제
-        if(onFriend.getStatus().equals(FriendStatusType.FRIEND)){
-          FriendEntity convertedEntity = friendRepository.findByFromMemberAndToMember(toMember, toEntityWithNo(fromMemberNo));
-          friendRepository.delete(convertedEntity);
+        if(onFriend.isPresent() && onFriend.get().getStatus().equals(FriendStatusType.FRIEND)){
+          Optional<FriendEntity> convertedEntity = friendRepository.findByFromMemberAndToMember(toMember, toEntityWithNo(fromMemberNo));
+          friendRepository.delete(convertedEntity.orElseThrow(NumberFormatException::new));
         }
+
         // 플친 요청 거절 -> friendEntity 삭제
-        friendRepository.delete(onFriend);
+        friendRepository.delete(onFriend.orElseThrow(NullPointerException::new));
 
         // 삭제된 후, 나의 플친 리스트 반환
         return friendRepository.findByToMemberAndStatus(toMember, FriendStatusType.PENDING);
@@ -195,14 +196,27 @@ public class FriendService {
         MemberEntity fromMember = toEntityWithNo(fromMemberNo);
 
         // 나에게서 차단
-        FriendEntity friendEntity = friendRepository.findByFromMemberAndToMember(fromMember, toEntityWithNo(toMemberNo));
-        friendEntity.setStatus(FriendStatusType.BLOCK);
+        Optional<FriendEntity> friendEntity = friendRepository.findByFromMemberAndToMember(fromMember, toEntityWithNo(toMemberNo));
+        // 차단시 나에게서 관계가 존재하는 경우
+        friendEntity.ifPresent(entity -> entity.setStatus(FriendStatusType.BLOCK));
+        // 차단시 나에게서 관계가 아직 존재하지 않는 경우
+        friendEntity.orElse(friendRepository.save(
+                FriendEntity.builder().fromMember(fromMember).toMember(toEntityWithNo(toMemberNo))
+                        .status(FriendStatusType.BLOCK).build()));
 
-        // 상대방과의 관계가 존재하면서, 관계가 플친중 또는 요청대기인 경우, 상대방에게서는 친구 삭제
-        FriendEntity convertedEntity = friendRepository.findByFromMemberAndToMember(toEntityWithNo(toMemberNo), fromMember);
-        if(convertedEntity != null && convertedEntity.getStatus() != FriendStatusType.BLOCK) {
-            friendRepository.delete(convertedEntity);
+        // 상대방에게서 관계가 존재하면서, 관계가 플친중 또는 요청대기인 경우, 상대방에게서는 친구 삭제
+        Optional<FriendEntity> convertedEntity = friendRepository.findByFromMemberAndToMember(toEntityWithNo(toMemberNo), fromMember);
+        if(convertedEntity.isPresent() && convertedEntity.get().getStatus() != FriendStatusType.BLOCK) {
+            friendRepository.delete(convertedEntity.get());
         }
+
+//        if(friendRepository.findByFromMemberAndToMember(toEntityWithNo(toMemberNo), fromMember).isPresent()
+//                && friendRepository.findByFromMemberAndToMember(toEntityWithNo(toMemberNo), fromMember)
+//                .get().getStatus() != FriendStatusType.BLOCK){
+//            friendRepository
+//                    .delete(friendRepository.findByFromMemberAndToMember(toEntityWithNo(toMemberNo), fromMember).get());
+//        }
+
         // 나의 플친리스트 반환
         return friendRepository.findByFromMemberAndStatus(fromMember, FriendStatusType.FRIEND);
     }
@@ -216,16 +230,40 @@ public class FriendService {
     private void validate(final FriendEntity friendEntity) {
         // fromMember 부존재
         if (friendEntity.getFromMember() == null) {
-            throw new RuntimeException("empty fromMember");
+            throw new RuntimeException("플친 요청자가 존재하지 않는 회원입니다.");
         }
         // toMember 부존재
         else if (friendEntity.getToMember() == null) {
-            throw new RuntimeException("empty toMember");
+            throw new RuntimeException("플친 응답자가 존재하지 않는 회원입니다.");
         }
-        // 이미 친구 또는 요청중일 경우 x -> 멤버의 조회 메서드 필요? duplication
-        // 상대방이 친구 요청 중일 경우 x
-        // fromMember와 toMember가 같을 경우 x
-        // 차단 상태일 경우 x
+        // fromMember와 toMember가 같을 경우
+        else if (friendEntity.getFromMember() == friendEntity.getToMember()) {
+            throw new RuntimeException("본인과 플친을 맺을 수 없습니다.");
+        }
+        // 내가 차단한 경우
+        else if(friendEntity.getStatus() == FriendStatusType.BLOCK) {
+            throw new RuntimeException("이미 차단한 상대입니다.");
+        }
+    }
+
+    /**
+     * @Author 천은경
+     * @Date 23.06.27
+     * @param friendEntity
+     * @Brief 차단 당한 경우 플친 제한
+     */
+    private void checkBlocked(final FriendEntity friendEntity) {
+        Optional<FriendEntity> converted = friendRepository
+                .findByFromMemberAndToMember(friendEntity.getToMember(), friendEntity.getFromMember());
+
+        // 이미 상대방이 나에게 플친 신청한 경우, 바로 플친
+        if (converted.isPresent() && converted.get().getStatus() == FriendStatusType.PENDING) {
+            friendRepository.save(converted.get().setFriend());
+        }
+        // 차단 당한 경우를 제외하고 플친 신청
+        else if(!converted.isPresent() || converted.get().getStatus() != FriendStatusType.BLOCK){
+            friendRepository.save(friendEntity);
+        }
     }
 
     /**

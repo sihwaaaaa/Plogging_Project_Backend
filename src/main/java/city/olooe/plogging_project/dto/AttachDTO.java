@@ -21,12 +21,13 @@ import java.util.UUID;
 @ToString
 public class AttachDTO {
 
+    private Long attachNo;
     private String uuid;
     private String path;
     private String filename;
-    private BoardDTO boardDTO;
-    private ChallengeDTO challengeDTO;
-    private BadgeDTO badgeDTO;
+    private Long bno;
+    private Long chNo;
+    private Long badgeNo;
 
     public AttachDTO(AttachEntity attachEntity) {
         this.uuid = attachEntity.getUuid();
@@ -47,12 +48,13 @@ public class AttachDTO {
 
     public AttachEntity toEntity() {
         return AttachEntity.builder()
+                .attachNo(attachNo)
                 .uuid(uuid)
                 .filename(filename)
                 .path(path)
-                .bno(boardDTO != null ? BoardEntity.builder().bno(boardDTO.getBno()).build() : null)
-                .chNo(challengeDTO != null ? ChallengeEntity.builder().chNo(challengeDTO.getChNo()).build() : null)
-                .badgeNo(badgeDTO != null ? BadgeEntity.builder().badgeNo(badgeDTO.getBadgeNo()).build() : null)
+                .bno(bno != null ? BoardEntity.builder().bno(bno).build() : null)
+                .chNo(chNo != null ? ChallengeEntity.builder().chNo(chNo).build() : null)
+                .badgeNo(badgeNo != null ? BadgeEntity.builder().badgeNo(badgeNo).build() : null)
                 .build();
     }
 
