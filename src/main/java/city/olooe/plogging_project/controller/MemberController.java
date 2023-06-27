@@ -24,9 +24,13 @@ import city.olooe.plogging_project.dto.MailCheckDTO;
 import city.olooe.plogging_project.dto.MemberDTO;
 import city.olooe.plogging_project.dto.ResponseDTO;
 import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.model.PointHistoryEntity;
+import city.olooe.plogging_project.model.RewardEntity;
+import city.olooe.plogging_project.model.RewardTypeStatus;
 import city.olooe.plogging_project.security.TokenProvider;
 import city.olooe.plogging_project.service.EmailService;
 import city.olooe.plogging_project.service.MemberService;
+import city.olooe.plogging_project.service.PointHistoryService;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.mail.MessagingException;
@@ -63,6 +67,9 @@ public class MemberController {
 
   @Autowired
   private PasswordEncoder passwordEncoder;
+
+  @Autowired
+  private PointHistoryService pointHistoryService;
 
   // /**
   // * @author: 박연재
@@ -134,6 +141,14 @@ public class MemberController {
       memberService.validateWithMember(member, memberDTO);
       MemberEntity registeredMember = memberService.create(member);
       memberService.createAuth(registeredMember);
+
+      PointHistoryEntity historyEntity = PointHistoryEntity.builder()
+          .memberNo(registeredMember)
+          .type(RewardTypeStatus.SignUp)
+          .point(RewardTypeStatus.SignUp.getValue())
+          .build();
+
+      pointHistoryService.createPoint(historyEntity);
 
       MemberDTO responseMemberDTO = MemberDTO.builder()
           .memberNo(registeredMember.getMemberNo())
