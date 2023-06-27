@@ -1,9 +1,16 @@
 package city.olooe.plogging_project.dto.map;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.model.map.MapEntity;
 import city.olooe.plogging_project.model.map.PloggingEntity;
+import city.olooe.plogging_project.persistence.MapRepository;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +36,9 @@ public class PloggingDTO {
   private Double distance; // 이동 거리
   private Boolean status; // 성공여부
 
+  // 맵에 대한 정보
+  private MapDTO map;
+
   /**
    * @author : 이시화
    * @date: 23.06.02
@@ -40,13 +50,16 @@ public class PloggingDTO {
    */
   public PloggingDTO(final PloggingEntity entity) {
     this.ploggingNo = entity.getPloggingNo();
-    this.mapNo = entity.getMapNo();
+    // this.mapNo = entity.getMapNo();
     this.memberNo = entity.getMember().getMemberNo();
     this.type = entity.getType();
     this.ploggingTime = entity.getPloggingTime();
     this.regDate = entity.getRegDate();
     this.distance = entity.getDistance();
     this.status = entity.getStatus();
+
+    // 연재 - 맵에 대한 정보를 불러옴 ( 프로필에 쓰일 코스 이름을 추출하기 위해서 )
+    this.map = new MapDTO(entity.getMapNo());
   }
 
   /**
@@ -61,7 +74,7 @@ public class PloggingDTO {
   public PloggingEntity toEntity() {
     return PloggingEntity.builder()
         .ploggingNo(ploggingNo)
-        .mapNo(mapNo)
+        .mapNo(MapEntity.builder().mapNo(mapNo).build())
         .member(MemberEntity.builder().memberNo(memberNo).build())
         .type(type)
         .ploggingTime(ploggingTime)

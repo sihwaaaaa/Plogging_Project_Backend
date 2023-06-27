@@ -55,6 +55,21 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
    */
   MemberEntity findByUserNameAndEmail(String userName, String email);
 
+  /**
+   * @author: 박연재
+   * @brief: 아이디 찾기를 위한 회원 조회
+   * @param: userId
+   * @return: MemberEntity
+   */
+  MemberEntity findByUserNameAndEmailAndUserId(String userName, String email, String userId);
+
+  /**
+   * @author: 박연재
+   * @brief: 회원 번호로 회원 조회
+   * @param: userId
+   * @param memberNo
+   * @return
+   */
   MemberEntity findByMemberNo(Long memberNo);
 
   /**
@@ -100,23 +115,4 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
    */
   Page<MemberEntity> findByUserIdContainingIgnoreCase(String keyword, Pageable pageable);
 
-  // /**
-  // * @author: 박연재
-  // * @date: 2023.06.02
-  // * @brief: 회원 수정
-  // * @param memberEntity
-  // * @return void
-  // */
-  // @Modifying
-  // void update(final MemberEntity memberEntity);
-
-  // /**
-  // * @author: 박연재
-  // * @date: 2023.06.02
-  // * @brief: 회원 수정
-  // * @param memberEntity
-  // * @return void
-  // */
-  // @Modifying
-  // void delete(Long memberNo);
 }

@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class MailCheckDTO {
+
+  private Long memberNo;
+  private String userId;
   private String userName;
   private String email;
 }
