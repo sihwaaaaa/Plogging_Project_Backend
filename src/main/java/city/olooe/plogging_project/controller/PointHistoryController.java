@@ -35,13 +35,37 @@ public class PointHistoryController {
      * @Author 이재원
      * @Date 23.06.13
      * @param memberNo
-     * @return Long(CurrentPoint, TotalPoint)
-     * @Brief 멤버 번호를 통해 누적 포인트를 출력
+     * @return CurrentPoint
+     * @Brief 멤버 번호를 통해 현재 포인트를 출력
      */
-    @GetMapping("/total/{memberNo}")
-    public Long myMemberNoTotalPoint(@PathVariable MemberEntity memberNo) {
+    @GetMapping("/currentPoint/{memberNo}")
+    public Long myMemberNoCurrentPoint(@PathVariable MemberEntity memberNo) {
         return historyService.findBySumPoint(MemberEntity.builder().memberNo(memberNo.getMemberNo()).build());
     }
+    /**
+     * @Author 이재원
+     * @Date 23.06.13
+     * @param memberNo
+     * @return TotalPoint
+     * @Brief 멤버 번호를 통해 누적 포인트를 출력
+     */
+    @GetMapping("/totalPoint/{memberNo}")
+    public ResponseEntity<?> getTotalPoint(@PathVariable Long memberNo) {
+        return ResponseEntity.ok().body(historyService.getTotalPoint(memberNo));
+    }
+
+    /**
+     * @Author 이재원
+     * @Date 23.06.13
+     * @param memberNo
+     * @return Donation : getKey, getValue
+     * @Brief 멤버 번호를 통해 회원의 기부 포인트를 출력
+     */
+    @GetMapping("/donationPoint/{memberNo}")
+    public Long myDonationPoint(@PathVariable MemberEntity memberNo) {
+        return historyService.myDonationPoint(MemberEntity.builder().memberNo(memberNo.getMemberNo()).build());
+    }
+
     /**
      * @Author 이재원
      * @Date 23.06.13
@@ -50,8 +74,7 @@ public class PointHistoryController {
      * @Brief 조회한 멤버 번호의 포인트 적립 내역
      */
     @GetMapping("/list/{memberNo}")
-
-    public ResponseEntity<?> myMemberNoCurrentPoint(@PathVariable MemberEntity memberNo) {
+    public ResponseEntity<?> myMemberNoPointList(@PathVariable MemberEntity memberNo) {
         List<PointHistoryEntity> historyEntities = historyService.test_memberNoList(MemberEntity.builder().memberNo(memberNo.getMemberNo()).build());
         List<PointHistoryDTO> historyDTOS = historyEntities.stream()
                 .map(PointHistoryDTO::new)
@@ -61,19 +84,14 @@ public class PointHistoryController {
 
     @PostMapping("/Donation")
     public ResponseEntity<?> registerDonation(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody PointHistoryDTO dto) {
-        log.info(String.valueOf(dto));
+        log.info("dto Test {}" , dto );
+        PointHistoryEntity historyEntity = PointHistoryDTO.toEntity(dto);
 
-        PointHistoryEntity historyEntity = PointHistoryEntity.builder()
-                .memberNo(MemberEntity.builder().memberNo(user.getMember().getMemberNo()).build())
-                .point(dto.getPoint())
-                .type(RewardTypeStatus.Donation)
-                .rewardNo(RewardEntity.builder().rewardNo(dto.getRewardNo()).build())
-                .build();
 
         PointHistoryEntity createDonation = historyService.createPoint(historyEntity);
 
         PointHistoryDTO historyDTO = new PointHistoryDTO(createDonation);
-
+        log.info("{}", RewardTypeStatus.Donation);
         return ResponseEntity.ok().body(historyDTO);
     }
 
@@ -87,17 +105,17 @@ public class PointHistoryController {
      */
     @PostMapping("/Product")
     public ResponseEntity<?> registerProduct(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody PointHistoryDTO dto) {
+        log.info("dto Test {}" , dto );
 
-        PointHistoryEntity historyEntity = PointHistoryEntity.builder()
-                .memberNo(MemberEntity.builder().memberNo(user.getMember().getMemberNo()).build())
-                .point(dto.getPoint())
-                .type(RewardTypeStatus.Product)
-                .rewardNo(RewardEntity.builder().rewardNo(dto.getRewardNo()).build())
-                .build();
-
-        PointHistoryEntity createDonation = historyService.createPoint(historyEntity);
-
-        PointHistoryDTO historyDTO = new PointHistoryDTO(createDonation);
+        PointHistoryEntity historyEntity = PointHistoryDTO.toEntity(dto);
+//                PointHistoryEntity.builder()
+//                .memberNo(MemberEntity.builder().memberNo(user.getMember().getMemberNo()).build())
+//                .point(dto.getPoint())
+//                .type(dto.getType())
+//                .rewardNo(RewardEntity.builder().rewardNo(dto.getRewardNo()).build())
+//                .build();
+        PointHistoryEntity createProduct = historyService.createPoint(historyEntity);
+        PointHistoryDTO historyDTO = new PointHistoryDTO(createProduct);
 
         return ResponseEntity.ok().body(historyDTO);
     }

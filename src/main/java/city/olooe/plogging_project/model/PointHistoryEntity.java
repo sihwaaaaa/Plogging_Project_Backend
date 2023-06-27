@@ -24,7 +24,7 @@ public class PointHistoryEntity implements Serializable {
     @JoinColumn(name = "memberNo")
     private MemberEntity memberNo;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = RewardEntity.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = RewardEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "rewardNo")
     private RewardEntity rewardNo;
 
