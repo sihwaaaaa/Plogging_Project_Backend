@@ -8,9 +8,12 @@ import java.util.stream.Collectors;
 import city.olooe.plogging_project.dto.AttachDTO;
 import city.olooe.plogging_project.model.AttachEntity;
 import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.model.PointHistoryEntity;
+import city.olooe.plogging_project.model.RewardTypeStatus;
 import city.olooe.plogging_project.model.community.BoardCategory;
 import city.olooe.plogging_project.model.map.PloggingEntity;
 import city.olooe.plogging_project.persistence.AttachRepository;
+import city.olooe.plogging_project.persistence.PointHistoryRepository;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -40,6 +43,7 @@ public class BoardService {
   private final BoardRepository boardRepository;
 
   private final AttachRepository attachRepository;
+  private final PointHistoryRepository pointHistoryRepository;
 
 
   /**
@@ -56,7 +60,17 @@ public class BoardService {
 
     if (boardCreateDTO.getPloggingNo() != null) {
       boardEntity.setCategory(BoardCategory.PLOGGING);
+
+      // 플로깅 인증글 작성 후 포인트 지급
+      PointHistoryEntity historyEntity = PointHistoryEntity.builder()
+              .memberNo(user.getMember())
+              .type(RewardTypeStatus.Plogging)
+              .point(RewardTypeStatus.Plogging.getValue())
+              .build();
+
+      pointHistoryRepository.save(historyEntity);
     }
+
     boardRepository.save(boardEntity);
 
     if(boardCreateDTO.getAttach() != null){

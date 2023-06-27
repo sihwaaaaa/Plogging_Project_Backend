@@ -59,7 +59,7 @@ public class PloggingDTO {
     this.status = entity.getStatus();
 
     // 연재 - 맵에 대한 정보를 불러옴 ( 프로필에 쓰일 코스 이름을 추출하기 위해서 )
-    this.map = new MapDTO(entity.getMapNo());
+//    this.map = new MapDTO(entity.getMapNo());
   }
 
   /**
