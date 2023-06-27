@@ -187,13 +187,12 @@ public class ChallengeController {
      *
      * @brief: : 해당 챌린지에 일정에 참여한 맴버리스트
      */
-    @GetMapping("/scheduleMemberList/{chNo}/{scheduleNo}")
-    public ResponseEntity<?> getScheduleMemberList(@PathVariable Long chNo , @PathVariable Long scheduleNo) {
-        log.info("scheduleNo: {}", scheduleNo);
-        log.info("chNo: {}" , chNo);
-        ChallengeEntity challengeScheduleEntity = new ChallengeEntity(chNo);
-        ChallengeScheduleEntity challengeMember = new ChallengeScheduleEntity(scheduleNo);
-        List<SchedulMemberEntity> schedules = challengeService.readSchMemberList(challengeScheduleEntity,challengeMember);
+    @GetMapping("/scheduleMemberList/{scheduleNo}")
+    public ResponseEntity<?> getScheduleMemberList( @PathVariable Long scheduleNo) {
+        log.info("scheduleNo :  {}", scheduleNo);
+        ChallengeScheduleEntity challengeScheduleEntity = new ChallengeScheduleEntity(scheduleNo);
+        log.info("challengeScheduleEntity : {}", challengeScheduleEntity);
+        List<SchedulMemberEntity> schedules = challengeService.readSchMemberList(challengeScheduleEntity);
 
         List<ScheduleMemberDTO> scheduleMemberDTOS = schedules.stream()
                 .map(ScheduleMemberDTO::new)
@@ -235,6 +234,19 @@ public class ChallengeController {
     @DeleteMapping("/challenge/chDetail/{chNo}")
     public void delete(@PathVariable Long bno) {
         challengeService.delete(bno);
+    }
+    /**
+     * @author : 김민수
+     * @date: '23.06.16
+     *
+     * @param: bno
+     * @return: -
+     *
+     * @brief: 일정참여 취소
+     */
+    @DeleteMapping("/scheduleCancle/{smno}")
+    public void scheduleCancle(@PathVariable Long smno) {
+        challengeService.scheduleCancle(smno);
     }
 
 

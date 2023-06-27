@@ -33,19 +33,6 @@ public class  ChallengeService {
     @Autowired
     MemberRepository memberRepository;
 
-    // 유효성 검사
-//        validate(challengeDTO.toChallengeEntity())
-
-//        LocalDate regDate =  challengeDTO.getRegDate();
-//        LocalDate start = challengeDTO.getStartDate();
-//        int result = regDate.compareTo(start);
-//
-//        if(result == 0)
-//            ChallengeStatus.CHALLENGEBEFORE.getValue();
-//        else if (result < 0)
-//            ChallengeStatus.CHALLENGEGOING.getValue();
-//        else
-//            ChallengeStatus.CHALLENGECLOSE.getValue();
     /**
      * @author : 김민수
      * @date: '23.06.08
@@ -158,15 +145,6 @@ public class  ChallengeService {
      * @brief: 챌린지 일정참여
      * @return: ChallengeScheduleEntity
      */
-//    @Transactional
-//    public SchedulMemberEntity scheduleJoin(ScheduleMemberDTO scheduleMemberDTO, Long chNo, Long memberNo) {
-//        SchedulMemberEntity schedulMemberEntity = scheduleMemberDTO.toschedulMemberEntity();
-//        schedulMemberEntity.setChNo(ChallengeEntity.builder().chNo(chNo).build());
-//        schedulMemberEntity.setChallenger(ChallengeMemberEntity.builder().challenger(
-//                MemberEntity.builder().memberNo(memberNo).build()
-//        ).build());
-//        return schedulMemberRepository.save(schedulMemberEntity);
-//    }
     @Transactional
     public SchedulMemberEntity scheduleJoin(ScheduleMemberDTO scheduleMemberDTO, Long memberNo){
         SchedulMemberEntity schedulMemberEntity = scheduleMemberDTO.toschedulMemberEntity();
@@ -203,14 +181,19 @@ public class  ChallengeService {
         return challengeScheduleRepository.save(challengeScheduleEntity);
     }
 
+    // 챌린지 리스트 조회
     @Transactional(readOnly = true)
     public List<ChallengeScheduleEntity> readChSchedule(ChallengeEntity chNo) {
         return challengeScheduleRepository.findByChNo(chNo);
 
-    } @Transactional(readOnly = true)
-    public List<SchedulMemberEntity> readSchMemberList(ChallengeEntity chNo, ChallengeScheduleEntity schedule) {
-        return schedulMemberRepository.findByChNoAndScheduleNo(chNo,schedule);
     }
+
+    // 스케쥴맴버 조회
+    @Transactional(readOnly = true)
+    public List<SchedulMemberEntity> readSchMemberList(ChallengeScheduleEntity ScheduleNo) {
+        return schedulMemberRepository.findByScheduleNo(ScheduleNo);
+    }
+
 
 
     /**
@@ -222,9 +205,10 @@ public class  ChallengeService {
      * @brief: 챌린지 일정참여 취소
      * @return: ChallengeScheduleEntity
      */
-    public void scheduleCancle(ScheduleMemberDTO scheduleMemberDTO){
-        // 챌린지 일정참여 취소 - 챌린지No, 챌린지 일정No, 맴버No 필요
-        SchedulMemberEntity schedulMemberEntity = scheduleMemberDTO.toschedulMemberEntity();
+    @Transactional
+    public void scheduleCancle(Long smno){
+        // 챌린지 일정참여 취소 - 챌린지 일정No
+        SchedulMemberEntity schedulMemberEntity = schedulMemberRepository.findBySmno(smno);
         schedulMemberRepository.delete(schedulMemberEntity);
     }
 

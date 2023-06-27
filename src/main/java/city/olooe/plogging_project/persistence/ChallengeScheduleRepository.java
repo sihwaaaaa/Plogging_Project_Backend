@@ -12,4 +12,6 @@ import java.util.List;
 @Repository
 public interface ChallengeScheduleRepository extends JpaRepository<ChallengeScheduleEntity, Long> {
     List<ChallengeScheduleEntity> findByChNo(ChallengeEntity chNo);
+
+    ChallengeScheduleEntity findByScheduleNo(Long schedule);
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Member;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -20,11 +21,15 @@ public class ScheduleMemberDTO {
     private Long scheduleNo;
     private Long chNo;
 
+    private List<Long> scheduleMembers;
+    private Integer challengeMemberCnt;
+
     public ScheduleMemberDTO(final SchedulMemberEntity schedulMemberEntity) {
         this.smno = schedulMemberEntity.getSmno();
-        this.challenger = schedulMemberEntity.getChNo().getChNo();
+        this.challenger = schedulMemberEntity.getChallenger().getMemberNo();
         this.scheduleNo = schedulMemberEntity.getScheduleNo().getScheduleNo();
         this.chNo = schedulMemberEntity.getChNo().getChNo();
+        this.challengeMemberCnt = schedulMemberEntity.getSchMembersCnt().size();
     }
 
     /**
@@ -43,13 +48,6 @@ public class ScheduleMemberDTO {
                 .build();
     }
 
-//    public  SchedulMemberEntity toScheduleCancle(){
-//        return SchedulMemberEntity.builder().smno(smno)
-//                .chNo(ChallengeEntity.builder().chNo(chNo).build())
-//                .scheduleNo(ChallengeScheduleEntity.builder().scheduleNo(scheduleNo).build())
-//                .challenger(MemberEntity.builder().memberNo(challenger).build())
-//                .build();
-//    }
 
     public  SchedulMemberEntity schedeulCancle(){
         return SchedulMemberEntity.builder().smno(smno)
