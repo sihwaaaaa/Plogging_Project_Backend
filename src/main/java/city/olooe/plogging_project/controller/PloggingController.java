@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -51,9 +52,10 @@ public class PloggingController {
   private PloggingService ploggingService;
 
     @GetMapping
-    public ResponseEntity<?> readRouteList() {
+    public ResponseEntity<?> readRouteList(@PageableDefault(sort = "mapNo", size = 5
+                                        ) Pageable pageable ) {
       
-       List<MapDTO> dtos = ploggingService.getMapList();
+       Slice<MapDTO> dtos = ploggingService.getMapList(pageable);
         // return null;
         // if (dto == null) {
         //     return ResponseEntity.notFound().build();
@@ -106,10 +108,9 @@ public class PloggingController {
    * @Breif 추천경로 검색기능
    */
   @GetMapping("/search")
-  public ResponseEntity<?> searchMember( @RequestParam String keyword ,@PageableDefault(sort = "mapNo", size = 5
-                                        , direction = Sort.Direction.DESC) Pageable pageable ) {
+  public ResponseEntity<?> searchMember( @RequestParam String keyword ) {
 
-    Page<MapDTO> mapDTO = ploggingService.searchRoute(keyword, pageable);
+    List<MapDTO> mapDTO = ploggingService.searchRoute(keyword);
     return ResponseEntity.ok().body(ResponseDTO.builder().data(mapDTO).build());  }
 
 
