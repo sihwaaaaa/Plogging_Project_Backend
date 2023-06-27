@@ -4,13 +4,17 @@ import city.olooe.plogging_project.dto.member.MemberSearchDTO;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import city.olooe.plogging_project.security.CustomUserDetails;
 
+import org.apache.catalina.connector.Response;
 import org.apache.ibatis.javassist.compiler.ast.Member;
+import org.apache.tomcat.util.descriptor.web.ApplicationParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -71,18 +75,6 @@ public class MemberController {
   @Autowired
   private PointHistoryService pointHistoryService;
 
-  // /**
-  // * @author: 박연재
-  // * @date: 2023.06.02
-  // * @brief: 로그인 페이지
-  // * @param param
-  // * @return void
-  // */
-  // @GetMapping(value = "login")
-  // public void login(@RequestParam String param) {
-
-  // }
-
   /**
    * @author: 박연재
    * @date: 2023.06.02
@@ -93,10 +85,6 @@ public class MemberController {
   @PostMapping("signin")
   public ResponseEntity<?> signin(@RequestBody MemberDTO memberDTO) {
     // 1. 아이디, 비밀번호를 통해서 로그인 완료
-    // if(memberService.checkMember(dto.getUserId(),dto.getPassword())){
-    // MemberEntity entity = MemberDTO.toEntity(dto);
-    // return ResponseEntity.ok().body(entity);
-    //
     try {
       MemberEntity member = memberService.getByCredentials(memberDTO.getUserId(), memberDTO.getPassword(),
           passwordEncoder);
@@ -208,12 +196,55 @@ public class MemberController {
       memberService.validateWithEmail(mailCheckDTO.getEmail()); // 회원이 존재하는지 확인
       MemberEntity memberEntity = memberService.getMember(mailCheckDTO.getUserName(), mailCheckDTO.getEmail());
       log.info("{}", memberEntity);
-      MemberDTO dto = MemberDTO.builder()
+      mailCheckDTO = MailCheckDTO.builder()
           .memberNo(memberEntity.getMemberNo())
           .userId(memberEntity.getUserId())
+          .email(memberEntity.getEmail())
           .build();
-      String confirm = emailService.sendMessage(mailCheckDTO.getEmail(), mailCheckDTO.getUserName(), dto.getMemberNo(),
-          dto.getUserId());
+      String confirm = emailService.sendMessage(mailCheckDTO.getEmail(), mailCheckDTO);
+      response = ResponseDTO.builder().data(confirm).build();
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      response = ResponseDTO.builder().data(e.getMessage()).build();
+      return ResponseEntity.badRequest().body(response);
+    }
+  }
+
+  @PutMapping("resetPassword/{memberNo}/passwordEdit")
+  public ResponseEntity<?> passwordEdit(@PathVariable Long memberNo, @RequestBody MemberDTO dto) {
+    System.out.println(dto.getPassword());
+    ResponseDTO<?> response = null;
+    try {
+      dto = MemberDTO.builder()
+          .memberNo(memberNo)
+          .password(dto.getPassword())
+          .build();
+      memberService.modifyPassword(dto); // 회원 정보 수정 서비스 계층
+
+      response = ResponseDTO.builder().data("비밀번호 재설정 성공!").build();
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      response = ResponseDTO.builder().error(e.getMessage()).build();
+      return ResponseEntity.badRequest().body(response);
+    }
+  }
+
+  @PostMapping("resetPassword")
+  public ResponseEntity<?> findPassword(@RequestBody MailCheckDTO mailCheckDTO)
+      throws UnsupportedEncodingException, MessagingException {
+    ResponseDTO<?> response = null;
+    try {
+      // memberService.validateWithEmail(mailCheckDTO.getEmail()); // 회원이 존재하는지 확인
+      MemberEntity memberEntity = memberService.getMember(mailCheckDTO.getUserName(), mailCheckDTO.getEmail(),
+          mailCheckDTO.getUserId());
+      mailCheckDTO = MailCheckDTO.builder()
+          .memberNo(memberEntity.getMemberNo())
+          .userId(memberEntity.getUserId())
+          .email(memberEntity.getEmail())
+          .userName(memberEntity.getUserName())
+          .build();
+
+      String confirm = emailService.sendMessage(mailCheckDTO.getEmail(), mailCheckDTO);
       response = ResponseDTO.builder().data(confirm).build();
       return ResponseEntity.ok().body(response);
     } catch (Exception e) {
@@ -227,7 +258,7 @@ public class MemberController {
 
     ResponseDTO<?> response = null;
     try {
-      String confirm = emailService.sendMessage(dto.getEmail(), null, null, null);
+      String confirm = emailService.sendMessage(dto.getEmail(), dto);
       response = ResponseDTO.builder().data(confirm).build();
       return ResponseEntity.ok().body(response);
     } catch (Exception e) {
@@ -255,8 +286,32 @@ public class MemberController {
       @PageableDefault(sort = "memberNo", size = 5, direction = Sort.Direction.DESC) Pageable pageable) {
 
     Page<MemberSearchDTO> memberDTOS = memberService.searchMember(user, keyword, pageable);
-
     return ResponseEntity.ok().body(ResponseDTO.builder().data(memberDTOS).build());
   }
 
+  /**
+   * @author 박연재
+   * @date 23.06.27
+   * @brief 회원 탈퇴 기능
+   * @param req
+   * @param res
+   * @param user
+   * @return
+   */
+  @PutMapping("secession")
+  public ResponseEntity<?> secessMember(HttpServletRequest req, HttpServletResponse res,
+      @AuthenticationPrincipal ApplicationUserPrincipal user) {
+    ResponseDTO<?> responseDTO = null;
+    try {
+      MemberEntity member = user.getMember();
+      memberService.secessWithMember(member);
+      new SecurityContextLogoutHandler().logout(req, res,
+          SecurityContextHolder.getContext().getAuthentication());
+      responseDTO = ResponseDTO.builder().data("회원 탈퇴에 성공하셨습니다.").build();
+      return ResponseEntity.ok().body(responseDTO);
+    } catch (Exception e) {
+      responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
+      return ResponseEntity.badRequest().body(responseDTO);
+    }
+  }
 }

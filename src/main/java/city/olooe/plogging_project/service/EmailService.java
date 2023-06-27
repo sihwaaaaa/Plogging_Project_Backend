@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import city.olooe.plogging_project.dto.MailCheckDTO;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -25,7 +26,7 @@ public class EmailService {
 
   public String ePw = ""; // 인증 코드
 
-  private MimeMessage createMessage(String to, String userName, Long memberNo, String userId)
+  private MimeMessage createMessage(String to, MailCheckDTO mailCheckDTO)
       throws MessagingException, UnsupportedEncodingException {
     log.info("{}", to);
     log.info("{}", ePw);
@@ -38,10 +39,12 @@ public class EmailService {
 
     // epw => 인증코드
     String msg = "";
-    if (userName == null) {
+    if (mailCheckDTO.getMemberNo() == null) {
       msg += messageContent(msg, ePw); // 이메일 인증 컨텐츠
+    } else if (mailCheckDTO.getUserId() == null) {
+      msg += linkContent(msg, mailCheckDTO.getMemberNo());
     } else {
-      msg += linkContent(msg, memberNo, userId);
+      msg += passwordContent(msg, mailCheckDTO.getMemberNo());
     }
     message.setText(msg, "utf-8", "html");
     message.setFrom(new InternetAddress(setFrom, "Plogging"));
@@ -93,7 +96,7 @@ public class EmailService {
     return msg;
   }
 
-  public String linkContent(String msg, Long memberNo, String userId) {
+  public String linkContent(String msg, Long memberNo) {
     msg += "<div>";
     msg += introContent(msg);
     msg += "</br>";
@@ -104,16 +107,28 @@ public class EmailService {
     return msg;
   }
 
-  public String sendMessage(String to, String userName, Long memberNo, String userId)
+  public String passwordContent(String msg, Long memberNo) {
+    msg += "<div>";
+    msg += introContent(msg);
+    msg += "</br>";
+    msg += "<p>아래 링크를 통해서 비밀번호를 재설정해주세요</p>";
+    msg += "<a href='" + LOCAL_REDIRECT_URL + "member/resetPassword/" + memberNo + "/passwordEdit'";
+    msg += "style='background-color=red'>";
+    msg += "비밀번호 재설정하기";
+    msg += "</a></div>";
+    return msg;
+  }
+
+  public String sendMessage(String to, MailCheckDTO mailCheckDTO)
       throws MessagingException, UnsupportedEncodingException {
     MimeMessage message = null;
-    if (userName == null) {
+    if (mailCheckDTO.getMemberNo() == null) {
       ePw = createKey();
-      message = createMessage(to, null, null, null); // 수신자를 포함한 message를 생성
+      message = createMessage(to, mailCheckDTO); // 수신자를 포함한 message를 생성
       emailSender.send(message);
       return ePw;
     } else {
-      message = createMessage(to, userName, memberNo, userId); // userName, 수신자를 포함한 message를 생성
+      message = createMessage(to, mailCheckDTO); // userName, 수신자를 포함한 message를 생성
       emailSender.send(message);
       return "이메일이 발송되었습니다.";
     }
