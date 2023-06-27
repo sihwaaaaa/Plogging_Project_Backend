@@ -68,7 +68,15 @@ public class PointHistoryRepositoryTest {
     @Test
     public void test_sumPoint() {
         log.info("{}", pointHistoryRepository.sumPoint(MemberEntity.builder().memberNo(75L).build()));
+    }
+    @Test
+    public void test_currentPoint() {
+        log.info("{}", pointHistoryRepository.findByTypeAndMemberNo(RewardTypeStatus.Donation, MemberEntity.builder().memberNo(75L).build()));
+    }
 
+    @Test
+    public void test_currentPoint2() {
+        log.info("{}", pointHistoryRepository.DonationPoint(MemberEntity.builder().memberNo(75L).build(), RewardTypeStatus.Donation));
     }
 
     @Test

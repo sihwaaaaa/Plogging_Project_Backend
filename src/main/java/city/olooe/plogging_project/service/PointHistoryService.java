@@ -50,8 +50,8 @@ public class PointHistoryService {
      * @Brief 멤버 번호를 조회하여 포인트 유형 조회
      */
     @Transactional
-    public List<PointHistoryEntity> GetMemberList(MemberEntity memberNo, String type) {
-        return pointHistoryRepository.findByTypeAndMemberNo(RewardTypeStatus.valueOf(type), memberNo);
+    public Long myDonationPoint(MemberEntity member) {
+       return pointHistoryRepository.DonationPoint(MemberEntity.builder().memberNo(member.getMemberNo()).build(), RewardTypeStatus.Donation);
     }
 
     /**
@@ -97,7 +97,7 @@ public class PointHistoryService {
 
     @Transactional
     public List<PointHistoryEntity> test_memberNoList(MemberEntity memberNo) {
-        return pointHistoryRepository.findByMemberNo(MemberEntity.builder().memberNo(1L).build());
+        return pointHistoryRepository.findByMemberNo(MemberEntity.builder().memberNo(memberNo.getMemberNo()).build());
     }
 
     @Transactional
@@ -171,18 +171,29 @@ public class PointHistoryService {
 
     @Transactional
     public Map<String, Object> getBadge(Long memberNo) {
-        return jdbcTemplate.queryForObject("select memberNo, pt, nvl(badgeNo, 1) badgeNo, nvl(name, '씨앗') bagdeName from (\n" +
-                "\tselect memberNo, sum(point) pt\n" +
-                "\tfrom tbl_pointhistory tp \n" +
-                "\tgroup by memberNo\n" +
-                ")a\n" +
-                "left join tbl_badge tb on pt between minPoint and point\n" +
-                "where memberNo =" + memberNo, (rs, rn) -> {
+        return jdbcTemplate.queryForObject("SELECT memberNo, SUM(pt) AS pt, COALESCE(badgeNo, 1) AS badgeNo, COALESCE(name, '씨앗') AS badgeName\n" +
+                "FROM (\n" +
+                "    SELECT memberNo, CASE WHEN point > 0 THEN point ELSE 0 END AS pt\n" +
+                "    FROM tbl_pointhistory\n" +
+                ") tp\n" +
+                "LEFT JOIN tbl_badge ON pt BETWEEN minPoint AND point\n" +
+                "WHERE memberNo =" + memberNo, (rs, rn) -> {
             Map<String, Object> map = new HashMap<>();
             map.put("memberNo", rs.getString(1));
             map.put("point", rs.getString(2));
             map.put("badgeNo", rs.getString(3));
             map.put("badgeName", rs.getString(4));
+            return map;
+        });
+    }
+    @Transactional
+    public Map<String, Object> getTotalPoint(Long memberNo) {
+        return jdbcTemplate.queryForObject("select memberNo, sum(point) \n" +
+                "from tbl_pointhistory tp \n" +
+                "where point > 0 and memberNo = "+memberNo, (rs, rn) -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("memberNo", rs.getString(1));
+            map.put("point", rs.getString(2));
             return map;
         });
     }
