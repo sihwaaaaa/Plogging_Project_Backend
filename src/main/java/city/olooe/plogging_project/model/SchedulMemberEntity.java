@@ -4,6 +4,9 @@ import javax.persistence.*;
 
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Builder
 @Getter
 @Setter
@@ -29,7 +32,12 @@ public class SchedulMemberEntity {
     @JoinColumn(name = "chNo")
     private ChallengeEntity chNo;
 
+    @OneToMany(mappedBy = "scheduleNo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ChallengeScheduleEntity> schMembersCnt = new ArrayList<>();
+
     public SchedulMemberEntity(Long scheduleNo) {
         this.scheduleNo = ChallengeScheduleEntity.builder().scheduleNo(scheduleNo).build();
     }
+
+
 }

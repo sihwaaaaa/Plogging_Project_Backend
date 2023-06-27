@@ -67,8 +67,8 @@ public class ChallengeScheduleDTO {
                 .build();
     }
 
-    public ChallengeScheduleEntity toScheduleList() {
-        return  ChallengeScheduleEntity.builder().chNo(ChallengeEntity.builder().chNo(chNo).build())
+    public ChallengeScheduleEntity toScheduleNo() {
+        return  ChallengeScheduleEntity.builder().scheduleNo(ChallengeScheduleEntity.builder().scheduleNo(scheduleNo).build().getScheduleNo())
                 .build();
     }
 
