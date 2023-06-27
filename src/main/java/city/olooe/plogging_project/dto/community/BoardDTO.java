@@ -9,6 +9,7 @@ import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.model.map.PloggingEntity;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -27,6 +28,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor
 @DynamicInsert
 @DynamicUpdate
+@Slf4j
 public class BoardDTO {
   private Long memberNo; // 작성하는 회원
   private String userId; // 작성한 회원 아이디
@@ -111,5 +113,6 @@ public class BoardDTO {
       this.category = boardEntity.getCategory().getKey();
       this.ploggingNo = boardEntity.getPloggingNo() != null ? boardEntity.getPloggingNo().getPloggingNo() : null;
       this.replyCount = boardEntity.getReplys() != null ? boardEntity.getReplys().size() : 0;
-  }
+      this.attach = !boardEntity.getAttaches().isEmpty() ? new AttachDTO(boardEntity.getAttaches().get(0)) : null;
+    }
 }

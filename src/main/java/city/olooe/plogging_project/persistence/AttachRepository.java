@@ -5,7 +5,9 @@ import city.olooe.plogging_project.model.community.BoardEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface AttachRepository extends JpaRepository<AttachEntity, Long> {
-    AttachEntity findByBno(BoardEntity bno);
+    Optional<AttachEntity> findByBno(BoardEntity bno);
 }

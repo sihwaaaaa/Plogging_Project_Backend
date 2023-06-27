@@ -2,6 +2,7 @@ package city.olooe.plogging_project.service.community;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import city.olooe.plogging_project.dto.AttachDTO;
@@ -56,14 +57,15 @@ public class BoardService {
     if (boardCreateDTO.getPloggingNo() != null) {
       boardEntity.setCategory(BoardCategory.PLOGGING);
     }
+    boardRepository.save(boardEntity);
 
-    BoardDTO boardDTO = new BoardDTO(boardRepository.save(boardEntity));
+    if(boardCreateDTO.getAttach() != null){
+      AttachDTO attach = boardCreateDTO.getAttach();
+      attach.setBno(boardEntity.getBno());
+      attachRepository.save(attach.toEntity());
+    }
 
-    AttachDTO attach = boardCreateDTO.getAttach();
-    attach.setBoardDTO(boardDTO);
-    attachRepository.save(attach.toEntity());
-
-    return boardDTO;
+    return boardCreateDTO;
   }
 
 
@@ -79,19 +81,16 @@ public class BoardService {
     // 게시글 유무에 따른 예외처리
     BoardEntity boardEntity = boardRepository.findById(boardUpdateDTO.getBno())
         .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+    
+    // 첨부파일 존재 여부 검사 후, 해당글의 첨부파일 수정
+    Optional<AttachEntity> attachEntity = attachRepository.findByBno(boardEntity);
+    AttachDTO attach = boardUpdateDTO.getAttach();
+    attachEntity.ifPresent(entity ->
+            entity.updateAttach(attach.getUuid(), attach.getPath(), attach.getFilename()));
 
     // 게시글 업데이트
     boardEntity.update(boardUpdateDTO.getTitle(), boardUpdateDTO.getContent(), new Date());
     BoardDTO boardDTO = new BoardDTO(boardEntity);
-
-    // 기존 첨부파일 삭제
-    AttachEntity attachEntity = attachRepository.findByBno(boardEntity);
-    attachRepository.delete(attachEntity);
-
-    // 새로운 첨부파일 저장
-    AttachDTO attachDTO = boardUpdateDTO.getAttach();
-    attachDTO.setBoardDTO(boardDTO);
-    attachRepository.save(attachDTO.toEntity());
 
     return boardUpdateDTO;
   }
@@ -109,8 +108,15 @@ public class BoardService {
   public BoardDTO searchByBno(Long bno) {
     BoardEntity boardEntity = boardRepository.findById(bno)
         .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
+
     BoardDTO boardDTO = new BoardDTO(boardEntity);
+
     boardDTO.setReplyCount(boardEntity.getReplys().size());
+    
+    // 첨부파일 유무 검사
+    Optional<AttachEntity> byBno = attachRepository.findByBno(boardEntity);
+    byBno.ifPresent(attachEntity -> boardDTO.setAttach(new AttachDTO(attachEntity)));
+
     if(boardEntity.getPloggingNo() != null){
       boardDTO.setPloggingNo(boardEntity.getPloggingNo().getPloggingNo());
     }
