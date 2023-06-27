@@ -106,6 +106,7 @@ public class MemberController {
         .build();
      ResponseDTO resposneDTO = ResponseDTO.builder().data(responseMemberDTO).build();  
     return ResponseEntity.ok().body(resposneDTO);
+    if(member != null) {
     } catch(Exception e){
       ResponseDTO resposneDTO = ResponseDTO.builder().error("로그인 실패!").build();
       return ResponseEntity.badRequest().body(resposneDTO);
