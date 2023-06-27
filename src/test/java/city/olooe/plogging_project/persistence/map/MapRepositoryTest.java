@@ -72,7 +72,7 @@ public class MapRepositoryTest {
   @DisplayName("경로 검색 테스트")
   public void searchRoute(){
     Pageable pageable = PageRequest.of(0, 5);
-    Page<MapEntity> mapEntity = mapRepository.findByAddrContainingOrCourseNameContainingOrCourseDetailContaining("동작","동작","동작",pageable);
+    List<MapEntity> mapEntity = mapRepository.findByAddrContainingOrCourseNameContainingOrCourseDetailContaining("동작","동작","동작");
     mapEntity.forEach(map -> System.out.println(map));
   }
 
