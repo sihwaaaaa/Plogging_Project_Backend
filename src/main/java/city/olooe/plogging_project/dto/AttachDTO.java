@@ -3,6 +3,8 @@ package city.olooe.plogging_project.dto;
 import city.olooe.plogging_project.controller.FileController;
 import city.olooe.plogging_project.dto.community.BoardDTO;
 import city.olooe.plogging_project.model.AttachEntity;
+import city.olooe.plogging_project.model.BadgeEntity;
+import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.community.BoardEntity;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,11 +46,14 @@ public class AttachDTO {
     }
 
     public AttachEntity toEntity() {
-        return AttachEntity.builder().uuid(uuid).filename(filename).path(path).build();
-    }
-
-    public AttachEntity toEntityWithBoard() {
-        return AttachEntity.builder().uuid(uuid).filename(filename).path(path).bno(BoardEntity.builder().bno(boardDTO.getBno()).build()).build();
+        return AttachEntity.builder()
+                .uuid(uuid)
+                .filename(filename)
+                .path(path)
+                .bno(boardDTO != null ? BoardEntity.builder().bno(boardDTO.getBno()).build() : null)
+                .chNo(challengeDTO != null ? ChallengeEntity.builder().chNo(challengeDTO.getChNo()).build() : null)
+                .badgeNo(badgeDTO != null ? BadgeEntity.builder().badgeNo(badgeDTO.getBadgeNo()).build() : null)
+                .build();
     }
 
     public String getTodayStr() {

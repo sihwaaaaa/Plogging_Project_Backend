@@ -23,7 +23,7 @@ public class AttachEntity {
     private String uuid;
     private String path;
     private String filename;
-    @OneToOne(fetch = FetchType.LAZY, targetEntity = BoardEntity.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = BoardEntity.class)
     @JoinColumn(name = "bno", referencedColumnName = "bno")
     private BoardEntity bno;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = ChallengeEntity.class)
@@ -32,4 +32,5 @@ public class AttachEntity {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = BadgeEntity.class)
     @JoinColumn(name = "badgeNo", referencedColumnName = "badgeNo")
     private BadgeEntity badgeNo;
+
 }
