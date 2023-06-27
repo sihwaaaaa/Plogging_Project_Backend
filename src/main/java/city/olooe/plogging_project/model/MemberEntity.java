@@ -61,6 +61,8 @@ public class MemberEntity implements Serializable {
   private String authProvider; // oauth 2.0 연동 공급자
   private String intro;
 
+  private Boolean enabled; // 회원 탈퇴 여부
+
   public MemberEntity(String userId, String password, String userName, String email) {
     this.userId = userId;
     this.password = password;
