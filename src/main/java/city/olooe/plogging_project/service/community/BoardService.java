@@ -51,17 +51,28 @@ public class BoardService {
    */
   @Transactional
   public BoardDTO create(ApplicationUserPrincipal user, BoardDTO boardCreateDTO) {
-    BoardEntity boardEntity = boardCreateDTO.toEntity(user, boardCreateDTO);
+    BoardEntity boardEntity = BoardEntity.builder()
+            .memberNo(MemberEntity.builder().memberNo(user.getMember().getMemberNo()).build())
+            .title(boardCreateDTO.getTitle())
+            .content(boardCreateDTO.getContent())
+            .category(BoardCategory.COMMUNITY)
+            .build();
 
-    if (boardCreateDTO.getPloggingNo() != null) {
+    BoardDTO boardDTO;
+
+    if (boardCreateDTO.getPloggingNo() != null){
       boardEntity.setCategory(BoardCategory.PLOGGING);
+      boardEntity.setPloggingNo(PloggingEntity.builder().ploggingNo(boardCreateDTO.getPloggingNo()).build());
+      boardDTO = new BoardDTO(boardRepository.save(boardEntity));
+      boardDTO.setPloggingNo(boardCreateDTO.getPloggingNo());
+      return boardDTO;
     }
 
-    BoardDTO boardDTO = new BoardDTO(boardRepository.save(boardEntity));
+    boardDTO = new BoardDTO(boardRepository.save(boardEntity));
 
     AttachDTO attach = boardCreateDTO.getAttach();
-    attach.setBoardDTO(boardDTO);
-    attachRepository.save(attach.toEntity());
+    attach.setBoardDTO(BoardDTO.builder().bno(boardCreateDTO.getBno()).build());
+    attachRepository.save(attach.toEntityWithBoard());
 
     return boardDTO;
   }
@@ -76,22 +87,10 @@ public class BoardService {
    */
   @Transactional
   public BoardDTO update(BoardDTO boardUpdateDTO) {
-    // 게시글 유무에 따른 예외처리
     BoardEntity boardEntity = boardRepository.findById(boardUpdateDTO.getBno())
         .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
 
-    // 게시글 업데이트
     boardEntity.update(boardUpdateDTO.getTitle(), boardUpdateDTO.getContent(), new Date());
-    BoardDTO boardDTO = new BoardDTO(boardEntity);
-
-    // 기존 첨부파일 삭제
-    AttachEntity attachEntity = attachRepository.findByBno(boardEntity);
-    attachRepository.delete(attachEntity);
-
-    // 새로운 첨부파일 저장
-    AttachDTO attachDTO = boardUpdateDTO.getAttach();
-    attachDTO.setBoardDTO(boardDTO);
-    attachRepository.save(attachDTO.toEntity());
 
     return boardUpdateDTO;
   }

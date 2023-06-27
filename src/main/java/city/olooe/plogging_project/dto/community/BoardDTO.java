@@ -6,8 +6,6 @@ import city.olooe.plogging_project.dto.AttachDTO;
 import city.olooe.plogging_project.model.community.BoardCategory;
 import city.olooe.plogging_project.model.community.BoardEntity;
 import city.olooe.plogging_project.model.MemberEntity;
-import city.olooe.plogging_project.model.map.PloggingEntity;
-import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -62,17 +60,6 @@ public class BoardDTO {
             .build();
   }
 
-  public BoardEntity toEntity(ApplicationUserPrincipal user, BoardDTO boardDTO) {
-    return BoardEntity.builder()
-            .memberNo(MemberEntity.builder().memberNo(user.getMember().getMemberNo()).build())
-            .title(boardDTO.getTitle())
-            .content(boardDTO.content)
-            .category(BoardCategory.COMMUNITY)
-            .ploggingNo(boardDTO.getPloggingNo() != null ? PloggingEntity.builder().ploggingNo(boardDTO.getPloggingNo()).build() : null)
-            .regDate(new Date())
-            .build();
-  }
-
   /**
    * @author : 김성진
    * @date: 23.06.05
@@ -109,7 +96,6 @@ public class BoardDTO {
       this.regDate = boardEntity.getRegDate();
       this.updateDate = boardEntity.getUpdateDate();
       this.category = boardEntity.getCategory().getKey();
-      this.ploggingNo = boardEntity.getPloggingNo() != null ? boardEntity.getPloggingNo().getPloggingNo() : null;
-      this.replyCount = boardEntity.getReplys() != null ? boardEntity.getReplys().size() : 0;
+//      this.replyCount = boardEntity.getReplys().size();
   }
 }
