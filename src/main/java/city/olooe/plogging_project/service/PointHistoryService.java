@@ -135,31 +135,32 @@ public class PointHistoryService {
     @Transactional
     public List<Map<String, Object>> getRankList() {
         return jdbcTemplate.query("SELECT\n" +
-                "  rank() OVER (ORDER BY subquery.totalpoint DESC) AS rank,  \n" +
+                "  rank() OVER (ORDER BY totalpoint DESC) AS rank,\n" +
                 "  tm.userId,\n" +
                 "  subquery.totalpoint,\n" +
                 "  subquery.badgeName\n" +
                 "FROM (\n" +
                 "  SELECT\n" +
-                "    memberNo,\n" +
-                "    pt AS totalpoint,\n" +
-                "    NVL(badgeNo, 1) AS badgeNo,\n" +
-                "    NVL(name, '씨앗') AS badgeName\n" +
+                "    tp.memberNo,\n" +
+                "    tp.totalpoint,\n" +
+                "    COALESCE(tb.badgeNo, 1) AS badgeNo,\n" +
+                "    COALESCE(tb.name, '씨앗') AS badgeName\n" +
                 "  FROM (\n" +
                 "    SELECT\n" +
                 "      memberNo,\n" +
-                "      SUM(point) AS pt\n" +
+                "      SUM(CASE WHEN point > 0 THEN point ELSE 0 END) AS totalpoint\n" +
                 "    FROM\n" +
                 "      tbl_pointhistory\n" +
+                "    WHERE\n" +
+                "      point > 0\n" +
                 "    GROUP BY\n" +
                 "      memberNo\n" +
-                "  ) a\n" +
-                "  LEFT JOIN tbl_badge tb ON pt BETWEEN tb.minPoint AND tb.point\n" +
+                "  ) tp\n" +
+                "  LEFT JOIN tbl_badge tb ON tp.totalpoint BETWEEN tb.minPoint AND tb.point\n" +
                 ") subquery\n" +
-                "LEFT JOIN tbl_badge tb2 ON subquery.totalpoint BETWEEN tb2.minPoint AND tb2.point\n" +
-                "left join tbl_member tm on subquery.memberNo = tm.memberNo\n" +
-                "ORDER by rank\n" +
-                "LIMIT 5", (rs, rowNum) -> {
+                "LEFT JOIN tbl_member tm ON subquery.memberNo = tm.memberNo\n" +
+                "ORDER BY rank\n" +
+                "LIMIT 5;", (rs, rowNum) -> {
             Map<String, Object> map = new HashMap<>();
             map.put("rank", rs.getString(1));
             map.put("userId", rs.getString(2));
@@ -171,13 +172,14 @@ public class PointHistoryService {
 
     @Transactional
     public Map<String, Object> getBadge(Long memberNo) {
-        return jdbcTemplate.queryForObject("SELECT memberNo, SUM(pt) AS pt, COALESCE(badgeNo, 1) AS badgeNo, COALESCE(name, '씨앗') AS badgeName\n" +
+        return jdbcTemplate.queryForObject("SELECT tp.memberNo, tp.pt, COALESCE(tb.badgeNo, 1) AS badgeNo, COALESCE(tb.name, '씨앗') AS badgeName\n" +
                 "FROM (\n" +
-                "    SELECT memberNo, CASE WHEN point > 0 THEN point ELSE 0 END AS pt\n" +
-                "    FROM tbl_pointhistory\n" +
+                "  SELECT memberNo, SUM(CASE WHEN point > 0 THEN point ELSE 0 END) AS pt\n" +
+                "  FROM tbl_pointhistory\n" +
+                "  WHERE memberNo = " + memberNo + "\n" +
+                "  GROUP BY memberNo\n" +
                 ") tp\n" +
-                "LEFT JOIN tbl_badge ON pt BETWEEN minPoint AND point\n" +
-                "WHERE memberNo =" + memberNo, (rs, rn) -> {
+                "LEFT JOIN tbl_badge tb ON tp.pt BETWEEN tb.minPoint AND tb.point" , (rs, rn) -> {
             Map<String, Object> map = new HashMap<>();
             map.put("memberNo", rs.getString(1));
             map.put("point", rs.getString(2));
