@@ -35,7 +35,7 @@ public interface FriendRepository extends JpaRepository<FriendEntity, Long> {
      * @return FriendEntity
      * @Brief 나와 상대의 플친 단일 조회
      */
-    FriendEntity findByFromMemberAndToMember(MemberEntity fromMember, MemberEntity toMember);
+    Optional<FriendEntity> findByFromMemberAndToMember(MemberEntity fromMember, MemberEntity toMember);
 
     @Query("select f.status from FriendEntity f where f.fromMember = :fromMember and f.toMember = :toMember")
     Optional<FriendStatusType> findStatusBy(MemberEntity fromMember, MemberEntity toMember);

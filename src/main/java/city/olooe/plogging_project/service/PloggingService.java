@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import city.olooe.plogging_project.dto.community.BoardDTO;
@@ -72,9 +73,10 @@ public class PloggingService {
   * @brief: 전체 경로리스트를 반환
   */
   @Transactional
-  public List<MapDTO> getMapList() {
-    List<MapEntity> entity = repository.findAll();
-    List<MapDTO> dtos = entity.stream().map(MapDTO::new).collect(Collectors.toList());
+  public Slice<MapDTO> getMapList(Pageable pageable) {
+    Slice<MapEntity> entity = repository.findByMapNoLessThan(144L,pageable);
+    Slice<MapDTO> dtos = entity.map((mapEntity) -> { return new MapDTO(mapEntity);});
+    
     return dtos;
   }
   @Transactional
@@ -99,12 +101,12 @@ public class PloggingService {
    * @return 추천경로 리스트
    * @Brief 경로명 or 경로설명 or 자치구로 경로 검색
    */
-  public Page<MapDTO> searchRoute(String keyword, Pageable pageable) {
+  public List<MapDTO> searchRoute(String keyword) {
 
-    Page<MapEntity> searchMapEntity = repository.findByAddrContainingOrCourseNameContainingOrCourseDetailContaining(keyword, keyword, keyword, pageable);
+    List<MapEntity> searchMapEntity = repository.findByAddrContainingOrCourseNameContainingOrCourseDetailContaining(keyword, keyword, keyword);
 
 
-    Page<MapDTO> mapDTO = searchMapEntity.map((mapEntity) -> { return new MapDTO(mapEntity);});
+    List<MapDTO> mapDTO = searchMapEntity.stream().map(MapDTO::new).collect(Collectors.toList());
 
     return mapDTO;
   }

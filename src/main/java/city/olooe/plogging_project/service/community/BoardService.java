@@ -2,14 +2,18 @@ package city.olooe.plogging_project.service.community;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import city.olooe.plogging_project.dto.AttachDTO;
 import city.olooe.plogging_project.model.AttachEntity;
 import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.model.PointHistoryEntity;
+import city.olooe.plogging_project.model.RewardTypeStatus;
 import city.olooe.plogging_project.model.community.BoardCategory;
 import city.olooe.plogging_project.model.map.PloggingEntity;
 import city.olooe.plogging_project.persistence.AttachRepository;
+import city.olooe.plogging_project.persistence.PointHistoryRepository;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -39,6 +43,7 @@ public class BoardService {
   private final BoardRepository boardRepository;
 
   private final AttachRepository attachRepository;
+  private final PointHistoryRepository pointHistoryRepository;
 
 
   /**
@@ -55,15 +60,26 @@ public class BoardService {
 
     if (boardCreateDTO.getPloggingNo() != null) {
       boardEntity.setCategory(BoardCategory.PLOGGING);
+
+      // 플로깅 인증글 작성 후 포인트 지급
+      PointHistoryEntity historyEntity = PointHistoryEntity.builder()
+              .memberNo(user.getMember())
+              .type(RewardTypeStatus.Plogging)
+              .point(RewardTypeStatus.Plogging.getValue())
+              .build();
+
+      pointHistoryRepository.save(historyEntity);
     }
 
-    BoardDTO boardDTO = new BoardDTO(boardRepository.save(boardEntity));
+    boardRepository.save(boardEntity);
 
-    AttachDTO attach = boardCreateDTO.getAttach();
-    attach.setBoardDTO(boardDTO);
-    attachRepository.save(attach.toEntity());
+    if(boardCreateDTO.getAttach() != null){
+      AttachDTO attach = boardCreateDTO.getAttach();
+      attach.setBno(boardEntity.getBno());
+      attachRepository.save(attach.toEntity());
+    }
 
-    return boardDTO;
+    return boardCreateDTO;
   }
 
 
@@ -79,19 +95,16 @@ public class BoardService {
     // 게시글 유무에 따른 예외처리
     BoardEntity boardEntity = boardRepository.findById(boardUpdateDTO.getBno())
         .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+    
+    // 첨부파일 존재 여부 검사 후, 해당글의 첨부파일 수정
+    Optional<AttachEntity> attachEntity = attachRepository.findByBno(boardEntity);
+    AttachDTO attach = boardUpdateDTO.getAttach();
+    attachEntity.ifPresent(entity ->
+            entity.updateAttach(attach.getUuid(), attach.getPath(), attach.getFilename()));
 
     // 게시글 업데이트
     boardEntity.update(boardUpdateDTO.getTitle(), boardUpdateDTO.getContent(), new Date());
     BoardDTO boardDTO = new BoardDTO(boardEntity);
-
-    // 기존 첨부파일 삭제
-    AttachEntity attachEntity = attachRepository.findByBno(boardEntity);
-    attachRepository.delete(attachEntity);
-
-    // 새로운 첨부파일 저장
-    AttachDTO attachDTO = boardUpdateDTO.getAttach();
-    attachDTO.setBoardDTO(boardDTO);
-    attachRepository.save(attachDTO.toEntity());
 
     return boardUpdateDTO;
   }
@@ -109,8 +122,15 @@ public class BoardService {
   public BoardDTO searchByBno(Long bno) {
     BoardEntity boardEntity = boardRepository.findById(bno)
         .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
+
     BoardDTO boardDTO = new BoardDTO(boardEntity);
+
     boardDTO.setReplyCount(boardEntity.getReplys().size());
+    
+    // 첨부파일 유무 검사
+    Optional<AttachEntity> byBno = attachRepository.findByBno(boardEntity);
+    byBno.ifPresent(attachEntity -> boardDTO.setAttach(new AttachDTO(attachEntity)));
+
     if(boardEntity.getPloggingNo() != null){
       boardDTO.setPloggingNo(boardEntity.getPloggingNo().getPloggingNo());
     }

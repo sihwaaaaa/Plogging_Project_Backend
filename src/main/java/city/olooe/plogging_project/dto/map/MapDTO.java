@@ -57,7 +57,7 @@ public class MapDTO {
     this.addr = entity.getAddr();
     this.distance = entity.getDistance();
     this.time = entity.getTime();
-     this.stops = entity.getStops().stream().map(StopoverDTO::new).collect(Collectors.toList());
+    this.stops = entity.getStops().stream().map(StopoverDTO::new).collect(Collectors.toList());
   }
 
   /**

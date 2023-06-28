@@ -39,7 +39,7 @@ public class PloggingServiceTest {
   @Transactional
   public void searchMap() {
     Pageable pageable = PageRequest.of(0, 5);
-    Page<MapDTO> dto = service.searchRoute("동작", pageable);
+    List<MapDTO> dto = service.searchRoute("동작");
    System.out.println(dto.toString());
   }
   // @Test

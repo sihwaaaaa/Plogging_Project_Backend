@@ -44,6 +44,7 @@ public class ChallengeScheduleEntity {
     private Date endDate; // 플로깅 끝나는 날짜 시간
     private Date regDate; // 생성날짜
 
+
     public ChallengeScheduleEntity(Long scheduleNo) {
         this.scheduleNo = scheduleNo;
     }

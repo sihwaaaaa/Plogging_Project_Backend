@@ -103,9 +103,10 @@ public class BoardController {
    */
   @PutMapping("/update")
   public ResponseEntity<?> update(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody BoardDTO boardUpateDTO) {
-    
-    if(boardUpateDTO.getMemberNo() == user.getMember().getMemberNo()) {
-      log.warn("본인글 수정 확인");
+
+    // 본인의 게시물이 아닌 경우
+    if(!Objects.equals(boardUpateDTO.getMemberNo(), user.getMember().getMemberNo())) {
+      ResponseEntity.ok().body(ResponseDTO.builder().error("잘못된 접근").build());
     }
     
     BoardDTO boardDTO = boardService.update(boardUpateDTO);
@@ -139,6 +140,7 @@ public class BoardController {
    */
   @DeleteMapping("/delete/{bno}")
   public ResponseEntity<?> delete(@PathVariable Long bno) {
+
     boardService.delete(bno);
     return ResponseEntity.ok().body(ResponseDTO.builder().data(bno).build());
   }

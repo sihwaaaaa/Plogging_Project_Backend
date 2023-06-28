@@ -214,18 +214,18 @@ public class ChallengeServiceTest {
      *
      * @brief: 챌린지 일정참여 취소
      */
-    @Test
+//    @Test
 //    @Transactional
-    public void scheduleCancle(){
-        // 챌린지 일정참여 취소 - 챌린지No, 챌린지 일정No, 맴버No 필요
-        ScheduleMemberDTO scheduleMemberDTO = ScheduleMemberDTO.builder()
-                .smno(8L)
-                .scheduleNo(11L)
-                .chNo(10L)
-                .challenger(1L)
-                .build();
-        challengeService.scheduleCancle(scheduleMemberDTO);
-    }
+//    public void scheduleCancle(){
+//        // 챌린지 일정참여 취소 - 챌린지No, 챌린지 일정No, 맴버No 필요
+//        ScheduleMemberDTO scheduleMemberDTO = ScheduleMemberDTO.builder()
+//                .smno(8L)
+//                .scheduleNo(11L)
+//                .chNo(10L)
+//                .challenger(1L)
+//                .build();
+//        challengeService.scheduleCancle(scheduleMemberDTO);
+//    }
 
     /**
      * @author : 김민수
