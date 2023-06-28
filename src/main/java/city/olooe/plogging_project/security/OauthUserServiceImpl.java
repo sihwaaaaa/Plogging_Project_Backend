@@ -17,8 +17,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import city.olooe.plogging_project.model.AuthEntity;
 import city.olooe.plogging_project.model.AuthType;
 import city.olooe.plogging_project.model.MemberEntity;
+import city.olooe.plogging_project.model.PointHistoryEntity;
+import city.olooe.plogging_project.model.RewardTypeStatus;
 import city.olooe.plogging_project.persistence.AuthRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
+import city.olooe.plogging_project.service.PointHistoryService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -32,6 +35,9 @@ public class OauthUserServiceImpl extends DefaultOAuth2UserService {
 
   @Autowired
   private MemberRepository memberRepository;
+
+  @Autowired
+  private PointHistoryService pointHistoryService;
 
   @Autowired
   private AuthRepository authRepository;
@@ -101,6 +107,13 @@ public class OauthUserServiceImpl extends DefaultOAuth2UserService {
       memberEntity = memberRepository.findByUserName(userName);
       authRepository.save(authEntity);
       
+      PointHistoryEntity historyEntity = PointHistoryEntity.builder()
+          .memberNo(memberEntity)
+          .type(RewardTypeStatus.SignUp)
+          .point(RewardTypeStatus.SignUp.getValue())
+          .build();
+      pointHistoryService.createPoint(historyEntity);
+
     } else {
       // 이미 회원이 존재하면 기존 회원을 불러옴
       memberEntity = memberRepository.findByUserName(userName);

@@ -191,18 +191,18 @@ public class MemberController {
   @PostMapping("findId")
   public ResponseEntity<?> findUserId(@RequestBody MailCheckDTO mailCheckDTO)
       throws UnsupportedEncodingException, MessagingException {
+        System.out.println(mailCheckDTO);
     ResponseDTO<?> response = null;
     try {
       memberService.validateWithEmail(mailCheckDTO.getEmail()); // 회원이 존재하는지 확인
       MemberEntity memberEntity = memberService.getMember(mailCheckDTO.getUserName(), mailCheckDTO.getEmail());
       log.info("{}", memberEntity);
       mailCheckDTO = MailCheckDTO.builder()
-          .memberNo(memberEntity.getMemberNo())
-          .userId(memberEntity.getUserId())
-          .email(memberEntity.getEmail())
-          .build();
-      String confirm = emailService.sendMessage(mailCheckDTO.getEmail(), mailCheckDTO);
-      response = ResponseDTO.builder().data(confirm).build();
+      .memberNo(memberEntity.getMemberNo())
+      .email(memberEntity.getEmail())
+      .build();
+      emailService.sendMessage(mailCheckDTO.getEmail(), mailCheckDTO);
+      response = ResponseDTO.builder().data("이메일이 성공적으로 발송되었습니다.").build();
       return ResponseEntity.ok().body(response);
     } catch (Exception e) {
       response = ResponseDTO.builder().data(e.getMessage()).build();

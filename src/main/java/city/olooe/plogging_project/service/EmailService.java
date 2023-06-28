@@ -39,12 +39,12 @@ public class EmailService {
 
     // epw => 인증코드
     String msg = "";
-    if (mailCheckDTO.getMemberNo() == null) {
+    if (mailCheckDTO.getMemberNo() == null && mailCheckDTO.getEmail() != null) {
       msg += messageContent(msg, ePw); // 이메일 인증 컨텐츠
-    } else if (mailCheckDTO.getUserId() == null) {
-      msg += linkContent(msg, mailCheckDTO.getMemberNo());
-    } else {
-      msg += passwordContent(msg, mailCheckDTO.getMemberNo());
+    } else if(mailCheckDTO.getMemberNo() != null && mailCheckDTO.getUserId() == null){
+        msg += linkContent(msg, mailCheckDTO.getMemberNo());
+    } else if(mailCheckDTO.getMemberNo() != null && mailCheckDTO.getUserName() != null && mailCheckDTO.getUserId() != null){
+        msg += passwordContent(msg, mailCheckDTO.getMemberNo());
     }
     message.setText(msg, "utf-8", "html");
     message.setFrom(new InternetAddress(setFrom, "Plogging"));
