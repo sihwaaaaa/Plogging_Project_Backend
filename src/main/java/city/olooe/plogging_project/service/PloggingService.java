@@ -24,6 +24,7 @@ import city.olooe.plogging_project.model.ChallengeEntity;
 import city.olooe.plogging_project.model.friend.FriendStatusType;
 import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.model.map.MapEntity;
+import city.olooe.plogging_project.model.map.PloggingEntity;
 import city.olooe.plogging_project.model.map.StopoverEntity;
 import city.olooe.plogging_project.persistence.MapRepository;
 import city.olooe.plogging_project.persistence.PloggingRepository;
@@ -39,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 */
 @Service
 @Slf4j
-public class PloggingService {
+public class  PloggingService {
   
   @Autowired
   private MapRepository repository;// map jpa구현체
@@ -83,15 +84,20 @@ public class PloggingService {
   public PloggingDTO insertPlogging(PloggingDTO dto, Long memberNo,MapDTO mapDTO) {
     
     if (mapDTO.getMapNo() == null) {
-    Long mapNo = repository.save(mapDTO.toEntityNotStops()).getMapNo();
-      dto.setMapNo(mapNo);
-      log.info("{}",mapNo);
+  MapEntity mapEntity = repository.save(mapDTO.toEntityNotStops());
+      dto.setMapDTO(new MapDTO(mapEntity.getMapNo(),mapEntity.getStartX(),mapEntity.getStartY(),mapEntity.getEndX(),mapEntity.getEndY()));
+      dto.setMemberNo(memberNo);
+      PloggingEntity ploggingEntity = ploggingRepository.save(dto.toEntityStops());
+      PloggingDTO ploggingDTO = new PloggingDTO(ploggingEntity.getPloggingNo(),ploggingEntity.getMember().getMemberNo(),ploggingEntity.getType(),ploggingEntity.getPloggingTime(),ploggingEntity.getRegDate(),ploggingEntity.getDistance(),ploggingEntity.getStatus(),ploggingEntity.getMapEntity());
+      return ploggingDTO;
     }else{
-      dto.setMapNo(mapDTO.getMapNo());
+      dto.setMapDTO(mapDTO);
+      dto.setMemberNo(memberNo);
+      PloggingEntity ploggingEntity = dto.toEntity();
+      PloggingDTO ploggingDTO = new PloggingDTO(ploggingRepository.save(ploggingEntity));
+      return ploggingDTO;
     }
-    dto.setMemberNo(memberNo);
     
-    return new PloggingDTO(ploggingRepository.save(dto.toEntity()));
     
   }
  /**

@@ -88,12 +88,13 @@ public class PloggingController {
     public ResponseEntity<?> createPlogging(@AuthenticationPrincipal ApplicationUserPrincipal user, @RequestBody Map<String,Object> dtos){
       PloggingDTO ploggingDTO = objectMapper.convertValue(dtos.get("plogging"), PloggingDTO.class);
       if (dtos.get("map") != null) {
-        
+        log.info("{맵}",dtos.get("map"));
         MapDTO mapDTO = objectMapper.convertValue(dtos.get("map"), MapDTO.class);
         ploggingDTO = ploggingService.insertPlogging(ploggingDTO, user.getMember().getMemberNo(),mapDTO);
       }
       if (dtos.get("route") != null) {
         
+        log.info("{}",dtos.get("route"));
         MapDTO mapDTO = objectMapper.convertValue(dtos.get("route"), MapDTO.class);
         ploggingDTO = ploggingService.insertPlogging(ploggingDTO, user.getMember().getMemberNo(),mapDTO);
       }

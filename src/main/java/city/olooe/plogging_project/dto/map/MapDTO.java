@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import city.olooe.plogging_project.model.map.MapEntity;
 import city.olooe.plogging_project.model.map.StopoverEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -59,6 +60,13 @@ public class MapDTO {
     this.time = entity.getTime();
     this.stops = entity.getStops().stream().map(StopoverDTO::new).collect(Collectors.toList());
   }
+  public MapDTO( Long mapNo,Double startX, Double startY,Double endX, Double endY) {
+    this.mapNo = mapNo;
+    this.startX = startX;
+    this.startY = startY;
+    this.endX = endX;
+    this.endY = endY;
+  }
 
   /**
    * @author : 이시화
@@ -71,6 +79,7 @@ public class MapDTO {
    * 
    * @brief: MapDTO를 MapEntity로 변환
    */
+ 
   public MapEntity toEntity() {
     return MapEntity.builder()
         .mapNo(mapNo)
