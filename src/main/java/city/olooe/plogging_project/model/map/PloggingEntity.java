@@ -52,6 +52,6 @@ public class PloggingEntity {
 
   @ManyToOne
   @JoinColumn(name = "mapNo")
-  private MapEntity mapNo;// fk 경로
+  private MapEntity mapEntity;// fk 경로
 
 }
