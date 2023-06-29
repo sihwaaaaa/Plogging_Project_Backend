@@ -5,6 +5,10 @@ import city.olooe.plogging_project.model.*;
 import city.olooe.plogging_project.persistence.ChallengeRepository;
 import city.olooe.plogging_project.persistence.FriendRepository;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
+
+import java.security.Principal;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -102,7 +106,7 @@ public class MemberService {
    * @return MemberEntity
    */
   public MemberEntity getMember(String userName, String email, String userId) {
-    return memberRepository.findByUserNameAndEmail(userName, email);
+    return memberRepository.findByUserNameAndEmailAndUserId(userName, email, userId);
   }
 
   /**
@@ -236,12 +240,14 @@ public class MemberService {
    * @param member
    */
   @Transactional
-  public void secessWithMember(final MemberEntity member) {
-    if (member == null) {
-      throw new UsernameNotFoundException("회원을 발견하지 못함");
+  public void secessWithMember(MemberDTO memberDTO) {
+    MemberEntity memberEntity = memberRepository.findById(memberDTO.getMemberNo())
+        .orElseThrow(() -> new IllegalArgumentException("회원을 발견하지 못함"));
+    if (!passwordEncoder.matches(memberDTO.getPassword(), memberEntity.getPassword())) {
+      throw new IllegalArgumentException("비밀번호가 일치하지 않음");
     }
-    member.setEnabled(false);
-    memberRepository.save(member);
+    Long Id = memberEntity.getMemberNo();
+    memberRepository.deleteById(Id);
   }
 
 }

@@ -31,6 +31,7 @@ import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.model.PointHistoryEntity;
 import city.olooe.plogging_project.model.RewardEntity;
 import city.olooe.plogging_project.model.RewardTypeStatus;
+import city.olooe.plogging_project.persistence.MemberRepository;
 import city.olooe.plogging_project.security.TokenProvider;
 import city.olooe.plogging_project.service.EmailService;
 import city.olooe.plogging_project.service.MemberService;
@@ -88,6 +89,9 @@ public class MemberController {
     try {
       MemberEntity member = memberService.getByCredentials(memberDTO.getUserId(), memberDTO.getPassword(),
           passwordEncoder);
+      if (member.getEnabled() == false) {
+        throw new IllegalArgumentException("로그인이 불가능한 회원입니다.");
+      }
       final String token = tokenProvider.userCreateToken(member);
       log.info("{}", token);
       final MemberDTO responseMemberDTO = MemberDTO.builder()
@@ -107,7 +111,7 @@ public class MemberController {
       ResponseDTO resposneDTO = ResponseDTO.builder().data(responseMemberDTO).build();
       return ResponseEntity.ok().body(resposneDTO);
     } catch (Exception e) {
-      ResponseDTO resposneDTO = ResponseDTO.builder().error("로그인 실패!").build();
+      ResponseDTO resposneDTO = ResponseDTO.builder().error(e.getMessage()).build();
       return ResponseEntity.badRequest().body(resposneDTO);
     }
   }
@@ -191,16 +195,16 @@ public class MemberController {
   @PostMapping("findId")
   public ResponseEntity<?> findUserId(@RequestBody MailCheckDTO mailCheckDTO)
       throws UnsupportedEncodingException, MessagingException {
-        System.out.println(mailCheckDTO);
+    System.out.println(mailCheckDTO);
     ResponseDTO<?> response = null;
     try {
       memberService.validateWithEmail(mailCheckDTO.getEmail()); // 회원이 존재하는지 확인
       MemberEntity memberEntity = memberService.getMember(mailCheckDTO.getUserName(), mailCheckDTO.getEmail());
       log.info("{}", memberEntity);
       mailCheckDTO = MailCheckDTO.builder()
-      .memberNo(memberEntity.getMemberNo())
-      .email(memberEntity.getEmail())
-      .build();
+          .memberNo(memberEntity.getMemberNo())
+          .email(memberEntity.getEmail())
+          .build();
       emailService.sendMessage(mailCheckDTO.getEmail(), mailCheckDTO);
       response = ResponseDTO.builder().data("이메일이 성공적으로 발송되었습니다.").build();
       return ResponseEntity.ok().body(response);
@@ -289,29 +293,4 @@ public class MemberController {
     return ResponseEntity.ok().body(ResponseDTO.builder().data(memberDTOS).build());
   }
 
-  /**
-   * @author 박연재
-   * @date 23.06.27
-   * @brief 회원 탈퇴 기능
-   * @param req
-   * @param res
-   * @param user
-   * @return
-   */
-  @PutMapping("secession")
-  public ResponseEntity<?> secessMember(HttpServletRequest req, HttpServletResponse res,
-      @AuthenticationPrincipal ApplicationUserPrincipal user) {
-    ResponseDTO<?> responseDTO = null;
-    try {
-      MemberEntity member = user.getMember();
-      memberService.secessWithMember(member);
-      new SecurityContextLogoutHandler().logout(req, res,
-          SecurityContextHolder.getContext().getAuthentication());
-      responseDTO = ResponseDTO.builder().data("회원 탈퇴에 성공하셨습니다.").build();
-      return ResponseEntity.ok().body(responseDTO);
-    } catch (Exception e) {
-      responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
-      return ResponseEntity.badRequest().body(responseDTO);
-    }
-  }
 }

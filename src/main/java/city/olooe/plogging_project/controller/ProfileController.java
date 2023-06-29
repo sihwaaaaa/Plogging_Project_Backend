@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -172,6 +173,44 @@ public class ProfileController {
     }
   }
 
+  /**
+   * @author 박연재
+   * @date 23.06.27
+   * @brief 회원 탈퇴 기능
+   * @param req
+   * @param res
+   * @param user
+   * @return
+   */
+  @DeleteMapping("{memberNo}/secession")
+  public ResponseEntity<?> secessMember(@RequestBody MemberDTO memberDTO,
+      @AuthenticationPrincipal ApplicationUserPrincipal user) {
+    ResponseDTO<?> responseDTO = null;
+    try {
+      memberService.secessWithMember(memberDTO);
+      SecurityContextHolder.clearContext();
+      responseDTO = ResponseDTO.builder().data("회원 탈퇴에 성공하셨습니다.").build();
+      return ResponseEntity.ok().body(responseDTO);
+    } catch (Exception e) {
+      responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
+      return ResponseEntity.badRequest().body(responseDTO);
+    }
+  }
+
+  @GetMapping("{memberNo}/secession")
+  public ResponseEntity<?> secessMemberPage(@PathVariable Long memberNo) {
+    ResponseDTO<?> responseDTO = null;
+
+    try {
+      MemberEntity entity = memberService.getMember(memberNo).get();
+      MemberDTO dto = new MemberDTO(entity);
+      responseDTO = ResponseDTO.builder().data(dto).build();
+      return ResponseEntity.ok().body(responseDTO);
+    } catch (Exception e) {
+      responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
+      return ResponseEntity.badRequest().body(responseDTO);
+    }
+  }
   // private ResponseEntity<?> resProfile(MemberEntity member,
   // Optional<MemberEntity> optionalMember,
   // String errorMsg) {
