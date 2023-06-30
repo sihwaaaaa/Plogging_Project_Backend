@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import city.olooe.plogging_project.dto.AttachDTO;
+import city.olooe.plogging_project.dto.ResponseDTO;
 import city.olooe.plogging_project.model.AttachEntity;
 import city.olooe.plogging_project.model.MemberEntity;
 import city.olooe.plogging_project.model.PointHistoryEntity;
@@ -119,22 +120,24 @@ public class BoardService {
    * @brief: 게시물 개별조회 서비스
    */
   @Transactional(readOnly = true)
-  public BoardDTO searchByBno(Long bno) {
-    BoardEntity boardEntity = boardRepository.findById(bno)
-        .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
+  public ResponseDTO<?> searchByBno(Long bno) {
+    Optional<BoardEntity> boardEntity = boardRepository.findById(bno);
 
-    BoardDTO boardDTO = new BoardDTO(boardEntity);
+    if(boardEntity.isPresent()){
+      BoardDTO boardDTO = new BoardDTO(boardEntity.get());
 
-    boardDTO.setReplyCount(boardEntity.getReplys().size());
-    
-    // 첨부파일 유무 검사
-    Optional<AttachEntity> byBno = attachRepository.findByBno(boardEntity);
-    byBno.ifPresent(attachEntity -> boardDTO.setAttach(new AttachDTO(attachEntity)));
+      boardDTO.setReplyCount(boardEntity.get().getReplys().size());
 
-    if(boardEntity.getPloggingNo() != null){
-      boardDTO.setPloggingNo(boardEntity.getPloggingNo().getPloggingNo());
+      // 첨부파일 유무 검사
+      Optional<AttachEntity> byBno = attachRepository.findByBno(boardEntity.get());
+      byBno.ifPresent(attachEntity -> boardDTO.setAttach(new AttachDTO(attachEntity)));
+
+      if(boardEntity.get().getPloggingNo() != null){
+        boardDTO.setPloggingNo(boardEntity.get().getPloggingNo().getPloggingNo());
+      }
+      return ResponseDTO.builder().data(boardDTO).build();
     }
-    return boardDTO;
+    return ResponseDTO.builder().error("500").build();
   }
 
   /**
