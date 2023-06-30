@@ -106,7 +106,7 @@ public class BoardController {
 
     // 본인의 게시물이 아닌 경우
     if(!Objects.equals(boardUpateDTO.getMemberNo(), user.getMember().getMemberNo())) {
-      ResponseEntity.ok().body(ResponseDTO.builder().error("잘못된 접근").build());
+      ResponseEntity.ok().body(ResponseDTO.builder().error("500").build());
     }
     
     BoardDTO boardDTO = boardService.update(boardUpateDTO);
@@ -124,8 +124,7 @@ public class BoardController {
    */
   @GetMapping("/board/{bno}")
   public ResponseEntity<?> searchByBno(@PathVariable Long bno) {
-    BoardDTO boardDTO = boardService.searchByBno(bno);
-    return ResponseEntity.ok().body(ResponseDTO.builder().data(boardDTO).build());
+    return ResponseEntity.ok().body(boardService.searchByBno(bno));
   }
 
 
