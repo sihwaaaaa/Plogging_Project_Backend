@@ -1,4 +1,4 @@
-package city.olooe.plogging_project.service;
+package city.olooe.plogging_project.service.friend;
 
 import city.olooe.plogging_project.dto.friend.FriendDTO;
 import city.olooe.plogging_project.model.friend.FriendEntity;
