@@ -4,7 +4,7 @@ import city.olooe.plogging_project.dto.friend.FriendDTO;
 import city.olooe.plogging_project.dto.ResponseDTO;
 import city.olooe.plogging_project.model.friend.FriendEntity;
 import city.olooe.plogging_project.security.ApplicationUserPrincipal;
-import city.olooe.plogging_project.service.FriendService;
+import city.olooe.plogging_project.service.friend.FriendService;
 import city.olooe.plogging_project.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

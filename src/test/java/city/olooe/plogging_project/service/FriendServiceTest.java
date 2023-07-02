@@ -4,6 +4,7 @@ import city.olooe.plogging_project.model.friend.FriendEntity;
 import city.olooe.plogging_project.model.friend.FriendStatusType;
 import city.olooe.plogging_project.persistence.FriendRepository;
 import city.olooe.plogging_project.persistence.MemberRepository;
+import city.olooe.plogging_project.service.friend.FriendService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

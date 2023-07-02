@@ -5,6 +5,7 @@ import city.olooe.plogging_project.model.friend.FriendStatusType;
 import city.olooe.plogging_project.model.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public interface FriendRepository extends JpaRepository<FriendEntity, Long> {
     Optional<FriendEntity> findByFromMemberAndToMember(MemberEntity fromMember, MemberEntity toMember);
 
     @Query("select f.status from FriendEntity f where f.fromMember = :fromMember and f.toMember = :toMember")
-    Optional<FriendStatusType> findStatusBy(MemberEntity fromMember, MemberEntity toMember);
+    Optional<FriendStatusType> findStatusBy(@Param("fromMember") MemberEntity fromMember,@Param("toMember") MemberEntity toMember);
 
     /**
      * @author 천은경

@@ -6,6 +6,7 @@ import city.olooe.plogging_project.model.MemberEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import city.olooe.plogging_project.model.ChallengeEntity;
@@ -20,7 +21,7 @@ public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Long
     List<ChallengeEntity> findChallengeEntityByOrderByChNoDesc();
 
     @Query("select ch from ChallengeEntity ch left join ch.ChallengeMembers cm where cm.challenger = :member order by cm.cmemberNo")
-    List<ChallengeEntity> findMyChallenges(MemberEntity member, Pageable pageable);
+    List<ChallengeEntity> findMyChallenges(@Param("member") MemberEntity member,@Param("pageable") Pageable pageable);
 
     @Query("select ch from ChallengeEntity ch left join ch.ChallengeMembers cm where cm.challenger = :member order by cm.cmemberNo")
     List<ChallengeEntity> findMyChallenges(MemberEntity member);
