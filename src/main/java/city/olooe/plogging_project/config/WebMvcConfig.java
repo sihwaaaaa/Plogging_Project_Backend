@@ -23,7 +23,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 // Origin이 http://localhost:3000에 대해./
 //                .allowedOrigins("http://192.168.20.38:3000")
-//                .allowedOrigins("http://3.34.124.126:8080")
+//                .allowedOrigins("http://13.209.48.33:8080")
+//                .allowedOrigins("https://jubging.sionms.co.kr")
                 .allowedOriginPatterns(CorsConfiguration.ALL)
                 // "GET", "POST", "PUT", "DELETE", "OPTIONS" 메서드를 허용
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
