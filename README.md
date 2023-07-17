@@ -422,8 +422,8 @@ create table tbl_usermap
 ### Issue
 <pre>
 
-- 사용중이던 node 17.xx 버전과 리액트 템플릿 버전이 호환 불가.
-  - nvm 설치하여 버전을 17.xx -> 16.xx 버전으로 다운그레이드 및 craco 설치
+- sql쿼리문을 jqpl로 변환하는 과정에서 버전이 맞지않아 Rank 함수를 사용하지 못하는 상황 발생
+  - 해결 : Service Class에서 JDBCTemplate 를 활용하여 map 형태로 return. Controller에서 호출
  
 </pre>
 
