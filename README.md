@@ -26,12 +26,11 @@
 <h3 align="center">SNS와 플로깅을 동시에! 줍깅</h3>
 
   <p align="center">
-   
+
     작업기간 : 2023.05.24~2023.07.03</p>    
-    
+
   </p>
   <a href="https://pl.flatjava.co.kr/" target="_blank">View Demo</a>
-</div>
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -39,9 +38,9 @@
 ![finalIndex](https://github.com/plogging-project/Plogging_Project_Frontend/assets/132035168/b0a40c46-3d53-4ad6-8590-cf2b382aaa3e)
 
 <br>
-React, React Template <br>
+SpringBoot JPA <br>
 파이널 프로젝트 <br>
-프론트엔드 -> React를 활용하여 줍깅 사이트 구현
+BackEnd -> Spring Boot JPA를 활용하여 데이터 가공
 
 ### Built With
 <img src="https://img.shields.io/badge/mariaDB-lightgray?style=flat&logo=mariadb&logoColor=white"/><br>
@@ -415,12 +414,9 @@ create table tbl_usermap
 
 ### 설치
 
-1. yarn 1.22.19
-2. HexaDash ReactTemplate : 0.1.0
-3. node 16.15.0
-4. npm install @craco/craco --save
-5. MariaDB
-6. Tomcat9
+1. jdk 17.0.5
+2. Spring Boot
+3. Spring Boot JPA
 
 ### Issue
 <pre>
@@ -602,7 +598,6 @@ create table tbl_usermap
     - [ ] 챌린지 알림
 
 
-        <br>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -771,7 +766,7 @@ Lee JaeWon - wodnjsdl01@gmail.com
 
 ### References
 README Template : [README-Template](https://github.com/othneildrew/Best-README-Template)<br>
-Reference : 
+Reference :
 [헬로깅](https://www.helloging.co.kr/)<br>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
