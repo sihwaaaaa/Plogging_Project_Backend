@@ -43,8 +43,9 @@ SpringBoot JPA <br>
 BackEnd -> Spring Boot JPA를 활용하여 데이터 가공
 
 ### Built With
-<img src="https://img.shields.io/badge/mariaDB-lightgray?style=flat&logo=mariadb&logoColor=white"/><br>
-<img src="https://img.shields.io/badge/React-lightgray?style=flat&logo=React&logoColor=61DAFB"/><br>
+<img src="https://img.shields.io/badge/springboot-6DB33F?style=flat&logo=springboot&logoColor=white"/><br>
+<img src="https://img.shields.io/badge/springsecurity-6DB33F?style=flat&logo=springsecurity&logoColor=white"/><br>
+<img src="https://img.shields.io/badge/mariaDB-003545?style=flat&logo=mariadb&logoColor=white"/><br>
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
