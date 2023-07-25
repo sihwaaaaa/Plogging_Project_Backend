@@ -40,7 +40,6 @@
 <br>
 SpringBoot JPA <br>
 파이널 프로젝트 <br>
-BackEnd -> Spring Boot JPA를 활용하여 데이터 가공
 
 ### Built With
 <img src="https://img.shields.io/badge/springboot-6DB33F?style=flat&logo=springboot&logoColor=white"/><br>
@@ -417,7 +416,6 @@ create table tbl_usermap
 
 1. jdk 17.0.5
 2. Spring Boot
-3. Spring Boot JPA
 
 ### Issue
 <pre>
