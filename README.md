@@ -36,7 +36,7 @@
 
 ### [▶️View Demo](https://jubging.poetrypainting.co.kr/)
 
-### [▶️Other Projects(Portfolio)](https://sihwaaaaa.github.io/)
+### [▶️Other Projects (Portfolio) ](https://sihwaaaaa.github.io/)
 
 <br>
 
